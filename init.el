@@ -1,14 +1,17 @@
-;; start with just gnu and melpa
-(setq package-archives nil)
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "http://stable.melpa.org/packages/"))
-
-;; we need package to actually install anything
+;; setup package
 (require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+
+;; make sure that it gets initialized
+(unless (bound-and-true-p package--initialized)
+  (setq package-enable-at-startup nil)
+  (package-initialize))
 
 ;; get `use-package'
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
+  (package-install 'use-package))
 
 ;; Configure `use-package' prior to loading it.
 (eval-and-compile
@@ -19,6 +22,8 @@
   (setq use-package-enable-imenu-support t)
   (setq use-package-hook-name-suffix nil))
 
+(eval-when-compile
+  (require 'use-package))
 
 ;; misc `emacs' settings
 (use-package emacs
@@ -33,8 +38,19 @@
   (scroll-bar-mode -1)
   (menu-bar-mode -1)
   :config
-  (load-theme 'modus-vivendi))
+  )
 
+;; setup ido
+(use-package ido
+  :config
+  (ido-mode 1)
+  (setq ido-max-window-height 1)
+  (setq ido-everywhere t))
+
+;; make dired list directories first
+(use-package dired
+  :config
+  (setq dired-listing-switches "-aBhl  --group-directories-first"))
 ;; make moving between and swapping windows easier
 (use-package windmove
   :bind
@@ -49,6 +65,7 @@
 
 ;; vim fusion
 (use-package evil
+  :ensure t
   :config
   (evil-mode 1)
   (define-key evil-normal-state-map [escape] 'keyboard-quit)
@@ -59,14 +76,7 @@
   (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
   (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
 
-;; setup ido
-(use-package ido
-  :config
-  (ido-mode 1)
-  (setq ido-max-window-height 1)
-  (setq ido-everywhere t))
-
-;; make dired list directories first
-(use-package dired
-  :config
-  (setq dired-listing-switches "-aBhl  --group-directories-first"))
+;; get this dope theme
+(use-package modus-vivendi-theme
+  :ensure t
+  :config(load-theme 'modus-vivendi))
