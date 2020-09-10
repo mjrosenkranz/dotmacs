@@ -4,9 +4,9 @@
              '("melpa" . "https://melpa.org/packages/"))
 
 ;; make sure that it gets initialized
-(unless (bound-and-true-p package--initialized)
-  (setq package-enable-at-startup nil)
-  (package-initialize))
+;; (unless (bound-and-true-p package--initialized)
+;;   (setq package-enable-at-startup nil)
+;;   (package-initialize))
 
 ;; get `use-package'
 (unless (package-installed-p 'use-package)
@@ -36,23 +36,22 @@
   (tool-bar-mode -1)
   (blink-cursor-mode -1)
   (scroll-bar-mode -1)
-  (menu-bar-mode -1)
-  :config
-  )
+  (menu-bar-mode -1))
 
 ;; setup ido
-(use-package ido
+(use-package icomplete
+  :defer
   :config
-  (ido-mode 1)
-  (setq ido-max-window-height 1)
-  (setq ido-everywhere t))
+  (icomplete-mode 1))
 
 ;; make dired list directories first
 (use-package dired
+  :defer
   :config
   (setq dired-listing-switches "-aBhl  --group-directories-first"))
 ;; make moving between and swapping windows easier
 (use-package windmove
+  :defer
   :bind
   ("M-<left>" . 'windmove-left)
   ("M-<right>" . 'windmove-right)
@@ -79,4 +78,7 @@
 ;; get this dope theme
 (use-package modus-vivendi-theme
   :ensure t
-  :config(load-theme 'modus-vivendi))
+  :config(load-theme 'modus-vivendi t))
+
+(use-package olivetti
+  :ensure t)
