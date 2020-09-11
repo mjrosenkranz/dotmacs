@@ -4,9 +4,9 @@
              '("melpa" . "https://melpa.org/packages/"))
 
 ;; make sure that it gets initialized
-;; (unless (bound-and-true-p package--initialized)
-;;   (setq package-enable-at-startup nil)
-;;   (package-initialize))
+(unless (bound-and-true-p package--initialized)
+  (setq package-enable-at-startup nil)
+  (package-initialize))
 
 ;; get `use-package'
 (unless (package-installed-p 'use-package)
@@ -32,7 +32,6 @@
   (load custom-file t)
   (setq ring-bell-function 'ignore)
   (setq inhibit-startup-screen t)
-  (set-frame-font "Jetbrains Mono 12" nil t)
   (tool-bar-mode -1)
   (blink-cursor-mode -1)
   (scroll-bar-mode -1)
