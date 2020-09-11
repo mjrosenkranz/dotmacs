@@ -40,9 +40,8 @@
 
 ;; setup ido
 (use-package icomplete
-  :defer
   :config
-  (icomplete-mode 1))
+  (icomplete-mode))
 
 ;; make dired list directories first
 (use-package dired
@@ -82,3 +81,22 @@
 
 (use-package olivetti
   :ensure t)
+
+(use-package go-mode
+  :ensure t
+  :defer t
+  :config
+  (setq gofmt-command "goimports")
+  (defun oct/go-mode-addons ()
+    (add-hook 'before-save-hook 'gofmt nil 'local))
+  (add-hook 'go-mode-hook 'oct/go-mode-addons))
+  (add-hook 'go-mode-hook
+	    (lambda ()
+	      (set (make-local-variable 'company-backends) '(company-go))))
+
+
+(use-package company :ensure t
+  :config
+  (company-mode))
+(use-package company-go :ensure t)
+
