@@ -1,0 +1,223 @@
+* Init
+** emacs init settings
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+  :init
+  (setq custom-file
+	"~/.emacs.d/custom-settings.el")
+  (load custom-file t))
+#+END_SRC
+
+* GUI
+** Remove annoying UI stuff and set theme
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+    :config
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
+    (blink-cursor-mode -1)
+    (scroll-bar-mode -1)
+    (setq inhibit-startup-screen t)
+    (setq ring-bell-function 'ignore)
+    (load-theme 'modus-vivendi t))
+#+END_SRC
+** Set font properties and keybinds
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+    :bind
+    ("C-=" . 'text-scale-increase)
+    ("C--" . 'text-scale-decrease))
+#+END_SRC
+
+** Set the theme
+#+BEGIN_SRC emacs-lisp
+;; get this dope theme
+(use-package modus-vivendi-theme
+    :ensure t)
+#+END_SRC
+
+** olivetti
+#+BEGIN_SRC emacs-lisp
+(use-package olivetti
+  :ensure t)
+#+END_SRC
+* Editor
+** Setup
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+    :config
+    (show-paren-mode 1)
+    (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+    (electric-pair-mode 1))
+#+END_SRC
+** Universal functions
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+:config
+  (defun oct/init ()
+    "Edit the `user-init-file' in the current buffer"
+    (interactive)
+    (find-file "~/.emacs.d/init-def.org")))
+#+END_SRC
+
+** evil-mode
+#+BEGIN_SRC emacs-lisp
+;; vim fusion
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode 1)
+  (define-key evil-normal-state-map [escape] 'keyboard-quit)
+  (define-key evil-visual-state-map [escape] 'keyboard-quit)
+  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+#+END_SRC
+* Buffers
+** Functions
+kill-curr-buff kills the current buffer and closes its window.
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+    :config
+    (defun oct/kill-curr-buff (&optional arg)
+	"Kill the current buffer"
+	;; make interactive, set arg to ???
+	(interactive "p")
+	;; we can't kill a minibuffer so abort it
+	;; otherwise kill the buffer
+	(if (minibufferp)
+	    (abort-recursive-edit)
+	(kill-buffer (current-buffer)))
+	;; if there are other windows we can kill this one
+	(when (and arg
+		(not (one-window-p)))
+		(delete-window)))
+
+    :bind ("M-k" . oct/kill-curr-buff))
+#+END_SRC
+** IBuffer
+Settings for ibuffer
+#+BEGIN_SRC emacs-lisp
+
+;; ibuffer stuff
+(use-package ibuffer)
+
+#+END_SRC
+** MiniBuffer
+#+BEGIN_SRC emacs-lisp
+(use-package minibuffer
+  :config
+  (use-package orderless
+    :ensure
+    :custom (setq completion-styles '(orderless))
+    :config
+    (setq orderless-regexp-separator "[/\s_-]+")
+    (setq orderless-matching-styles
+          '(orderless-flex
+            orderless-strict-leading-initialism
+            orderless-regexp
+            orderless-prefixes
+            orderless-literal))
+	    
+  (minibuffer-electric-default-mode 1)
+)
+#+END_SRC
+* Completetion
+** icomplete
+#+BEGIN_SRC emacs-lisp
+  (use-package icomplete
+    :demand
+    :config
+    (fido-mode -1)
+    (icomplete-mode 1)
+    :bind (:map icomplete-minibuffer-map
+		("<tab>" . icomplete-force-complete)
+		("<return>" . icomplete-force-complete-and-exit) ; exit with completion
+		;; ("C-j" . exit-minibuffer) ; force input unconditionally
+		;; ("C-n" . icomplete-forward-completions)
+		;; ("<right>" . icomplete-forward-completions)
+		;; ("<down>" . icomplete-forward-completions)
+		;; ("C-p" . icomplete-backward-completions)
+		;; ("<left>" . icomplete-backward-completions)
+		;; ("<up>" . icomplete-backward-completions)
+		;; ;; The following command is from Emacs 27.1
+		;; ("<C-backspace>" . icomplete-fido-backward-updir)
+		)
+  )
+#+END_SRC
+** company
+#+BEGIN_SRC emacs-lisp
+(use-package company
+    :ensure t
+    :config
+    (company-mode 1))
+#+END_SRC
+* Navigation
+** dired
+#+BEGIN_SRC emacs-lisp
+;; make dired list directories first
+(use-package dired
+  :defer
+  :config
+  (setq dired-listing-switches
+#+END_SRC
+** windowmove
+#+BEGIN_SRC emacs-lisp
+;; make moving between and swapping windows easier
+(use-package windmove
+  :defer
+  :bind
+  ("M-<left>" . 'windmove-left)
+  ("M-<right>" . 'windmove-right)
+  ("M-<up>" . 'windmove-up)
+  ("M-<down>" . 'windmove-down)
+  ("M-S-<left>" . 'windmove-swap-states-left)
+  ("M-S-<right>" . 'windmove-swap-states-right)
+  ("M-S-<up>" . 'windmove-swap-states-up)
+  ("M-S-<down>" . 'windmove-swap-states-down))
+#+END_SRC
+* Programming
+** Project Management
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :ensure t
+  :config
+  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+  (projectile-mode +1))
+#+END_SRC
+** Go
+#+BEGIN_SRC emacs-lisp
+(use-package go-mode
+  :ensure t
+  :defer t
+  :config
+  (setq gofmt-command "goimports")
+  (company-mode 1)
+  (defun oct/go-mode-addons ()
+    (add-hook 'before-save-hook 'gofmt nil 'local))
+  (add-hook 'go-mode-hook 'oct/go-mode-addons))
+  (add-hook 'go-mode-hook
+	    (lambda ()
+	      (set (make-local-variable 'company-backends) '(company-go))))
+
+
+(use-package company-go :ensure t)
+
+#+END_SRC
+* Git
+** Magit
+Setup magit and get a quick binding to bring it up.
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure
+  :bind ("C-c g" . magit-status))
+#+END_SRC
+Make magit show changes within diff line
+#+BEGIN_SRC emacs-lisp
+(use-package magit-diff
+  :after magit
+  :config
+  (setq magit-diff-refine-hunk t))
+#+END_SRC
