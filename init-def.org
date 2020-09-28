@@ -238,3 +238,19 @@ Make magit show changes within diff line
   :config
   (setq magit-diff-refine-hunk t))
 #+END_SRC
+* Org
+** add src
+add function 'org-mode-insert-src' and give it a key binding 'C-c s'.
+this makes it easier to add a sorce code block for this file or for works with other langues
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :config
+    (defun oct/org-mode-insert-src ()
+      (interactive)
+      (insert "#+BEGIN_SRC emacs-lisp\n")
+      (insert "#+END_SRC")
+      (previous-line)
+      (end-of-line))
+    :bind
+    ("C-c s" . 'oct/org-mode-insert-src))
+#+END_SRC
