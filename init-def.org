@@ -41,7 +41,7 @@
 (use-package olivetti
   :ensure t)
 #+END_SRC
-* Editor
+* Emacs
 ** Setup
 #+BEGIN_SRC emacs-lisp
 (use-package emacs
@@ -50,16 +50,33 @@
     (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
     (electric-pair-mode 1))
 #+END_SRC
-** Universal functions
+** variables
+#+BEGIN_SRC emacs-lisp
+  (defvar conf "~/.emacs.d/init-def")
+  (defvar init-el (concat conf ".el"))
+  (defvar init-org (concat conf ".org"))
+#+END_SRC
+** editing this file
 #+BEGIN_SRC emacs-lisp
 (use-package emacs
 :config
-  (defun oct/init ()
-    "Edit the `user-init-file' in the current buffer"
+(defun oct/init ()
+    "Edit `org-file' in the current buffer"
     (interactive)
-    (find-file "~/.emacs.d/init-def.org")))
+    (find-file init-org)))
 #+END_SRC
-
+** executing this file
+I need a way to compile and then execute the whole init file.
+this is helful for testing if I've fucked it up yet.
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+:config
+(defun oct/exec-init ()
+  (if (file-exists-p el)
+      (load-file el)
+    (org-babel-load-file org)))
+#+END_SRC
+* Editor
 ** evil-mode
 #+BEGIN_SRC emacs-lisp
 ;; vim fusion
