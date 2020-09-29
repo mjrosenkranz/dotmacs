@@ -152,17 +152,8 @@ Settings for ibuffer
     :bind (:map icomplete-minibuffer-map
 		("<tab>" . icomplete-force-complete)
 		("<return>" . icomplete-force-complete-and-exit) ; exit with completion
-		;; ("C-j" . exit-minibuffer) ; force input unconditionally
-		;; ("C-n" . icomplete-forward-completions)
-		;; ("<right>" . icomplete-forward-completions)
-		;; ("<down>" . icomplete-forward-completions)
-		;; ("C-p" . icomplete-backward-completions)
-		;; ("<left>" . icomplete-backward-completions)
-		;; ("<up>" . icomplete-backward-completions)
-		;; ;; The following command is from Emacs 27.1
-		;; ("<C-backspace>" . icomplete-fido-backward-updir)
-		)
-  )
+		("<right>" . icomplete-forward-completions)
+		("<left>" . icomplete-backward-completions)))
 #+END_SRC
 ** company
 #+BEGIN_SRC emacs-lisp
