@@ -74,7 +74,7 @@ this is helful for testing if I've fucked it up yet.
 (defun oct/exec-init ()
   (if (file-exists-p el)
       (load-file el)
-    (org-babel-load-file org)))
+    (org-babel-load-file org))))
 #+END_SRC
 * Editor
 ** evil-mode
@@ -136,10 +136,8 @@ Settings for ibuffer
             orderless-strict-leading-initialism
             orderless-regexp
             orderless-prefixes
-            orderless-literal))
-	    
-  (minibuffer-electric-default-mode 1)
-)
+            orderless-literal)))
+(minibuffer-electric-default-mode 1))
 #+END_SRC
 * Completetion
 ** icomplete
@@ -164,13 +162,7 @@ Settings for ibuffer
 #+END_SRC
 * Navigation
 ** dired
-#+BEGIN_SRC emacs-lisp
-;; make dired list directories first
-(use-package dired
-  :defer
-  :config
-  (setq dired-listing-switches
-#+END_SRC
+
 ** windowmove
 #+BEGIN_SRC emacs-lisp
 ;; make moving between and swapping windows easier
@@ -205,10 +197,10 @@ Settings for ibuffer
   (company-mode 1)
   (defun oct/go-mode-addons ()
     (add-hook 'before-save-hook 'gofmt nil 'local))
-  (add-hook 'go-mode-hook 'oct/go-mode-addons))
+  (add-hook 'go-mode-hook 'oct/go-mode-addons)
   (add-hook 'go-mode-hook
 	    (lambda ()
-	      (set (make-local-variable 'company-backends) '(company-go))))
+	      (set (make-local-variable 'company-backends) '(company-go)))))
 
 
 (use-package company-go :ensure t)

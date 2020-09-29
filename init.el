@@ -29,6 +29,4 @@
 (let* ((conf "~/.emacs.d/init-def")
        (el (concat conf ".el"))
        (org (concat conf ".org")))
-  (if (file-exists-p el)
-      (load-file el)
-    (org-babel-load-file org)))
+    (org-babel-load-file org))
