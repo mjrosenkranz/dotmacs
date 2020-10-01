@@ -23,10 +23,21 @@
 #+END_SRC
 ** Set font properties and keybinds
 #+BEGIN_SRC emacs-lisp
-(use-package emacs
-    :bind
-    ("C-=" . 'text-scale-increase)
-    ("C--" . 'text-scale-decrease))
+	(use-package emacs
+		:config
+		(defun oct/inc-scale ()
+			"increases the frame's font scale"
+			(interactive)
+			(setq font-scale (+ font-scale 10))
+			(set-face-attribute 'default (selected-frame) :height font-scale))
+		(defun oct/dec-scale ()
+			"decreases the frame's font scale"
+			(interactive)
+			(setq font-scale (- font-scale 10))
+			(set-face-attribute 'default (selected-frame) :height font-scale))
+		:bind
+		("C-=" . 'oct/inc-scale)
+		("C--" . 'oct/dec-scale))
 #+END_SRC
 
 ** Set the theme
@@ -69,12 +80,11 @@
 I need a way to compile and then execute the whole init file.
 this is helful for testing if I've fucked it up yet.
 #+BEGIN_SRC emacs-lisp
-(use-package emacs
-:config
-(defun oct/exec-init ()
-  (if (file-exists-p el)
-      (load-file el)
-    (org-babel-load-file org))))
+  (use-package emacs
+    :config
+    (defun oct/exec-init ()
+    (interactive)
+      (org-babel-load-file init-org)))
 #+END_SRC
 * Editor
 ** evil-mode
@@ -91,6 +101,15 @@ this is helful for testing if I've fucked it up yet.
   (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
   (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
   (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+#+END_SRC
+** settings
+#+BEGIN_SRC emacs-lisp
+	(use-package emacs
+		:config
+		(setq tab-width 2)
+		(setq-default indet-tabs-mode nil)
+		(setq font-scale 100)
+		)
 #+END_SRC
 * Buffers
 ** Functions
@@ -189,21 +208,21 @@ Settings for ibuffer
 #+END_SRC
 ** Go
 #+BEGIN_SRC emacs-lisp
-(use-package go-mode
-  :ensure t
-  :defer t
-  :config
-  (setq gofmt-command "goimports")
-  (company-mode 1)
-  (defun oct/go-mode-addons ()
-    (add-hook 'before-save-hook 'gofmt nil 'local))
-  (add-hook 'go-mode-hook 'oct/go-mode-addons)
-  (add-hook 'go-mode-hook
-	    (lambda ()
-	      (set (make-local-variable 'company-backends) '(company-go)))))
+	(use-package go-mode
+		:ensure t
+		:defer t
+		:config
+		(setq gofmt-command "goimports")
+		(company-mode 1)
+		(defun oct/go-mode-addons ()
+			(add-hook 'before-save-hook 'gofmt nil 'local))
+		(add-hook 'go-mode-hook 'oct/go-mode-addons)
+		(add-hook 'go-mode-hook
+				(lambda ()
+					(set (make-local-variable 'company-backends) '(company-go)))))
 
 
-(use-package company-go :ensure t)
+	(use-package company-go :ensure t)
 
 #+END_SRC
 * Git
@@ -226,14 +245,15 @@ Make magit show changes within diff line
 add function 'org-mode-insert-src' and give it a key binding 'C-c s'.
 this makes it easier to add a sorce code block for this file or for works with other langues
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :config
-    (defun oct/org-mode-insert-src ()
-      (interactive)
-      (insert "#+BEGIN_SRC emacs-lisp\n")
-      (insert "#+END_SRC")
-      (previous-line)
-      (end-of-line))
-    :bind
-    ("C-c s" . 'oct/org-mode-insert-src))
+	(use-package org
+		:config
+		(defun oct/org-mode-insert-src ()
+			(interactive)
+			(insert "#+BEGIN_SRC emacs-lisp\n")
+			(insert "#+END_SRC")
+			(previous-line)
+			(end-of-line)
+			(org-edit-src-code))
+		:bind
+		("C-c s" . 'oct/org-mode-insert-src))
 #+END_SRC
