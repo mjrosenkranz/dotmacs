@@ -8,6 +8,41 @@
   (load custom-file t))
 #+END_SRC
 
+* Emacs
+** Setup
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+    :config
+    (show-paren-mode 1)
+    (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+    (electric-pair-mode 1))
+#+END_SRC
+** variables
+#+BEGIN_SRC emacs-lisp
+  (defvar conf "~/.emacs.d/init-def")
+  (defvar init-el (concat conf ".el"))
+  (defvar init-org (concat conf ".org"))
+	(setq font-scale 120)
+#+END_SRC
+** editing this file
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+:config
+(defun oct/init ()
+    "Edit `org-file' in the current buffer"
+    (interactive)
+    (find-file init-org)))
+#+END_SRC
+** executing this file
+I need a way to compile and then execute the whole init file.
+this is helful for testing if I've fucked it up yet.
+#+BEGIN_SRC emacs-lisp
+  (use-package emacs
+    :config
+    (defun oct/exec-init ()
+    (interactive)
+      (org-babel-load-file init-org)))
+#+END_SRC
 * GUI
 ** Remove annoying UI stuff and set theme
 #+BEGIN_SRC emacs-lisp
@@ -25,6 +60,9 @@
 #+BEGIN_SRC emacs-lisp
 	(use-package emacs
 		:config
+		;; set font scale to default
+		(set-face-attribute 'default (selected-frame) :height font-scale)
+		;; functions for font scale
 		(defun oct/inc-scale ()
 			"increases the frame's font scale"
 			(interactive)
@@ -52,39 +90,10 @@
 (use-package olivetti
   :ensure t)
 #+END_SRC
-* Emacs
-** Setup
+** diminish
 #+BEGIN_SRC emacs-lisp
-(use-package emacs
-    :config
-    (show-paren-mode 1)
-    (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-    (electric-pair-mode 1))
-#+END_SRC
-** variables
-#+BEGIN_SRC emacs-lisp
-  (defvar conf "~/.emacs.d/init-def")
-  (defvar init-el (concat conf ".el"))
-  (defvar init-org (concat conf ".org"))
-#+END_SRC
-** editing this file
-#+BEGIN_SRC emacs-lisp
-(use-package emacs
-:config
-(defun oct/init ()
-    "Edit `org-file' in the current buffer"
-    (interactive)
-    (find-file init-org)))
-#+END_SRC
-** executing this file
-I need a way to compile and then execute the whole init file.
-this is helful for testing if I've fucked it up yet.
-#+BEGIN_SRC emacs-lisp
-  (use-package emacs
-    :config
-    (defun oct/exec-init ()
-    (interactive)
-      (org-babel-load-file init-org)))
+	(use-package diminish :ensure)
+	(use-package undo-tree :diminish)
 #+END_SRC
 * Editor
 ** evil-mode
@@ -106,10 +115,9 @@ this is helful for testing if I've fucked it up yet.
 #+BEGIN_SRC emacs-lisp
 	(use-package emacs
 		:config
-		(setq tab-width 2)
-		(setq-default indet-tabs-mode nil)
-		(setq font-scale 100)
-		)
+		(setq-default tab-width 2)
+		(setq-default c-basic-offset 2)
+		(setq-default indet-tabs-mode nil))
 #+END_SRC
 * Buffers
 ** Functions
@@ -202,9 +210,26 @@ Settings for ibuffer
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :ensure t
+	:diminish
   :config
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (projectile-mode +1))
+#+END_SRC
+** lsp-mode
+#+BEGIN_SRC emacs-lisp
+	(use-package lsp-mode
+		:ensure t
+		:commands (lsp lsp-deferred)
+		:hook (go-mode . lsp-deferred))
+
+	(use-package company
+		:config
+		(setq company-idle-delay 0)
+		(setq company-minimum-prefix-length 1))
+
+	(use-package company-lsp
+		:ensure t
+		:commands company-lsp)
 #+END_SRC
 ** Go
 #+BEGIN_SRC emacs-lisp
@@ -212,19 +237,19 @@ Settings for ibuffer
 		:ensure t
 		:defer t
 		:config
-		(setq gofmt-command "goimports")
-		(company-mode 1)
-		(defun oct/go-mode-addons ()
-			(add-hook 'before-save-hook 'gofmt nil 'local))
-		(add-hook 'go-mode-hook 'oct/go-mode-addons)
-		(add-hook 'go-mode-hook
-				(lambda ()
-					(set (make-local-variable 'company-backends) '(company-go)))))
+		(setq lsp-gopls-staticcheck t)
+		(setq lsp-eldoc-render-all t)
+		(setq lsp-gopls-complete-unimported t)
+		(defun lsp-go-install-save-hooks ()
+			(add-hook 'before-save-hook #'lsp-format-buffer t t)
+			(add-hook 'before-save-hook #'lsp-organize-imports t t))
+		(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+		(company-mode 1))
 
+	;; add hook
 
 	(use-package company-go :ensure t)
-
-#+END_SRC
+#+End_SRC
 * Git
 ** Magit
 Setup magit and get a quick binding to bring it up.
