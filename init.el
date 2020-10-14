@@ -8,6 +8,9 @@
   (setq package-enable-at-startup nil)
   (package-initialize))
 
+;; update package list
+(package-refresh-contents 1)
+
 ;; get `use-package'
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
