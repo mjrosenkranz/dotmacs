@@ -78,13 +78,6 @@ this is helful for testing if I've fucked it up yet.
 		("C--" . 'oct/dec-scale))
 #+END_SRC
 
-** Set the theme
-#+BEGIN_SRC emacs-lisp
-;; get this dope theme
-(use-package modus-vivendi-theme
-    :ensure t)
-#+END_SRC
-
 ** olivetti
 #+BEGIN_SRC emacs-lisp
 (use-package olivetti
@@ -94,6 +87,41 @@ this is helful for testing if I've fucked it up yet.
 #+BEGIN_SRC emacs-lisp
 	(use-package diminish :ensure)
 	(use-package undo-tree :diminish)
+#+END_SRC
+** Themes
+*** Set the theme
+#+BEGIN_SRC emacs-lisp
+	;; get this dope theme
+	(use-package modus-vivendi-theme
+			:ensure t)
+#+END_SRC
+*** custom theme
+we want to be able to load whatever custom themes we have so add them to the path
+#+BEGIN_SRC emacs-lisp
+	;; add theme directory
+	(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+#+END_SRC
+function to load a given theme
+#+BEGIN_SRC emacs-lisp
+	(defun oct/load-theme (theme)
+		"Reloads a THEME given by the user."
+		(interactive
+		 (list
+			(intern
+			 (completing-read "Load custom theme: "
+															(mapcar #'symbol-name
+																			(custom-available-themes))))))
+		(load-theme theme t))
+#+END_SRC
+*** rainbow-mode
+#+BEGIN_SRC emacs-lisp
+	(use-package rainbow-mode
+		:ensure
+		:diminish
+		:commands rainbow-mode
+		:config
+		(setq rainbow-ansi-colors nil)
+		(setq rainbow-x-colors nil))
 #+END_SRC
 * Editor
 ** evil-mode
@@ -220,10 +248,11 @@ Settings for ibuffer
 	(use-package lsp-mode
 		:ensure t
 		:commands (lsp lsp-deferred)
-		:hook (go-mode . lsp-deferred))
+		:hook (go-mode-hook . lsp))
 
 	(use-package company
 		:config
+		(global-company-mode 1)
 		(setq company-idle-delay 0)
 		(setq company-minimum-prefix-length 1))
 
@@ -250,6 +279,14 @@ Settings for ibuffer
 
 	(use-package company-go :ensure t)
 #+End_SRC
+** elisp
+use flymake in elisp modes
+#+BEGIN_SRC emacs-lisp
+	(use-package flymake
+		:commands flymake-mode
+		:hook
+		(emacs-lisp-mode-hook . flymake-mode))
+#+END_SRC
 * Git
 ** Magit
 Setup magit and get a quick binding to bring it up.

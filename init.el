@@ -9,7 +9,7 @@
   (package-initialize))
 
 ;; update package list
-(package-refresh-contents 1)
+(package-refresh-contents)
 
 ;; get `use-package'
 (unless (package-installed-p 'use-package)
