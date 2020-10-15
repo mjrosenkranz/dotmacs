@@ -233,6 +233,9 @@ Settings for ibuffer
   ("M-S-<up>" . 'windmove-swap-states-up)
   ("M-S-<down>" . 'windmove-swap-states-down))
 #+END_SRC
+** window placement
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
 * Programming
 ** Project Management
 #+BEGIN_SRC emacs-lisp
