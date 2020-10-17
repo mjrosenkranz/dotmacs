@@ -135,6 +135,10 @@ function to load a theme from the current file
 		(setq rainbow-ansi-colors nil)
 		(setq rainbow-x-colors nil))
 #+END_SRC
+** line numbers
+	 #+BEGIN_SRC emacs-lisp
+		 (setq display-line-numbers t)
+#+END_SRC
 * Editor
 ** evil-mode
 #+BEGIN_SRC emacs-lisp
@@ -245,8 +249,29 @@ Settings for ibuffer
   ("M-S-<up>" . 'windmove-swap-states-up)
   ("M-S-<down>" . 'windmove-swap-states-down))
 #+END_SRC
-** window placement
+** windows
 #+BEGIN_SRC emacs-lisp
+	(use-package emacs
+		:init
+		(setq display-buffer-alist
+					'(("\\*[Hh]elp\\*"
+						 (display-buffer-in-side-window)
+						 (side . bottom)
+						 (slot . -1)
+						 (height . 0.25))
+
+						("^\*Org Src"
+						 (display-buffer-in-side-window)
+						 (side . left))
+
+						("\\*Buffer List\\*"
+						 (display-buffer-in-side-window)
+						 (side . bottom)
+						 (slot . 0)
+						 (height . 0.25))
+						))
+		:bind (("C-c C-b" . window-toggle-side-windows))
+		)
 #+END_SRC
 * Programming
 ** Project Management
