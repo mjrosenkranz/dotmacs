@@ -73,6 +73,8 @@ this is helful for testing if I've fucked it up yet.
 			(interactive)
 			(setq font-scale (- font-scale 10))
 			(set-face-attribute 'default (selected-frame) :height font-scale))
+
+		(set-face-attribute 'default nil :family "Hack" :height font-scale)
 		:bind
 		("C-=" . 'oct/inc-scale)
 		("C--" . 'oct/dec-scale))
@@ -89,17 +91,12 @@ this is helful for testing if I've fucked it up yet.
 	(use-package undo-tree :diminish)
 #+END_SRC
 ** Themes
-*** Set the theme
-#+BEGIN_SRC emacs-lisp
-	;; get this dope theme
-	(use-package modus-vivendi-theme
-			:ensure t)
-#+END_SRC
 *** custom themes
 we want to be able to load whatever custom themes we have so add them to the path
 #+BEGIN_SRC emacs-lisp
 	;; add theme directory
 	(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+	(add-to-list 'load-path "~/.emacs.d/themes/")
 #+END_SRC
 
 function to load a given theme
@@ -125,6 +122,14 @@ function to load a theme from the current file
 							(buffer-file-name))
 						 0 -9))))
 #+END_SRC
+*** Set the theme
+#+BEGIN_SRC emacs-lisp
+	;; get this dope theme
+	;; (use-package modus-vivendi-theme
+	;; 		:ensure t)
+	(oct/load-theme-silent 'underwater)
+
+#+END_SRC
 *** rainbow-mode
 #+BEGIN_SRC emacs-lisp
 	(use-package rainbow-mode
@@ -136,9 +141,13 @@ function to load a theme from the current file
 		(setq rainbow-x-colors nil))
 #+END_SRC
 ** line numbers
-	 #+BEGIN_SRC emacs-lisp
-		 (setq display-line-numbers t)
+#+BEGIN_SRC emacs-lisp
+	(use-package display-line-numbers
+		:hook
+		(prog-mode-hook . display-line-numbers-mode))
 #+END_SRC
+** font
+
 * Editor
 ** evil-mode
 #+BEGIN_SRC emacs-lisp
