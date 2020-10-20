@@ -1,5 +1,5 @@
-* Init
-** emacs init settings
+* Emacs
+** use a custom file
 #+BEGIN_SRC emacs-lisp
 (use-package emacs
   :init
@@ -7,9 +7,7 @@
 	"~/.emacs.d/custom-settings.el")
   (load custom-file t))
 #+END_SRC
-
-* Emacs
-** Setup
+** setup
 #+BEGIN_SRC emacs-lisp
 (use-package emacs
     :config
@@ -53,8 +51,7 @@ this is helful for testing if I've fucked it up yet.
     (blink-cursor-mode -1)
     (scroll-bar-mode -1)
     (setq inhibit-startup-screen t)
-    (setq ring-bell-function 'ignore)
-    (load-theme 'modus-vivendi t))
+    (setq ring-bell-function 'ignore))
 #+END_SRC
 ** Set font properties and keybinds
 #+BEGIN_SRC emacs-lisp
@@ -132,13 +129,14 @@ function to load a theme from the current file
 #+END_SRC
 *** rainbow-mode
 #+BEGIN_SRC emacs-lisp
-	(use-package rainbow-mode
-		:ensure
-		:diminish
-		:commands rainbow-mode
-		:config
-		(setq rainbow-ansi-colors nil)
-		(setq rainbow-x-colors nil))
+		(use-package rainbow-mode
+			:ensure
+			:diminish
+			:commands rainbow-mode
+			:config
+			(setq rainbow-ansi-colors nil)
+			(setq rainbow-x-colors nil)
+			(setq-default rainbow-mode 1))
 #+END_SRC
 ** line numbers
 #+BEGIN_SRC emacs-lisp
@@ -235,10 +233,14 @@ Settings for ibuffer
 #+END_SRC
 ** company
 #+BEGIN_SRC emacs-lisp
-(use-package company
-    :ensure t
-    :config
-    (company-mode 1))
+	(use-package company
+		:ensure t
+		:config
+		(company-mode 1)
+		(define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
+		(global-company-mode 1)
+		(setq company-idle-delay 1)
+		(setq company-minimum-prefix-length 1))
 #+END_SRC
 * Navigation
 ** dired
@@ -298,12 +300,6 @@ Settings for ibuffer
 		:ensure t
 		:commands (lsp lsp-deferred)
 		:hook (go-mode-hook . lsp))
-
-	(use-package company
-		:config
-		(global-company-mode 1)
-		(setq company-idle-delay 0)
-		(setq company-minimum-prefix-length 1))
 
 	(use-package company-lsp
 		:ensure t
