@@ -9,7 +9,8 @@
   (package-initialize))
 
 ;; update package list
-(package-refresh-contents)
+;; commenting out because it takes too long
+;; (package-refresh-contents)
 
 ;; get `use-package'
 (unless (package-installed-p 'use-package)

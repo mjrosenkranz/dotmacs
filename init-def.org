@@ -294,6 +294,11 @@ Settings for ibuffer
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (projectile-mode +1))
 #+END_SRC
+** vterm
+#+BEGIN_SRC emacs-lisp
+	(use-package vterm
+			:ensure t)
+#+END_SRC
 ** lsp-mode
 #+BEGIN_SRC emacs-lisp
 	(use-package lsp-mode
