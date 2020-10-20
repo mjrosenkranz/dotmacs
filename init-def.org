@@ -217,6 +217,36 @@ Settings for ibuffer
             orderless-literal)))
 (minibuffer-electric-default-mode 1))
 #+END_SRC
+** windows
+#+BEGIN_SRC emacs-lisp
+	(use-package emacs
+		:init
+		(setq display-buffer-alist
+					'(("\\*[Hh]elp\\*"
+						 (display-buffer-in-side-window)
+						 (side . bottom)
+						 (slot . -1)
+						 (height . 0.25))
+
+						("^vterm.*"
+						 (display-buffer-in-side-window)
+						 (side . bottom)
+						 (slot . -1)
+						 (height . 0.25))
+
+						("^\*Org Src"
+						 (display-buffer-in-side-window)
+						 (side . left))
+
+						("\\*Buffer List\\*"
+						 (display-buffer-in-side-window)
+						 (side . bottom)
+						 (slot . 0)
+						 (height . 0.25))
+						))
+		:bind (("C-c C-b" . window-toggle-side-windows))
+		)
+#+END_SRC
 * Completetion
 ** icomplete
 #+BEGIN_SRC emacs-lisp
@@ -259,30 +289,6 @@ Settings for ibuffer
   ("M-S-<right>" . 'windmove-swap-states-right)
   ("M-S-<up>" . 'windmove-swap-states-up)
   ("M-S-<down>" . 'windmove-swap-states-down))
-#+END_SRC
-** windows
-#+BEGIN_SRC emacs-lisp
-	(use-package emacs
-		:init
-		(setq display-buffer-alist
-					'(("\\*[Hh]elp\\*"
-						 (display-buffer-in-side-window)
-						 (side . bottom)
-						 (slot . -1)
-						 (height . 0.25))
-
-						("^\*Org Src"
-						 (display-buffer-in-side-window)
-						 (side . left))
-
-						("\\*Buffer List\\*"
-						 (display-buffer-in-side-window)
-						 (side . bottom)
-						 (slot . 0)
-						 (height . 0.25))
-						))
-		:bind (("C-c C-b" . window-toggle-side-windows))
-		)
 #+END_SRC
 * Programming
 ** Project Management
