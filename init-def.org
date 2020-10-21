@@ -358,6 +358,11 @@ Make magit show changes within diff line
   :config
   (setq magit-diff-refine-hunk t))
 #+END_SRC
+Add evil mode stuff
+#+BEGIN_SRC emacs-lisp
+	(use-package evil-magit
+		:ensure)
+#+END_SRC
 * Org
 ** add src
 add function 'org-mode-insert-src' and give it a key binding 'C-c s'.
