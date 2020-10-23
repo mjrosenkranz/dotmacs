@@ -149,18 +149,38 @@ function to load a theme from the current file
 * Editor
 ** evil-mode
 #+BEGIN_SRC emacs-lisp
-;; vim fusion
-(use-package evil
-  :ensure t
-  :config
-  (evil-mode 1)
-  (define-key evil-normal-state-map [escape] 'keyboard-quit)
-  (define-key evil-visual-state-map [escape] 'keyboard-quit)
-  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+	;; vim fusion
+	(use-package evil
+		:ensure t
+		:config
+		(evil-mode 1)
+		(define-key evil-normal-state-map [escape] 'keyboard-quit)
+		(define-key evil-visual-state-map [escape] 'keyboard-quit)
+		(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+		(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+		(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+		(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+		(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+		;; let us use evil mode in ibuffer
+		(setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
+		(add-to-list 'evil-emacs-state-modes 'vterm-mode)
+
+		;; change :q to just killing the buffer
+		(evil-define-command evil-quit-current (&optional bang)
+			:repeat nil
+			(interactive "<!>")
+			;; if there are any other buffers just kill this one
+			(kill-buffer (current-buffer)))
+
+		;; change :wq to just writing and killing the buffer
+		(evil-define-command evil-write-quit-current (&optional bang)
+			:repeat nil
+			(interactive "<!>")
+			;; if there are any other buffers just kill this one
+			(save-buffer)
+			(kill-buffer (current-buffer)))
+		(evil-ex-define-cmd "q[uit]" 'evil-quit-current)
+		(evil-ex-define-cmd "wq" 'evil-write-quit-current))
 #+END_SRC
 ** settings
 #+BEGIN_SRC emacs-lisp
@@ -196,8 +216,11 @@ kill-curr-buff kills the current buffer and closes its window.
 Settings for ibuffer
 #+BEGIN_SRC emacs-lisp
 
-;; ibuffer stuff
-(use-package ibuffer)
+	;; ibuffer stuff
+	(use-package ibuffer
+		:bind
+		(("C-x C-b" . ibuffer))
+		(setq ibuffer-use-other-window nil))
 
 #+END_SRC
 ** MiniBuffer
@@ -227,14 +250,14 @@ Settings for ibuffer
 						 (side . bottom)
 						 (slot . -1)
 						 (height . 0.25))
-
-						("^vterm.*"
+						 
+						("^\\(\\*e?shell\\|vterm\\).*"
 						 (display-buffer-in-side-window)
 						 (side . bottom)
-						 (slot . -1)
+						 (slot . 0)
 						 (height . 0.25))
 
-						("^\*Org Src"
+						("\\*Org Src.*"
 						 (display-buffer-in-side-window)
 						 (side . left))
 
@@ -244,8 +267,7 @@ Settings for ibuffer
 						 (slot . 0)
 						 (height . 0.25))
 						))
-		:bind (("C-c C-b" . window-toggle-side-windows))
-		)
+		:bind (("C-c b" . window-toggle-side-windows)))
 #+END_SRC
 * Completetion
 ** icomplete
@@ -269,7 +291,7 @@ Settings for ibuffer
 		(company-mode 1)
 		(define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
 		(global-company-mode 1)
-		(setq company-idle-delay 1)
+		(setq company-idle-delay 0)
 		(setq company-minimum-prefix-length 1))
 #+END_SRC
 * Navigation

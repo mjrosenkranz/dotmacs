@@ -1,8 +1,8 @@
-(require 'generate-theme)
+(load-file "~/.emacs.d/themes/generate-theme.el")
 
 (deftheme underwater "a simple theme")
 (oct/generate-theme underwater
-										"#2E383E"  ;;bg   
+										"#2E383E"  ;;bg
 										"#4E5E69"  ;;bg+  
 										"#4c8ea6"  ;;pri  
 										"#579982"  ;;sec  

@@ -20,6 +20,8 @@
 	 ;; `(mode-line-highlight)
 	 ;; `(mode-line-inactive )
 	 `(mode-line-inactive ((t (:background ,bg+ :foreground ,fg+ :box))))
+	 ;; minibuffer
+	 `(minibuffer-prompt ((t (:foreground ,pri))))
 	 ;; editor faces
 	 `(font-lock-builtin-face ((t (:foreground ,fill))))
 	 `(font-lock-comment-face ((t (:foreground ,comm :slant italic))))
@@ -52,9 +54,32 @@
 	 ;; `(evil-ex-substitute-matches
 	 ;; `(evil-ex-substitute-replacement
 
+	 ;; company mode
+	 `(company-echo ((t (:foreground ,fg, :background ,bg))))
+	 `(company-echo-common ((t (:foreground ,fg+, :background ,bg))))
+	 `(company-preview ((t (:foreground ,fg, :background ,bg+))))
+	 `(company-preview-common ((t (:inherit 'company-preview :foreground ,pri))))
+	 `(company-preview-search ((t (:inherit 'company-preview :foreground ,sec))))
+	 ;; company tooltip
+	 `(company-scrollbar-bg ((t (:background ,bg+))))
+	 `(company-scrollbar-fg ((t (:background ,fg))))
+	 `(company-template-field ((t (:foreground ,fg :background ,bg+))))
+	 `(company-tooltip ((t (:background ,bg+))))
+	 `(company-tooltip-annotation ((t (:foreground ,sec))))
+	 `(company-tooltip-common ((t (:inherit 'company-tooltip-annotation))))
+	 `(company-tooltip-selection ((t (:foreground ,bg :background ,pri))))
+	 `(company-tooltip-annotation-selection ((t (:inherit 'company-tooltip-selection :weight bold))))
+	 `(company-tooltip-common-selection ((t (:inherit 'company-tooltip-selection :weight bold))))
+
+	 ;; magit
+	 ;; `(magit-diff-added ((t (:background ,bg+ :foreground ,pri))))
+
 	 ;; misc
 	 `(link ((t (:foreground ,sec))))
 	 `(link-visited ((t (:foreground ,sec))))
-	 `(error ((t (:foreground ,alert))))))
+	 `(error ((t (:foreground ,alert :weight bold))))))
+
+;;
+
 
 (provide 'generate-theme)

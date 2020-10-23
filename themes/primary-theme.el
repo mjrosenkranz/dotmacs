@@ -1,8 +1,8 @@
-(require 'generate-theme)
+(load-file "~/.emacs.d/themes/generate-theme.el")
 
 (deftheme primary "a simple theme")
 (oct/generate-theme primary
-										"#e1e1e1"  ;;bg   
+										"#e1e1e1"  ;;bg
 										"#cfcfcf"  ;;bg+  
 										"#2fbe47"  ;;pri  
 										"#639ee9"  ;;sec  
