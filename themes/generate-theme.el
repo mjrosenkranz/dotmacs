@@ -74,8 +74,27 @@
 	 ;; magit
 	 ;; `(magit-diff-added ((t (:background ,bg+ :foreground ,pri))))
 
-	 ;; misc
-	 `(link ((t (:foreground ,sec))))
+	 ;; terminal
+
+	 ;; rainbow parens and stuff
+	 `(rainbow-delimiters-base-error-face ((t (:foreground ,alert :weight bold))))
+	 `(rainbow-delimiters-base-face ((t (:foreground ,fg+))))
+	 `(rainbow-delimiters-depth-1-face ((t (:foreground ,pri))))
+	 `(rainbow-delimiters-depth-2-face ((t (:foreground ,sec))))
+	 `(rainbow-delimiters-depth-3-face ((t (:foreground ,cur))))
+	 `(rainbow-delimiters-depth-4-face ((t (:foreground ,fill))))
+	 `(rainbow-delimiters-depth-5-face ((t (:foreground ,pri))))
+	 `(rainbow-delimiters-depth-6-face ((t (:foreground ,sec))))
+	 `(rainbow-delimiters-depth-7-face ((t (:foreground ,cur))))
+	 `(rainbow-delimiters-depth-8-face ((t (:foreground ,fill))))
+	 `(rainbow-delimiters-depth-9-face ((t (:foreground ,pri))))
+	 `(rainbow-delimiters-mismatched-face ((t (:inherit 'rainbow-delimiters-base-error-face))))
+	 `(rainbow-delimiters-unmatched-face  ((t (:inherit 'rainbow-delimiters-base-error-face))))
+
+
+	;; misc
+		 `(link ((t (:foreground ,sec))))
+
 	 `(link-visited ((t (:foreground ,sec))))
 	 `(error ((t (:foreground ,alert :weight bold))))))
 
