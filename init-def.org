@@ -214,16 +214,24 @@
 ** keys
 this will probably need to be reorganized
 #+BEGIN_SRC emacs-lisp
-(use-package general
-	:ensure
-	:config
-	(general-create-definer oct/leader-keys
-		:keymaps '(normal insert visual emacs)
-		:global-prefix "C-SPC")
-	(oct/leader-keys
-		"gs" 'magit-status
-		"rc" 'oct/init
-		"rs" 'oct/exec-init))
+	(use-package general
+		:ensure
+		:config
+		(general-evil-setup t)
+		(general-create-definer oct/leader-keys
+			:keymaps '(normal insert visual emacs)
+			:prefix "SPC"
+			:global-prefix "C-SPC")
+
+		(oct/leader-keys
+		 "g" '(:ignore t)
+		 "gs" 'magit-status
+		 "c" '(:ignore t)
+		 "cc" 'oct/init
+		 "cs" 'oct/exec-init))
+
+
+
 #+END_SRC
 * Buffers
 ** Functions
@@ -250,19 +258,23 @@ this will probably need to be reorganized
 ** IBuffer
 	 Settings for ibuffer
 	 #+BEGIN_SRC emacs-lisp
-
-;; ibuffer stuff
 (use-package ibuffer
+	:config
+	(setq ibuffer-use-other-window nil)
 	:bind
-	(("C-x C-b" . ibuffer))
-	(setq ibuffer-use-other-window nil))
-
+	(("C-x C-b" . ibuffer)))
 	 #+END_SRC
 ** MiniBuffer
 	 #+BEGIN_SRC emacs-lisp
 (use-package minibuffer
 	:config
-	(use-package orderless
+	(minibuffer-electric-default-mode 1)
+	(setq completion-styles '(partial-completion substring initials flex))
+	(setq completion-category-overrides
+				'((file (styles initials basic))
+					(buffer (styles initials basic)))))
+
+(use-package orderless
 		:ensure
 		:custom (setq completion-styles '(orderless))
 		:config
@@ -273,7 +285,6 @@ this will probably need to be reorganized
 						orderless-regexp
 						orderless-prefixes
 						orderless-literal)))
-	(minibuffer-electric-default-mode 1))
 	 #+END_SRC
 ** windows
 	 #+BEGIN_SRC emacs-lisp
@@ -288,9 +299,9 @@ this will probably need to be reorganized
 					
 					("^\\(\\*e?shell\\|vterm\\).*"
 					 (display-buffer-in-side-window)
-					 (side . bottom)
+					 (side . right)
 					 (slot . 0)
-					 (window-height . 0.30))
+					 (window-width . 0.30))
 
 					("\\*Org Src.*"
 					 (display-buffer-in-side-window)
@@ -321,13 +332,17 @@ this will probably need to be reorganized
 ** company
 	 #+BEGIN_SRC emacs-lisp
 (use-package company
-	:ensure t
-	:config
-	(company-mode 1)
-	(define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
-	(global-company-mode 1)
-	(setq company-idle-delay 0)
-	(setq company-minimum-prefix-length 1))
+	:ensure
+	:after lsp-mode
+	:hook (prog-mode . company-mode)
+	:bind
+	(:map company-active-map
+				("<tab>" . company-complete-selection))
+	(:map lsp-mode-map
+				("<tab>" . company-indent-or-complete-common))
+	:custom
+	(company-minimum-prefix-length 1)
+	(company-idle-delay 0.0))
 	 #+END_SRC
 * Navigation
 ** dired
@@ -379,12 +394,26 @@ this will probably need to be reorganized
 (use-package vterm
 	:ensure t)
 	 #+END_SRC
+** shell
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+	:ensure t
+	:hook
+	(sh-mode . flycheck-mode))
+#+END_SRC
 ** lsp-mode
 	 #+BEGIN_SRC emacs-lisp
+(defun oct/lsp-mode-setup()
+	(setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+	(lsp-headerline-breadcrumb-mode))
+
 (use-package lsp-mode
 	:ensure t
 	:commands (lsp lsp-deferred)
-	:hook (go-mode-hook . lsp))
+	:init
+	(setq lsp-keymap-prefix "C-c l")
+	:hook
+	(lsp-mode . oct/lsp-mode-setup))
 
 (use-package company-lsp
 	:ensure t
@@ -403,7 +432,8 @@ this will probably need to be reorganized
 		(add-hook 'before-save-hook #'lsp-format-buffer t t)
 		(add-hook 'before-save-hook #'lsp-organize-imports t t))
 	(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-	(company-mode 1))
+	(company-mode 1)
+	:hook (go-mode . lsp-deferred))
 
 ;; add hook
 
@@ -415,7 +445,7 @@ this will probably need to be reorganized
 (use-package flymake
 	:commands flymake-mode
 	:hook
-	(emacs-lisp-mode-hook . flymake-mode))
+	(emacs-lisp-mode . flymake-mode))
 	 #+END_SRC
 	 
 delimiters make stuff look better
@@ -423,6 +453,17 @@ delimiters make stuff look better
 (use-package rainbow-delimiters
 	:ensure
 	:hook (prog-mode . rainbow-delimiters-mode))
+#+END_SRC
+** zig
+	 #+BEGIN_SRC emacs-lisp
+(use-package lsp-mode
+	:config
+	(add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
+	(lsp-register-client
+	 (make-lsp-client
+		:new-connection (lsp-stdio-connection "~/zls/zig-cache/bin/")
+		:major-modes '(zig-mode)
+		:server-id 'zls)))
 #+END_SRC
 * Git
 ** Magit
