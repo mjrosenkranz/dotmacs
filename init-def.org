@@ -465,6 +465,30 @@ delimiters make stuff look better
 		:major-modes '(zig-mode)
 		:server-id 'zls)))
 #+END_SRC
+** rust
+	 #+BEGIN_SRC emacs-lisp
+(use-package rust-mode
+	:ensure
+	:hook
+	(rust-mode . lsp-deferred)
+	(flycheck-mode . flycheck-rust-setup))
+
+(use-package lsp-rust
+	:ensure
+	:after lsp-mode)
+
+(use-package flycheck-rust
+	:ensure)
+
+;; (use-package lsp-mode
+;; 	:config
+;; 	(add-to-list 'lsp-language-id-configuration '(rust-mode . "rust"))
+;; 	(lsp-register-client
+;; 	 (make-lsp-client
+;; 		:new-connection (lsp-stdio-connection "~/.cargo/bin/rls")
+;; 		:major-modes '(rust-mode)
+;; 		:server-id 'rls)))
+#+END_SRC
 * Git
 ** Magit
 	 Setup magit and get a quick binding to bring it up.
