@@ -91,12 +91,42 @@
 	 `(rainbow-delimiters-mismatched-face ((t (:inherit 'rainbow-delimiters-base-error-face))))
 	 `(rainbow-delimiters-unmatched-face  ((t (:inherit 'rainbow-delimiters-base-error-face))))
 
+	 ;; flycheck/make
+ `(flycheck-error ((t (:underline (:style wave :color ,alert)))))
+ `(flycheck-delimited-error ((t (:inherit 'flycheck-error))))
+ `(flycheck-error-delimiter ((t (:inherit 'flycheck-error))))
+ `(flycheck-fringe-error ((t (:inherit 'error))))
+ `(flycheck-fringe-info ((t (:foreground ,pri))))
+ `(flycheck-fringe-warning ((t (:foreground ,cur))))
+ `(flycheck-info ((t (:underline (:style wave :color ,pri)))))
+ `(flycheck-warning ((t (:underline (:style wave :color ,cur)))))
+ `(flycheck-error-list-checker-name ((t (:inherit 'font-lock-function-name-face))))
+ `(flycheck-error-list-column-number ((t (:inherit 'default))))
+ `(flycheck-error-list-error ((t (:inherit 'error))))
+ `(flycheck-error-list-error-message ((t (:inherit 'default))))
+ `(flycheck-error-list-filename ((t (:foreground ,pri :weight bold))))
+ `(flycheck-error-list-highlight ((t (:inherit 'default :weight bold))))
+ `(flycheck-error-list-id ((t (:inherit 'font-lock-type-face))))
+ `(flycheck-error-list-id-with-explaine ((t (:inherit 'font-lock-type-face))))
+ `(flycheck-error-list-info ((t (:foreground ,pri :weight bold))))
+ `(flycheck-error-list-line-number ((t (:inherit 'default))))
+ `(flycheck-error-list-warning ((t (:foreground ,cur :weight bold))))
+
+ `(flymake-error ((t (:inherit 'flycheck-error))))
+ `(flymake-note ((t (:inherit 'flycheck-info))))
+ `(flymake-warning ((t (:inherit 'flycheck-warning))))
+ `(flyspell-duplicate ((t (:inherit 'flycheck-warning))))
+ `(flyspell-incorrect ((t (:inherit 'flycheck-error))))
+
+
 
 	;; misc
 		 `(link ((t (:foreground ,sec))))
 
 	 `(link-visited ((t (:foreground ,sec))))
-	 `(error ((t (:foreground ,alert :weight bold))))))
+	 `(error ((t (:foreground ,alert :weight bold))))
+	 )
+	)
 
 ;;
 
