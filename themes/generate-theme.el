@@ -3,16 +3,18 @@
 	(custom-theme-set-faces
 	 theme
 	 `(default ((t (:background ,bg :foreground ,fg))))
-
 	 ;; ui
 	 `(cursor ((t (:background ,cur))))
 	 `(fringe ((t (:foreground ,bg))))
+	 `(window-divider ((t (:foreground ,bg+))))
+	 `(window-divider-first-pixel ((t (:inherit 'window-divider))))
+	 `(window-divider-last-pixel ((t (:inherit 'window-divider))))
 	 ;; line numbers
 	 `(line-number ((t (:background ,bg :foreground ,comm))))
 	 `(linum ((t (:background ,bg :foreground ,bg+))))
 	 `(line-number-current-line ((t (:background ,bg :foreground ,fg+))))
-	 `(line-number-major-tick ((t (:background ,bg :foreground ,fg))))
-	 `(line-number-minor-tick ((t (:background ,bg :foreground ,fg))))
+	 `(line-number-major-tick ((t (:inherit 'line-number-current-line))))
+	 `(line-number-minor-tick ((t (:inherit 'line-number-current-line))))
 	 ;; modeline
 	 `(mode-line ((t (:background ,bg+ :foreground ,fg :box))))
 	 ;; `(mode-line-buffer-id)

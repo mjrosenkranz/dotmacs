@@ -55,6 +55,8 @@
 	(scroll-bar-mode -1)
 	(setq inhibit-startup-screen t)
 	(setq ring-bell-function 'ignore)
+  (set-default 'window-divider-default-right-width 3)
+	(window-divider-mode 1)
 	(set-fringe-mode 15))
 	 #+END_SRC
 ** Set font properties and keybinds
@@ -317,6 +319,18 @@ this will probably need to be reorganized
 					 (window-height . 0.25))))
 	:bind (("C-c b" . window-toggle-side-windows)))
 	 #+END_SRC
+	 
+movement between windows
+#+BEGIN_SRC emacs-lisp
+(use-package general
+	:config
+	(oct/leader-keys
+		("w" '(:ignore t))
+		("wh" 'windmove-left)
+		("wj" 'windmove-down)
+		("wk" 'windmove-up)
+		("wl" 'windmove-right)))
+#+END_SRC
 * Completetion
 ** icomplete
 	 #+BEGIN_SRC emacs-lisp
@@ -333,15 +347,21 @@ this will probably need to be reorganized
 	 #+END_SRC
 ** company
 	 #+BEGIN_SRC emacs-lisp
+(defun oct/comp ()
+	(message "asdf"))
 (use-package company
 	:ensure
 	:after lsp-mode
 	:hook (prog-mode . company-mode)
 	:bind
+				("<tab>" . company-indent-or-complete-common)
 	(:map company-active-map
-				("<tab>" . company-complete-selection))
-	(:map lsp-mode-map
-				("<tab>" . company-indent-or-complete-common))
+				;; if there is one option then complete it
+				;; if there are more then we want to cycle
+				("<tab>" . 'oct/comp))
+				;;("<tab>" . company-complete-selection))
+	(:map company-search-map
+				("<tab>" . company-complete-common-or-cycle))
 	:custom
 	(company-minimum-prefix-length 1)
 	(company-idle-delay 0.0))
@@ -394,7 +414,8 @@ this will probably need to be reorganized
 ** vterm
 	 #+BEGIN_SRC emacs-lisp
 (use-package vterm
-	:ensure t)
+	:ensure t
+	:init (unbind-key "C-w" vterm-mode-map))
 
 (defun oct/scratch ()
 	"Launches a terminal in the bottom window."
@@ -408,15 +429,15 @@ this will probably need to be reorganized
 			(kill-buffer "vterm-scratch")))
 	(vterm "vterm-scratch"))
 	 #+END_SRC
-** shell
-#+BEGIN_SRC emacs-lisp
+*** shell
+ #+BEGIN_SRC emacs-lisp
 (use-package flycheck
 	:ensure t
 	:hook
 	(sh-mode . flycheck-mode))
-#+END_SRC
-** lsp-mode
-	 #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+*** lsp-mode
+		#+BEGIN_SRC emacs-lisp
 (defun oct/lsp-mode-setup()
 	(setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
 	(lsp-headerline-breadcrumb-mode))
@@ -432,9 +453,9 @@ this will probably need to be reorganized
 (use-package company-lsp
 	:ensure t
 	:commands company-lsp)
-	 #+END_SRC
-** Go
-	 #+BEGIN_SRC emacs-lisp
+		#+END_SRC
+*** Go
+		#+BEGIN_SRC emacs-lisp
 (use-package go-mode
 	:ensure t
 	:defer t
@@ -452,24 +473,24 @@ this will probably need to be reorganized
 ;; add hook
 
 (use-package company-go :ensure t)
-	 #+End_SRC
-** elisp
-	 use flymake in elisp modes
-	 #+BEGIN_SRC emacs-lisp
+		#+End_SRC
+*** elisp
+		use flymake in elisp modes
+		#+BEGIN_SRC emacs-lisp
 (use-package flymake
 	:commands flymake-mode
 	:hook
 	(emacs-lisp-mode . flymake-mode))
-	 #+END_SRC
+		#+END_SRC
 	 
-delimiters make stuff look better
-#+BEGIN_SRC emacs-lisp
+ delimiters make stuff look better
+ #+BEGIN_SRC emacs-lisp
 (use-package rainbow-delimiters
 	:ensure
 	:hook (prog-mode . rainbow-delimiters-mode))
-#+END_SRC
-** zig
-	 #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+*** zig
+		#+BEGIN_SRC emacs-lisp
 (use-package lsp-mode
 	:config
 	(add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
@@ -478,21 +499,21 @@ delimiters make stuff look better
 		:new-connection (lsp-stdio-connection "~/zls/zig-cache/bin/")
 		:major-modes '(zig-mode)
 		:server-id 'zls)))
-#+END_SRC
-** rust
-	 #+BEGIN_SRC emacs-lisp
-(use-package rust-mode
-	:ensure
-	:hook
-	(rust-mode . lsp-deferred)
-	(flycheck-mode . flycheck-rust-setup))
-
-(use-package lsp-rust
-	:ensure
-	:after lsp-mode)
-
-(use-package flycheck-rust
-	:ensure)
+ #+END_SRC
+*** rust
+		#+BEGIN_SRC emacs-lisp
+;; (use-package rust-mode
+;; 	:ensure
+;; 	:hook
+;; 	(rust-mode . lsp-deferred)
+;; 	(flycheck-mode . flycheck-rust-setup))
+;; 
+;; (use-package lsp-rust
+;; 	:ensure
+;; 	:after lsp-mode)
+;; 
+;; (use-package flycheck-rust
+;; 	:ensure)
 
 ;; (use-package lsp-mode
 ;; 	:config
@@ -502,13 +523,13 @@ delimiters make stuff look better
 ;; 		:new-connection (lsp-stdio-connection "~/.cargo/bin/rls")
 ;; 		:major-modes '(rust-mode)
 ;; 		:server-id 'rls)))
-#+END_SRC
-** c++
-#+BEGIN_SRC emacs-lisp
+ #+END_SRC
+*** c++
+ #+BEGIN_SRC emacs-lisp
 (use-package c++-mode
 	:hook
 	(c++-mode . lsp-deferred))
-#+END_SRC
+ #+END_SRC
 * Git
 ** Magit
 	 Setup magit and get a quick binding to bring it up.
@@ -534,7 +555,7 @@ delimiters make stuff look better
 ** Working with source code
 	 add function 'org-mode-insert-src' and give it a key binding 'C-c s'.
 	 this makes it easier to add a sorce code block for this file or for works with other langues
-	 #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package org-src
 	:after org
 	:config
@@ -554,5 +575,5 @@ delimiters make stuff look better
 		(org-edit-src-code))
 	:bind
 	("C-c s" . 'oct/org-mode-insert-src))
-	 #+END_SRC
+#+END_SRC
 
