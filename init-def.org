@@ -503,6 +503,12 @@ delimiters make stuff look better
 ;; 		:major-modes '(rust-mode)
 ;; 		:server-id 'rls)))
 #+END_SRC
+** c++
+#+BEGIN_SRC emacs-lisp
+(use-package c++-mode
+	:hook
+	(c++-mode . lsp-deferred))
+#+END_SRC
 * Git
 ** Magit
 	 Setup magit and get a quick binding to bring it up.
