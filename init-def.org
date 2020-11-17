@@ -173,28 +173,30 @@
 (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
 (add-to-list 'evil-emacs-state-modes 'vterm-mode)
 (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-(evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+(evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+(evil-global-set-key 'motion "g(" 'backward-up-list)
+(evil-global-set-key 'motion "g)" 'down-list))
 #+END_SRC
 
 	 Some functions for missing functionality
 #+BEGIN_SRC emacs-lisp
 ;; (use-package evil
-;; ;; change :q to just killing the buffer
-;; (evil-define-command evil-quit-current (&optional bang)
-;; :repeat nil
-;; (interactive "<!>")
-;; ;; if there are any other buffers just kill this one
-;; (kill-buffer (current-buffer)))
-
-;; ;; change :wq to just writing and killing the buffer
-;; (evil-define-command evil-write-quit-current (&optional bang)
-;; :repeat nil
-;; (interactive "<!>")
-;; ;; if there are any other buffers just kill this one
-;; (save-buffer)
-;; (kill-buffer (current-buffer)))
-;; (evil-ex-define-cmd "q[uit]" 'evil-quit-current)
-;; (evil-ex-define-cmd "wq" 'evil-write-quit-current))
+;; 	;; change :q to just killing the buffer
+;; 	(evil-define-command evil-quit-current (&optional bang)
+;; 		:repeat nil
+;; 		(interactive "<!>")
+;; 		;; if there are any other buffers just kill this one
+;; 		(kill-buffer (current-buffer)))
+;; 
+;; 	;; change :wq to just writing and killing the buffer
+;; 	(evil-define-command evil-write-quit-current (&optional bang)
+;; 		:repeat nil
+;; 		(interactive "<!>")
+;; 		;; if there are any other buffers just kill this one
+;; 		(save-buffer)
+;; 		(kill-buffer (current-buffer)))
+;; 	(evil-ex-define-cmd "q[uit]" 'evil-quit-current)
+;; 	(evil-ex-define-cmd "wq" 'evil-write-quit-current))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 (use-package evil-collection
