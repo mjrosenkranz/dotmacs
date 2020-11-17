@@ -298,12 +298,12 @@ this will probably need to be reorganized
 					 (side . bottom)
 					 (slot . -1)
 					 (window-height . 0.25))
-					
-					("^\\(\\*e?shell\\|vterm\\).*"
+
+
+					("vterm-scratch"
 					 (display-buffer-in-side-window)
-					 (side . right)
-					 (slot . 0)
-					 (window-width . 0.30))
+					 (window-height . 0.3)
+					 (side . bottom))
 
 					("\\*Org Src.*"
 					 (display-buffer-in-side-window)
@@ -395,6 +395,18 @@ this will probably need to be reorganized
 	 #+BEGIN_SRC emacs-lisp
 (use-package vterm
 	:ensure t)
+
+(defun oct/scratch ()
+	"Launches a terminal in the bottom window."
+	(interactive)
+	;; if there is a buffer then kill it
+	(when (get-buffer "vterm-scratch")
+		(progn
+			(let ((proc (get-buffer-process (current-buffer))))
+				(when (processp proc)
+					(set-process-query-on-exit-flag proc nil)))
+			(kill-buffer "vterm-scratch")))
+	(vterm "vterm-scratch"))
 	 #+END_SRC
 ** shell
 #+BEGIN_SRC emacs-lisp
