@@ -16,9 +16,9 @@
 	 `(line-number-minor-tick ((t (:inherit 'line-number-current-line))))
 	 ;; modeline
 	 `(mode-line ((t (:background ,bg+ :foreground ,fg :box))))
+	 `(mode-line-highlight ((t (:background ,bg+ :foreground ,pri :box nil))))
 	 ;; `(mode-line-buffer-id)
 	 ;; `(mode-line-emphasis )
-	 ;; `(mode-line-highlight)
 	 ;; `(mode-line-inactive )
 	 `(mode-line-inactive ((t (:background ,bg+ :foreground ,fg+ :box))))
 	 ;; minibuffer
@@ -73,6 +73,27 @@
 	 `(company-tooltip-common-selection ((t (:inherit 'company-tooltip-selection :weight bold))))
 
 	 ;; magit
+	 `(magit-section-heading           ((t (:foreground ,pri :background ,bg :weight bold))))
+	 `(magit-section-heading-selection ((t (:inherit 'magit-section-heading :slant italic))))
+	 `(magit-section-highlight         ((t (:foreground ,pri :background ,block :weight bold :extend t))))
+	 `(magit-section-secondary-heading ((t (:inherit 'default :weight bold))))
+
+	 `(magit-diff-context ((t (:inherit 'default :extend t))))
+	 `(magit-diff-context-highlight ((t (:background ,block :extend t))))
+
+	 `(magit-diff-file-heading ((t (:inherit 'magit-section-heading))))
+	 `(magit-diff-file-heading-highlight ((t (:inherit 'magit-section-highlight))))
+	 `(magit-diff-file-heading-selection ((t (:inherit 'magit-section-heading-selection))))
+
+	 `(magit-diff-hunk-heading ((t (:inherit 'magit-diff-file-heading))))
+	 `(magit-diff-hunk-heading-highlight ((t (:inherit 'magit-diff-file-heading-highlight))))
+	 `(magit-diff-hunk-heading-selection ((t (:inherit 'magit-diff-file-heading-selection :weight bold))))
+
+	 `(magit-diff-added ((t (:background ,block :foreground ,pri))))
+	 `(magit-diff-added-highlight ((t (:inherit 'magit-diff-added))))
+	 `(magit-diff-removed ((t (:background ,block :foreground ,alert))))
+	 `(magit-diff-removed-highlight ((t (:inherit 'magit-diff-removed))))
+	 ;; `(magit-diff-hunk-region ((t ())))
 	 ;; `(magit-diff-added ((t (:background ,bg+ :foreground ,pri))))
 
 	 ;; terminal
@@ -127,6 +148,15 @@
 	 `(org-block-end-line ((t (:inherit 'org-block :extend t))))
 	 `(org-ellipsis ((t (:foreground ,bg+))))
 
+	 ;; term
+		`(term-color-black   ((t (:foreground ,comm :background ,comm))))
+		`(term-color-blue    ((t (:foreground ,pri :background ,pri))))
+		`(term-color-cyan    ((t (:foreground ,sec :background ,sec))))
+		`(term-color-red     ((t (:foreground ,alert :background ,alert))))
+		`(term-color-yellow  ((t (:foreground ,cur :background ,cur))))
+		`(term-color-white   ((t (:foreground ,fg+ :background ,fg+))))
+		`(term-color-green   ((t (:foreground ,bg+ :background ,bg+))))
+		`(term-color-magenta ((t (:foreground ,pri :background ,pri))))
 	 ;; misc
 	 `(link ((t (:foreground ,sec :underline))))
 
@@ -134,6 +164,5 @@
 	 `(error ((t (:foreground ,alert :weight bold))))
 	 `(warning ((t (:foreground ,cur :weight bold))))
 	 `(secondary-selection ((t (:background ,bg+ :foreground ,fg :box))))
-
 	 ))
 (provide 'generate-theme)
