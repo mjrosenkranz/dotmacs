@@ -1,5 +1,4 @@
-(defmacro oct/generate-theme (theme bg bg+ pri sec alert cur fill comm fg fg+)
-
+(defmacro oct/generate-theme (theme bg bg+ fg fg+ pri sec alert cur comm block)
 	(custom-theme-set-faces
 	 theme
 	 `(default ((t (:background ,bg :foreground ,fg))))
@@ -41,7 +40,7 @@
 	 `(font-lock-variable-name-face ((t (:foreground ,sec))))
 	 `(font-lock-warning-face ((t (:foreground ,cur))))
 	 ;; highlight
-	 `(region ((t (:background ,bg+ :foreground ,fg))))
+	 `(region ((t (:background ,bg+))))
 	 `(highlight ((t (:inherit region))))
 	 `(isearch ((t (:background ,pri :foreground ,bg))))
 	 `(isearch-fail ((t (:background ,alert :foreground ,bg))))
@@ -84,11 +83,11 @@
 	 `(rainbow-delimiters-depth-1-face ((t (:foreground ,pri))))
 	 `(rainbow-delimiters-depth-2-face ((t (:foreground ,sec))))
 	 `(rainbow-delimiters-depth-3-face ((t (:foreground ,cur))))
-	 `(rainbow-delimiters-depth-4-face ((t (:foreground ,fill))))
+	 `(rainbow-delimiters-depth-4-face ((t (:foreground ,fg+))))
 	 `(rainbow-delimiters-depth-5-face ((t (:foreground ,pri))))
 	 `(rainbow-delimiters-depth-6-face ((t (:foreground ,sec))))
 	 `(rainbow-delimiters-depth-7-face ((t (:foreground ,cur))))
-	 `(rainbow-delimiters-depth-8-face ((t (:foreground ,fill))))
+	 `(rainbow-delimiters-depth-8-face ((t (:foreground ,fg+))))
 	 `(rainbow-delimiters-depth-9-face ((t (:foreground ,pri))))
 	 `(rainbow-delimiters-mismatched-face ((t (:inherit 'rainbow-delimiters-base-error-face))))
 	 `(rainbow-delimiters-unmatched-face  ((t (:inherit 'rainbow-delimiters-base-error-face))))
@@ -122,14 +121,14 @@
 
 
 	 ;; org
-	 ;;`(org-block-begin-line ((t (:background ,bg+ :underline ,fg+ :extend nil))))
-	 `(org-block-begin-line ((t (:inherit 'default))))
-	 `(org-block ((t (:background ,bg+ :extend t))))
-	 `(org-block-end-line ((t (:inherit 'default))))
-	 ;; `(org-block-end-line ((t (:background ,bg+ :overline ,fg+ :extend nil))))
+	 `(org-link ((t (:inherit 'link))))
+	 `(org-block ((t (:background ,block :extend t))))
+	 `(org-block-begin-line ((t (:inherit 'org-block :extend t))))
+	 `(org-block-end-line ((t (:inherit 'org-block :extend t))))
+	 `(org-ellipsis ((t (:foreground ,bg+))))
 
 	 ;; misc
-	 `(link ((t (:foreground ,sec))))
+	 `(link ((t (:foreground ,sec :underline))))
 
 	 `(link-visited ((t (:foreground ,sec))))
 	 `(error ((t (:foreground ,alert :weight bold))))
