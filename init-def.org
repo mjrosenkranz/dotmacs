@@ -290,7 +290,7 @@ this will probably need to be reorganized
 						orderless-prefixes
 						orderless-literal)))
 	 #+END_SRC
-** windows
+** display-buffer-alist
 	 #+BEGIN_SRC emacs-lisp
 (use-package emacs
 	:init
@@ -301,7 +301,6 @@ this will probably need to be reorganized
 					 (slot . -1)
 					 (window-height . 0.25))
 
-
 					("vterm-scratch"
 					 (display-buffer-in-side-window)
 					 (window-height . 0.3)
@@ -309,8 +308,8 @@ this will probably need to be reorganized
 
 					("\\*Org Src.*"
 					 (display-buffer-in-side-window)
-					 (window-height . 0.5)
-					 (side . bottom))
+					 (window-width . 0.5)
+					 (side . right))
 
 					("\\*Buffer List\\*"
 					 (display-buffer-in-side-window)
@@ -331,6 +330,20 @@ movement between windows
 		("wk" 'windmove-up)
 		("wl" 'windmove-right)))
 #+END_SRC
+** window management
+#+BEGIN_SRC emacs-lisp
+(defun oct/dired-split ()
+	"Splits window and starts dired in the current working directory"
+	(interactive)
+	(let ((dir (if (eq (vc-root-dir) nil)
+								 (dired default-directory)
+							 (dired (vc-root-dir)))))
+		(display-buffer-in-direction
+		 dir
+		 '(
+			 (window . root)
+			 (direction . right)))))
+#+END_SRC
 * Completetion
 ** icomplete
 	 #+BEGIN_SRC emacs-lisp
@@ -347,21 +360,13 @@ movement between windows
 	 #+END_SRC
 ** company
 	 #+BEGIN_SRC emacs-lisp
-(defun oct/comp ()
-	(message "asdf"))
 (use-package company
 	:ensure
 	:after lsp-mode
 	:hook (prog-mode . company-mode)
-	:bind
-				("<tab>" . company-indent-or-complete-common)
-	(:map company-active-map
-				;; if there is one option then complete it
-				;; if there are more then we want to cycle
-				("<tab>" . 'oct/comp))
-				;;("<tab>" . company-complete-selection))
-	(:map company-search-map
-				("<tab>" . company-complete-common-or-cycle))
+	:bind (:map company-active-map
+							("<tab>" . company-complete-common-or-cycle)
+							("<return>" . company-complete))
 	:custom
 	(company-minimum-prefix-length 1)
 	(company-idle-delay 0.0))
@@ -414,8 +419,7 @@ movement between windows
 ** vterm
 	 #+BEGIN_SRC emacs-lisp
 (use-package vterm
-	:ensure t
-	:init (unbind-key "C-w" vterm-mode-map))
+	:ensure t)
 
 (defun oct/scratch ()
 	"Launches a terminal in the bottom window."
