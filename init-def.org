@@ -1,186 +1,196 @@
 * Emacs
 ** use a custom file
-	 #+begin_src emacs-lisp
-(use-package emacs
-	:init
-	(setq custom-file
-				"~/.emacs.d/custom-settings.el")
-	(load custom-file t))
-	 #+end_src
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :init
+    (setq custom-file
+          "~/.emacs.d/custom-settings.el")
+    (load custom-file t))
+#+end_src
+
 ** setup
-	 #+begin_src emacs-lisp
-(use-package emacs
-	:config
-	(show-paren-mode 1)
-	(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-	(electric-pair-mode 1))
-	 #+end_src
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (show-paren-mode 1)
+    (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+    (electric-pair-mode 1))
+#+end_src
+
 ** variables
-	 #+begin_src emacs-lisp
-(defvar conf "~/.emacs.d/init-def")
-(defvar init-el (concat conf ".el"))
-(defvar init-org (concat conf ".org"))
-(setq font-scale 120)
-	 #+end_src
+
+#+begin_src emacs-lisp
+  (defvar conf "~/.emacs.d/init-def")
+  (defvar init-el (concat conf ".el"))
+  (defvar init-org (concat conf ".org"))
+  (setq font-scale 120)
+#+end_src
+
 ** editing this file
-	 #+begin_src emacs-lisp
-(use-package emacs
-	:config
-	(defun oct/init ()
-		"Edit `org-file' in the current buffer"
-		(interactive)
-		(find-file init-org)))
-	 #+end_src
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (defun oct/init ()
+      "Edit `org-file' in the current buffer"
+      (interactive)
+      (find-file init-org)))
+#+end_src
+
 ** executing this file
-	 I need a way to compile and then execute the whole init file.
-	 this is helful for testing if I've fucked it up yet.
-	 #+begin_src emacs-lisp
-(use-package emacs
-	:config
-	(defun oct/exec-init ()
-		(interactive)
-		(org-babel-load-file init-org)))
-	 #+end_src
+I need a way to compile and then execute the whole init file.
+this is helful for testing if I've fucked it up yet.
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (defun oct/exec-init ()
+      (interactive)
+      (org-babel-load-file init-org)))
+#+end_src
+
 * GUI
 ** Basics
-	 Trying to keep the interface minimal.
-	 This means getting rid of tool and menu bars, stopping the startup screen, and bell.
-	 We also add a fringe of 15px because I don't like when text is right on the edge.
-	 #+begin_src emacs-lisp
-(use-package emacs
-	:config
-	(tool-bar-mode -1)
-	(menu-bar-mode -1)
-	(blink-cursor-mode -1)
-	(scroll-bar-mode -1)
-	(setq inhibit-startup-screen t)
-	(setq ring-bell-function 'ignore)
-  (set-default 'window-divider-default-right-width 3)
-	(window-divider-mode 1)
-	(set-fringe-mode 15))
-	 #+end_src
-** Set font properties and keybinds
-	 #+begin_src emacs-lisp
-(use-package emacs
-	:config
-	;; set font scale to default
-	(set-face-attribute 'default (selected-frame) :height font-scale)
-	;; functions for font scale
-	(defun oct/inc-scale ()
-		"increases the frame's font scale"
-		(interactive)
-		(setq font-scale (+ font-scale 10))
-		(set-face-attribute 'default (selected-frame) :height font-scale))
-	(defun oct/dec-scale ()
-		"decreases the frame's font scale"
-		(interactive)
-		(setq font-scale (- font-scale 10))
-		(set-face-attribute 'default (selected-frame) :height font-scale))
+Trying to keep the interface minimal.
+This means getting rid of tool and menu bars, stopping the startup screen, and bell.
+We also add a fringe of 15px because I don't like when text is right on the edge.
 
-	(set-face-attribute 'default nil :family "Hack" :height font-scale)
-	:bind
-	("C-=" . 'oct/inc-scale)
-	("C--" . 'oct/dec-scale))
-	 #+end_src
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
+    (blink-cursor-mode -1)
+    (scroll-bar-mode -1)
+    (setq inhibit-startup-screen t)
+    (setq ring-bell-function 'ignore)
+    (set-default 'window-divider-default-right-width 3)
+    (window-divider-mode 1)
+    (set-fringe-mode 15))
+#+end_src
+
+** Set font properties and keybinds
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    ;; set font scale to default
+    (set-face-attribute 'default (selected-frame) :height font-scale)
+    ;; functions for font scale
+    (defun oct/inc-scale ()
+      "increases the frame's font scale"
+      (interactive)
+      (setq font-scale (+ font-scale 10))
+      (set-face-attribute 'default (selected-frame) :height font-scale))
+    (defun oct/dec-scale ()
+      "decreases the frame's font scale"
+      (interactive)
+      (setq font-scale (- font-scale 10))
+      (set-face-attribute 'default (selected-frame) :height font-scale))
+  
+    (set-face-attribute 'default nil :family "Hack" :height font-scale)
+    :bind
+    ("C-=" . 'oct/inc-scale)
+    ("C--" . 'oct/dec-scale))
+#+end_src
 
 ** olivetti
-	 #+begin_src emacs-lisp
-(use-package olivetti
-	:ensure t)
-	 #+end_src
+
+#+begin_src emacs-lisp
+  (use-package olivetti
+    :ensure t)
+#+end_src
+
 ** diminish
-	 #+begin_src emacs-lisp
-(use-package diminish :ensure)
-(use-package undo-tree :diminish)
-	 #+end_src
+
+#+begin_src emacs-lisp
+  (use-package diminish :ensure)
+  (use-package undo-tree :diminish)
+#+end_src
+
 ** Themes
-*** custom themes
-		we want to be able to load whatever custom themes we have so add them to the path
-		#+begin_src emacs-lisp
-;; add theme directory
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(add-to-list 'load-path "~/.emacs.d/themes/")
-		#+end_src
+*** custom theme directory
 
-		function to load a given theme
-		#+begin_src emacs-lisp
-(defun oct/load-theme-silent (theme)
-	"Reloads a THEME given by the user."
-	(interactive
-	 (list
-		(intern
-		 (completing-read "Load custom theme: "
-											(mapcar #'symbol-name
-															(custom-available-themes))))))
-	(load-theme theme t))
-		#+end_src
+#+begin_src emacs-lisp
+  ;; add theme directory
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+  (add-to-list 'load-path "~/.emacs.d/themes/")
+#+end_src
 
-		function to load a theme from the current file
-		#+begin_src emacs-lisp
-(defun oct/load-theme-from-curr ()
-	(interactive)
-	(intern
-	 (oct/load-theme-silent (substring 
-													 (file-name-nondirectory
-														(buffer-file-name))
-													 0 -9))))
-		#+end_src
+*** theme functions
+
+function to load a given theme
+#+begin_src emacs-lisp
+  (defun oct/load-theme-silent (theme)
+    "Loads a THEME given by the user without asking for confirmation."
+    (interactive
+     (list
+      (intern
+       (completing-read "Load custom theme: "
+                        (mapcar #'symbol-name
+                                (custom-available-themes))))))
+    (load-theme theme t))
+#+end_src
+
 *** Set the theme
-		#+begin_src emacs-lisp
-;; get this dope theme
-;; (use-package modus-vivendi-theme
-;; 		:ensure t)
-(oct/load-theme-silent 'underwater)
 
-		#+end_src
+#+begin_src emacs-lisp
+  (oct/load-theme-silent 'underwater)
+#+end_src
+
 *** rainbow-mode
-		#+begin_src emacs-lisp
-(use-package rainbow-mode
-	:ensure
-	:diminish
-	:commands rainbow-mode
-	:config
-	(setq rainbow-ansi-colors nil)
-	(setq rainbow-x-colors nil)
-	(setq-default rainbow-mode 1))
-		#+end_src
+
+#+begin_src emacs-lisp
+  (use-package rainbow-mode
+    :ensure
+    :diminish
+    :commands rainbow-mode
+    :config
+    (setq rainbow-ansi-colors nil)
+    (setq rainbow-x-colors nil)
+    (setq-default rainbow-mode 1))
+#+end_src
+
 ** line numbers
-	 #+begin_src emacs-lisp
-(use-package emacs
-	:config
-	(column-number-mode)
-	(global-display-line-numbers-mode t)
-	(dolist (mode '(org-mode-hook
-									term-mode-hook
-									vterm-mode-hook))
-		(add-hook mode (lambda ()
-										 (display-line-numbers-mode 0)))))
-	 #+end_src
-** font
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (column-number-mode)
+    (global-display-line-numbers-mode t)
+    (dolist (mode '(org-mode-hook
+                    term-mode-hook
+                    vterm-mode-hook))
+      (add-hook mode (lambda ()
+                       (display-line-numbers-mode 0)))))
+#+end_src
 
 * Editor
 ** evil-mode
-	 basic evil mode setup
+*** basic  settings
+
 #+begin_src emacs-lisp
-;; vim fusion
-(use-package evil
-:ensure t
-:init
-(setq evil-want-integration t)
-(setq evil-want-keybinding nil)
-:config
-(evil-mode 1)
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-;; let us use evil mode in ibuffer
-(setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
-(add-to-list 'evil-emacs-state-modes 'vterm-mode)
-(evil-global-set-key 'motion "j" 'evil-next-visual-line)
-(evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-(evil-global-set-key 'motion "g(" 'backward-up-list)
-(evil-global-set-key 'motion "g)" 'down-list))
+  (use-package evil
+    :ensure t
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    :config
+    (evil-mode 1)
+    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+    ;; let us use evil mode in ibuffer
+    (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
+    (add-to-list 'evil-emacs-state-modes 'vterm-mode)
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+    (evil-global-set-key 'motion "g(" 'backward-up-list)
+    (evil-global-set-key 'motion "g)" 'down-list))
 #+end_src
 
-	 Some functions for missing functionality
+*** better versions of q and wq
+
 #+begin_src emacs-lisp
 ;; (use-package evil
 ;; 	;; change :q to just killing the buffer
@@ -200,383 +210,441 @@
 ;; 	(evil-ex-define-cmd "q[uit]" 'evil-quit-current)
 ;; 	(evil-ex-define-cmd "wq" 'evil-write-quit-current))
 #+end_src
+
+*** evil collection
+
 #+begin_src emacs-lisp
-(use-package evil-collection
-	:ensure
-	:after evil
-	:config
-	(evil-collection-init))
+  (use-package evil-collection
+    :ensure
+    :after evil
+    :config
+    (evil-collection-init))
 #+end_src
-** settings
-	 #+begin_src emacs-lisp
-(use-package emacs
-	:config
-	(setq-default tab-width 2)
-	(setq-default c-basic-offset 2)
-	(setq-default indet-tabs-mode nil))
-	 #+end_src
-** keys
-this will probably need to be reorganized
+
+*** leader-keys
+
 #+begin_src emacs-lisp
-	(use-package general
-		:ensure
-		:config
-		(general-evil-setup t)
-		(general-create-definer oct/leader-keys
-			:keymaps '(normal insert visual emacs)
-			:prefix "SPC"
-			:global-prefix "C-SPC")
+  (use-package general
+    :ensure
+    :config
+    (general-evil-setup t)
+    (general-create-definer oct/leader-keys
+      :keymaps '(normal insert visual emacs)
+      :prefix "SPC"
+      :global-prefix "C-SPC")
 
-		(oct/leader-keys
-		 "g" '(:ignore t)
-		 "gs" 'magit-status
-		 "c" '(:ignore t)
-		 "cc" 'oct/init
-		 "cs" 'oct/exec-init))
-
-
-
+    (oct/leader-keys
+     "g" '(:ignore t)
+     "gs" 'magit-status
+     "c" '(:ignore t)
+     "cc" 'oct/init
+     "cs" 'oct/exec-init))
 #+end_src
+
+** tabs
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (setq-default tab-width 2)
+    (setq-default c-basic-offset 2)
+    (setq-default indet-tabs-mode nil))
+#+end_src
+
 * Buffers
-** Functions
-	 kill-curr-buff kills the current buffer and closes its window.
-	 #+begin_src emacs-lisp
-(use-package emacs
-	:config
-	(defun oct/kill-curr-buff (&optional arg)
-		"Kill the current buffer"
-		;; make interactive, set arg to ???
-		(interactive "p")
-		;; we can't kill a minibuffer so abort it
-		;; otherwise kill the buffer
-		(if (minibufferp)
-				(abort-recursive-edit)
-			(kill-buffer (current-buffer)))
-		;; if there are other windows we can kill this one
-		(when (and arg
-							 (not (one-window-p)))
-			(delete-window)))
+** functions
 
-	:bind ("M-k" . oct/kill-curr-buff))
-	 #+end_src
-** IBuffer
-	 Settings for ibuffer
-	 #+begin_src emacs-lisp
-(use-package ibuffer
-	:config
-	(setq ibuffer-use-other-window nil)
-	:bind
-	(("C-x C-b" . ibuffer)))
-	 #+end_src
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (defun oct/kill-curr-buff (&optional arg)
+      "Kill the current buffer"
+      ;; make interactive, set arg to ???
+      (interactive "p")
+      ;; we can't kill a minibuffer so abort it
+      ;; otherwise kill the buffer
+      (if (minibufferp)
+          (abort-recursive-edit)
+        (kill-buffer (current-buffer)))
+      ;; if there are other windows we can kill this one
+      (when (and arg
+                 (not (one-window-p)))
+        (delete-window)))
+
+    :bind ("M-k" . oct/kill-curr-buff))
+#+end_src
+
+** ibuffer
+
+#+begin_src emacs-lisp
+  (use-package ibuffer
+    :config
+    (setq ibuffer-use-other-window nil)
+    :bind
+    (("C-x C-b" . ibuffer)))
+#+end_src
+
 ** MiniBuffer
-	 #+begin_src emacs-lisp
-(use-package minibuffer
-	:config
-	(minibuffer-electric-default-mode 1)
-	(setq completion-styles '(partial-completion substring initials flex))
-	(setq completion-category-overrides
-				'((file (styles initials basic))
-					(buffer (styles initials basic)))))
 
-(use-package orderless
-		:ensure
-		:custom (setq completion-styles '(orderless))
-		:config
-		(setq orderless-regexp-separator "[/\s_-]+")
-		(setq orderless-matching-styles
-					'(orderless-flex
-						orderless-strict-leading-initialism
-						orderless-regexp
-						orderless-prefixes
-						orderless-literal)))
-	 #+end_src
+#+begin_src emacs-lisp
+  (use-package minibuffer
+    :config
+    (minibuffer-electric-default-mode 1)
+    (setq completion-styles '(partial-completion substring initials flex))
+    (setq completion-category-overrides
+          '((file (styles initials basic))
+            (buffer (styles initials basic)))))
+
+  (use-package orderless
+      :ensure
+      :custom (setq completion-styles '(orderless))
+      :config
+      (setq orderless-regexp-separator "[/\s_-]+")
+      (setq orderless-matching-styles
+            '(orderless-flex
+              orderless-strict-leading-initialism
+              orderless-regexp
+              orderless-prefixes
+              orderless-literal)))
+#+end_src
+
 ** display-buffer-alist
-	 #+begin_src emacs-lisp
-(use-package emacs
-	:init
-	(setq display-buffer-alist
-				'(("\\*[Hh]elp\\*"
-					 (display-buffer-in-side-window)
-					 (side . bottom)
-					 (slot . -1)
-					 (window-height . 0.25))
 
-					("vterm-scratch"
-					 (display-buffer-in-side-window)
-					 (window-height . 0.3)
-					 (side . bottom))
-
-					("\\*Org Src.*"
-					 (display-buffer-in-side-window)
-					 (window-width . 0.5)
-					 (side . right))
-
-					("\\*Buffer List\\*"
-					 (display-buffer-in-side-window)
-					 (side . bottom)
-					 (slot . 0)
-					 (window-height . 0.25))))
-	:bind (("C-c b" . window-toggle-side-windows)))
-	 #+end_src
-	 
-movement between windows
 #+begin_src emacs-lisp
-(use-package general
-	:config
-	(oct/leader-keys
-		("w" '(:ignore t))
-		("wh" 'windmove-left)
-		("wj" 'windmove-down)
-		("wk" 'windmove-up)
-		("wl" 'windmove-right)))
+  (use-package emacs
+    :init
+    (setq display-buffer-alist
+          '(("\\*[Hh]elp\\*"
+             (display-buffer-in-side-window)
+             (side . bottom)
+             (slot . -1)
+             (window-height . 0.25))
+
+            ("vterm-scratch"
+             (display-buffer-in-side-window)
+             (window-height . 0.3)
+             (side . bottom))
+
+            ("\\*Org Src.*"
+             (display-buffer-in-side-window)
+             (window-width . 0.5)
+             (side . right))
+
+            ("\\*Buffer List\\*"
+             (display-buffer-in-side-window)
+             (side . bottom)
+             (slot . 0)
+             (window-height . 0.25))))
+    :bind (("C-c b" . window-toggle-side-windows)))
 #+end_src
-** window management
-#+begin_src emacs-lisp
-(defun oct/dired-split ()
-	"Splits window and starts dired in the current working directory"
-	(interactive)
-	(let ((dir (if (eq (vc-root-dir) nil)
-								 (dired default-directory)
-							 (dired (vc-root-dir)))))
-		(display-buffer-in-direction
-		 dir
-		 '(
-			 (window . root)
-			 (direction . right)))))
-#+end_src
+   
 * Completetion
 ** icomplete
-	 #+begin_src emacs-lisp
-(use-package icomplete
-	:demand
-	:config
-	(fido-mode -1)
-	(icomplete-mode 1)
-	:bind (:map icomplete-minibuffer-map
-							("<tab>" . icomplete-force-complete)
-							("<return>" . icomplete-force-complete-and-exit) ; exit with completion
-							("<right>" . icomplete-forward-completions)
-							("<left>" . icomplete-backward-completions)))
-	 #+end_src
+
+#+begin_src emacs-lisp
+  (use-package icomplete
+    :demand
+    :config
+    (fido-mode -1)
+    (icomplete-mode 1)
+    :bind (:map icomplete-minibuffer-map
+                ("<tab>" . icomplete-force-complete)
+                ("<return>" . icomplete-force-complete-and-exit) ; exit with completion
+                ("<right>" . icomplete-forward-completions)
+                ("<left>" . icomplete-backward-completions)))
+#+end_src
+
 ** company
-	 #+begin_src emacs-lisp
-(use-package company
-	:ensure
-	:after lsp-mode
-	:hook (prog-mode . company-mode)
-	:bind (:map company-active-map
-							("<tab>" . company-complete-common-or-cycle)
-							("<return>" . company-complete))
-	:custom
-	(company-minimum-prefix-length 1)
-	(company-idle-delay 0.0))
-	 #+end_src
+
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure
+    :after lsp-mode
+    :hook (prog-mode . company-mode)
+    :bind (:map company-active-map
+                ("<tab>" . company-complete-common-or-cycle)
+                ("S-<return>" . newline)
+                ("<return>" . company-complete))
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.0))
+#+end_src
+
 * Navigation
 ** dired
-	 config
-	 #+begin_src emacs-lisp
-(use-package dired
-	:commands (dired dired-jump)
-	:bind (("C-x C-j" . dired-jump))
-	:config
-	(evil-collection-define-key 'normal 'dired-mode-map
-		"h" 'dired-up-directory
-		"l" 'dired-find-file)
-	:custom
-	((dired-listing-switches "-agho --group-directories-first")))
+*** basic settings
+
+#+begin_src emacs-lisp
+  (use-package dired
+    :commands (dired dired-jump)
+    :bind (("C-x C-j" . dired-jump))
+    :config
+    (evil-collection-define-key 'normal 'dired-mode-map
+      "h" 'dired-up-directory
+      "l" 'dired-find-file)
+    :custom
+    ((dired-listing-switches "-agho --group-directories-first")))
 #+end_src
 
-  actions
-	#+begin_src emacs-lisp
-(use-package dired
-	)
+*** split to window to new dired
+
+#+begin_src emacs-lisp
+  (defun oct/dired-split-right ()
+    "Splits window and starts dired in the current working directory"
+    (interactive)
+    (select-window (split-window-right))
+    (if (eq (vc-root-dir) nil)
+        (dired default-directory)
+      (dired (vc-root-dir))))
+
+  (use-package dired
+    :bind
+    ("C-x C-d" . oct/dired-split-right))
 #+end_src
+
 ** windowmove
-	 #+begin_src emacs-lisp
-;; make moving between and swapping windows easier
-(use-package windmove
-	:defer
-	:bind
-	("M-<left>" . 'windmove-left)
-	("M-<right>" . 'windmove-right)
-	("M-<up>" . 'windmove-up)
-	("M-<down>" . 'windmove-down)
-	("M-S-<left>" . 'windmove-swap-states-left)
-	("M-S-<right>" . 'windmove-swap-states-right)
-	("M-S-<up>" . 'windmove-swap-states-up)
-	("M-S-<down>" . 'windmove-swap-states-down))
-	 #+end_src
+
+#+begin_src emacs-lisp
+  ;; make moving between and swapping windows easier
+  (use-package windmove
+    :defer
+    :bind
+    ("M-<left>" . 'windmove-left)
+    ("M-<right>" . 'windmove-right)
+    ("M-<up>" . 'windmove-up)
+    ("M-<down>" . 'windmove-down)
+    ("M-S-<left>" . 'windmove-swap-states-left)
+    ("M-S-<right>" . 'windmove-swap-states-right)
+    ("M-S-<up>" . 'windmove-swap-states-up)
+    ("M-S-<down>" . 'windmove-swap-states-down))
+#+end_src
+
 * Programming
-** Project Management
-	 #+begin_src emacs-lisp
-(use-package projectile
-	:ensure t
-	:diminish
-	:config
-	(define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-	(projectile-mode +1))
-	 #+end_src
+** projectile
+
+#+begin_src emacs-lisp
+  (use-package projectile
+    :ensure t
+    :diminish
+    :config
+    (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+    (projectile-mode +1))
+#+end_src
+
 ** vterm
-	 #+begin_src emacs-lisp
-(use-package vterm
-	:ensure t)
 
-(defun oct/scratch ()
-	"Launches a terminal in the bottom window."
-	(interactive)
-	;; if there is a buffer then kill it
-	(when (get-buffer "vterm-scratch")
-		(progn
-			(let ((proc (get-buffer-process (current-buffer))))
-				(when (processp proc)
-					(set-process-query-on-exit-flag proc nil)))
-			(kill-buffer "vterm-scratch")))
-	(vterm "vterm-scratch"))
-	 #+end_src
-*** shell
- #+begin_src emacs-lisp
-(use-package flycheck
-	:ensure t
-	:hook
-	(sh-mode . flycheck-mode))
- #+end_src
+#+begin_src emacs-lisp
+  (use-package vterm
+    :ensure t)
+
+  (defun oct/scratch ()
+    "Launches a terminal in the bottom window."
+    (interactive)
+    ;; if there is a buffer then kill it
+    (when (get-buffer "vterm-scratch")
+      (progn
+        (let ((proc (get-buffer-process (current-buffer))))
+          (when (processp proc)
+            (set-process-query-on-exit-flag proc nil)))
+        (kill-buffer "vterm-scratch")))
+    (vterm "vterm-scratch"))
+#+end_src
+
+** Languages
+*** (ba)sh
+
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :hook
+    (sh-mode . flycheck-mode))
+#+end_src
+
 *** lsp-mode
-		#+begin_src emacs-lisp
-(defun oct/lsp-mode-setup()
-	(setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-	(lsp-headerline-breadcrumb-mode))
 
-(use-package lsp-mode
-	:ensure t
-	:commands (lsp lsp-deferred)
-	:init
-	(setq lsp-keymap-prefix "C-c l")
-	:hook
-	(lsp-mode . oct/lsp-mode-setup))
+#+begin_src emacs-lisp
+  (defun oct/lsp-mode-setup()
+    (setq lsp-headerline-breadcrumb-segments
+          '(path-up-to-project file symbols))
+    (lsp-headerline-breadcrumb-mode))
 
-(use-package company-lsp
-	:ensure t
-	:commands company-lsp)
-		#+end_src
+  (use-package lsp-mode
+    :ensure t
+    :commands (lsp lsp-deferred)
+    :init
+    (setq lsp-keymap-prefix "C-c l")
+    :hook
+    (lsp-mode . oct/lsp-mode-setup))
+
+  (use-package company-lsp
+    :ensure t
+    :commands company-lsp)
+#+end_src
+
 *** Go
-		#+begin_src emacs-lisp
-(use-package go-mode
-	:ensure t
-	:defer t
-	:config
-	(setq lsp-gopls-staticcheck t)
-	(setq lsp-eldoc-render-all t)
-	(setq lsp-gopls-complete-unimported t)
-	(defun lsp-go-install-save-hooks ()
-		(add-hook 'before-save-hook #'lsp-format-buffer t t)
-		(add-hook 'before-save-hook #'lsp-organize-imports t t))
-	(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-	(company-mode 1)
-	:hook (go-mode . lsp-deferred))
 
-;; add hook
+#+begin_src emacs-lisp
+  (use-package go-mode
+    :ensure t
+    :defer t
+    :config
+    (setq lsp-gopls-staticcheck t)
+    (setq lsp-eldoc-render-all t)
+    (setq lsp-gopls-complete-unimported t)
+    (defun lsp-go-install-save-hooks ()
+      (add-hook 'before-save-hook #'lsp-format-buffer t t)
+      (add-hook 'before-save-hook #'lsp-organize-imports t t))
+    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+    (company-mode 1)
+    :hook (go-mode . lsp-deferred))
 
-(use-package company-go :ensure t)
-		#+End_SRC
+  ;; add hook
+
+  (use-package company-go :ensure t)
+#+end_SRC
+
 *** elisp
-		use flymake in elisp modes
-		#+begin_src emacs-lisp
-(use-package flymake
-	:commands flymake-mode
-	:hook
-	(emacs-lisp-mode . flymake-mode))
-		#+end_src
-	 
- delimiters make stuff look better
- #+begin_src emacs-lisp
-(use-package rainbow-delimiters
-	:ensure
-	:hook (prog-mode . rainbow-delimiters-mode))
- #+end_src
-*** zig
-		#+begin_src emacs-lisp
-(use-package lsp-mode
-	:config
-	(add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
-	(lsp-register-client
-	 (make-lsp-client
-		:new-connection (lsp-stdio-connection "~/zls/zig-cache/bin/")
-		:major-modes '(zig-mode)
-		:server-id 'zls)))
- #+end_src
-*** rust
-		#+begin_src emacs-lisp
-;; (use-package rust-mode
-;; 	:ensure
-;; 	:hook
-;; 	(rust-mode . lsp-deferred)
-;; 	(flycheck-mode . flycheck-rust-setup))
-;; 
-;; (use-package lsp-rust
-;; 	:ensure
-;; 	:after lsp-mode)
-;; 
-;; (use-package flycheck-rust
-;; 	:ensure)
 
-;; (use-package lsp-mode
-;; 	:config
-;; 	(add-to-list 'lsp-language-id-configuration '(rust-mode . "rust"))
-;; 	(lsp-register-client
-;; 	 (make-lsp-client
-;; 		:new-connection (lsp-stdio-connection "~/.cargo/bin/rls")
-;; 		:major-modes '(rust-mode)
-;; 		:server-id 'rls)))
- #+end_src
+#+begin_src emacs-lisp
+  (use-package flymake
+    :commands flymake-mode
+    :hook
+    (emacs-lisp-mode . flymake-mode))
+
+  (use-package rainbow-delimiters
+    :ensure
+    :hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+*** rust
+
+#+begin_src emacs-lisp
+  (use-package rust-mode
+    :ensure
+    :hook
+    (rust-mode . lsp-deferred)
+    (flycheck-mode . flycheck-rust-setup))
+
+  (use-package lsp-rust
+    :ensure
+    :after lsp-mode)
+
+  (use-package flycheck-rust
+    :ensure)
+
+  (use-package lsp-mode
+    :config
+    (add-to-list 'lsp-language-id-configuration '(rust-mode . "rust"))
+    (lsp-register-client
+     (make-lsp-client
+      :new-connection (lsp-stdio-connection "~/.cargo/bin/rls")
+      :major-modes '(rust-mode)
+      :server-id 'rls)))
+#+end_src
+
 *** c++
- #+begin_src emacs-lisp
-(use-package c++-mode
-	:hook
-	(c++-mode . lsp-deferred))
- #+end_src
+
+#+begin_src emacs-lisp
+  (use-package c++-mode
+    :hook
+    (c++-mode . lsp-deferred))
+#+end_src
+
 * Git
 ** Magit
-	 Setup magit and get a quick binding to bring it up.
-	 #+begin_src emacs-lisp
-(use-package magit
-	:ensure
-	:custom
-	(magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-(use-package evil-magit
-	:ensure
-	:after magit)
-	 #+end_src
-
-	 Make magit show changes within diff line
-	 #+begin_src emacs-lisp
-(use-package magit-diff
-	:after magit
-	:config
-	(setq magit-diff-refine-hunk t))
-	 #+end_src
-* Org
-** Working with source code
-	 add function 'org-mode-insert-src' and give it a key binding 'C-c s'.
-	 this makes it easier to add a sorce code block for this file or for works with other langues
 #+begin_src emacs-lisp
-(use-package org-src
-	:after org
-	:config
-	;; make this in the current window
-	(setq org-src-window-setup 'current-window)
-	(setq org-edit-src-persistent-message nil)
-	(setq org-src-fontify-natively t)
-	(setq org-src-preserve-indentation t)
-	(setq org-src-tab-acts-natively t)
-	(setq org-edit-src-content-indentation 0)
-	(defun oct/org-mode-insert-src ()
-		(interactive)
-		(insert "#+begin_src emacs-lisp\n")
-		(insert "#+end_src")
-		(previous-line)
-		(end-of-line)
-		(org-edit-src-code))
-	:bind
-	("C-c s" . 'oct/org-mode-insert-src))
+  (use-package magit
+    :ensure
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+  ;; evil integration
+  (use-package evil-magit
+    :ensure
+    :after magit)
+
+  ;; Make magit show changes within diff line
+  (use-package magit-diff
+    :after magit
+    :config
+    (setq magit-diff-refine-hunk t))
 #+end_src
+
+* Org
+** basic settings
+
+#+begin_src emacs-lisp
+  (defun oct/org-setup ()
+    (org-indent-mode)
+    (variable-pitch-mode 1)
+    (visual-line-mode 1))
+
+  (use-package org
+    :hook (org-mode . oct/org-setup))
+
+#+end_src
+
+** gui
+
+#+begin_src emacs-lisp
+  (use-package org
+    :config
+    (setq org-ellipsis " ▼"))
+
+  (defun oct/org-visual-fill ()
+    (setq visual-fill-column-width 80
+          visual-fill-column-center-text t)
+    (visual-fill-column-mode 1))
+
+  (use-package visual-fill-column
+    :ensure
+    :hook (org-mode . oct/org-visual-fill))
+
+  (use-package org-bullets
+    :ensure
+    :after org
+    :hook (org-mode . org-bullets-mode)
+    :custom (org-bullets-bullet-list
+             '("●" "○")))
+
+  ;; set face sizes
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute
+     (car face) nil
+     :height (cdr face)))
+
+#+end_src
+
+** Working with source code
+
+#+begin_src emacs-lisp
+  (defun oct/org-mode-insert-src ()
+    (interactive)
+    (insert "#+begin_src emacs-lisp\n")
+    (insert "#+end_src")
+    (previous-line)
+    (end-of-line)
+    (org-edit-src-code))
+
+  (use-package org-src
+    :after org
+    :config
+    ;; make this in the current window
+    (setq org-src-window-setup 'reorganize-frame)
+    (setq org-edit-src-persistent-message nil)
+    (setq org-src-fontify-natively t)
+    (setq org-src-preserve-indentation nil)
+    (setq org-src-tab-acts-natively nil)
+    (setq org-edit-src-content-indentation 2)
+    :bind
+    ("C-c s" . 'oct/org-mode-insert-src))
+#+end_src
+
