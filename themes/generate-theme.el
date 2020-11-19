@@ -144,8 +144,8 @@
 	 ;; org
 	 `(org-link ((t (:inherit 'link))))
 	 `(org-block ((t (:background ,block :extend t))))
-	 `(org-block-begin-line ((t (:inherit 'org-block :extend t))))
-	 `(org-block-end-line ((t (:inherit 'org-block :extend t))))
+	 `(org-block-begin-line ((t (:background ,block :foreground ,bg+ :extend t))))
+	 `(org-block-end-line ((t (:inherit 'org-block-begin-line :extend t))))
 	 `(org-ellipsis ((t (:foreground ,bg+))))
 
 	 ;; term

@@ -325,11 +325,6 @@ function to load a given theme
              (window-height . 0.3)
              (side . bottom))
 
-            ("\\*Org Src.*"
-             (display-buffer-in-side-window)
-             (window-width . 0.5)
-             (side . right))
-
             ("\\*Buffer List\\*"
              (display-buffer-in-side-window)
              (side . bottom)
@@ -578,6 +573,7 @@ function to load a given theme
   (defun oct/org-setup ()
     (org-indent-mode)
     (variable-pitch-mode 1)
+    (auto-fill-mode 1)
     (visual-line-mode 1))
 
   (use-package org
@@ -638,7 +634,7 @@ function to load a given theme
     :after org
     :config
     ;; make this in the current window
-    (setq org-src-window-setup 'reorganize-frame)
+    (setq org-src-window-setup 'other-window)
     (setq org-edit-src-persistent-message nil)
     (setq org-src-fontify-natively t)
     (setq org-src-preserve-indentation nil)
