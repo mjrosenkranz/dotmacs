@@ -634,7 +634,7 @@ function to load a given theme
     :after org
     :config
     ;; make this in the current window
-    (setq org-src-window-setup 'other-window)
+    (setq org-src-window-setup 'reorganize-frame)
     (setq org-edit-src-persistent-message nil)
     (setq org-src-fontify-natively t)
     (setq org-src-preserve-indentation nil)

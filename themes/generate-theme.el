@@ -40,7 +40,7 @@
 	 `(font-lock-variable-name-face ((t (:foreground ,sec))))
 	 `(font-lock-warning-face ((t (:foreground ,cur))))
 	 ;; highlight
-	 `(region ((t (:background ,bg+))))
+	 `(region ((t (:background ,bg+ :foreground nil))))
 	 `(highlight ((t (:inherit region))))
 	 `(isearch ((t (:background ,pri :foreground ,bg))))
 	 `(isearch-fail ((t (:background ,alert :foreground ,bg))))
@@ -72,10 +72,16 @@
 	 `(company-tooltip-annotation-selection ((t (:inherit 'company-tooltip-selection :weight bold))))
 	 `(company-tooltip-common-selection ((t (:inherit 'company-tooltip-selection :weight bold))))
 
+	 ;; completions
+	 `(complet)
+   `(completions-annotations      ((t (:inherit 'italic))))
+   `(completions-common-part      ((t (:foreground ,pri))))
+   `(completions-first-difference ((t (:inherit 'bold))))
+
 	 ;; magit
-	 `(magit-section-heading           ((t (:foreground ,pri :background ,bg :weight bold))))
+	 `(magit-section-heading ((t (:foreground ,pri :background ,bg :weight bold))))
 	 `(magit-section-heading-selection ((t (:inherit 'magit-section-heading :slant italic))))
-	 `(magit-section-highlight         ((t (:foreground ,pri :background ,block :weight bold :extend t))))
+	 `(magit-section-highlight ((t (:foreground ,pri :background ,block :weight bold :extend t))))
 	 `(magit-section-secondary-heading ((t (:inherit 'default :weight bold))))
 
 	 `(magit-diff-context ((t (:inherit 'default :extend t))))
@@ -88,15 +94,22 @@
 	 `(magit-diff-hunk-heading ((t (:inherit 'magit-diff-file-heading))))
 	 `(magit-diff-hunk-heading-highlight ((t (:inherit 'magit-diff-file-heading-highlight))))
 	 `(magit-diff-hunk-heading-selection ((t (:inherit 'magit-diff-file-heading-selection :weight bold))))
+	 `(magit-diff-lines-heading ((t (:inherit 'magit-diff-hunk-heading-selection :background ,bg+))))
 
+	 `(diff-added ((t (:background ,block :foreground ,pri))))
+	 `(diff-refine-added ((t (:inherit 'diff-added))))
 	 `(magit-diff-added ((t (:background ,block :foreground ,pri))))
 	 `(magit-diff-added-highlight ((t (:inherit 'magit-diff-added))))
+
+	 `(diff-removed ((t (:background ,block :foreground ,alert))))
+	 `(diff-refine-removed ((t (:inherit 'diff-removed))))
 	 `(magit-diff-removed ((t (:background ,block :foreground ,alert))))
 	 `(magit-diff-removed-highlight ((t (:inherit 'magit-diff-removed))))
-	 ;; `(magit-diff-hunk-region ((t ())))
-	 ;; `(magit-diff-added ((t (:background ,bg+ :foreground ,pri))))
 
-	 ;; terminal
+	 `(magit-diff-whitespace-warning ((t (:underline ,alert))))
+
+	 `(git-commit-summary ((t (:inherit 'default))))
+	 `(git-commit-overlong-summary ((t (:inherit 'error))))
 
 	 ;; rainbow parens and stuff
 	 `(rainbow-delimiters-base-error-face ((t (:foreground ,alert :weight bold))))
