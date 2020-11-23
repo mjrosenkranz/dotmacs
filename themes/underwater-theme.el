@@ -7,8 +7,8 @@
 										"#DCD8C5"  ;;fg   
 										"#82A4AF" ;;fg+
 										"#4c8ea6"  ;;pri  
-										"#579982"  ;;sec  
-										"#6AAC4A"  ;;alert
+										"#6AAC4A"  ;;sec  
+										"#e29726"  ;;alert
 										"#D7B020"  ;;cur  
 										"#94A5B0"  ;;comm 
 										"#262e33" ;;block

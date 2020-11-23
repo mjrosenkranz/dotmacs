@@ -1,8 +1,9 @@
 (defmacro oct/generate-theme (theme bg bg+ fg fg+ pri sec alert cur comm block)
 	(custom-theme-set-faces
 	 theme
-	 `(default ((t (:background ,bg :foreground ,fg))))
+
 	 ;; ui
+	 `(default ((t (:background ,bg :foreground ,fg))))
 	 `(cursor ((t (:background ,cur))))
 	 `(fringe ((t (:foreground ,fg+ :background ,bg))))
 	 `(window-divider ((t (:foreground ,bg+ :background ,bg+))))
@@ -173,6 +174,7 @@
 	 `(link ((t (:foreground ,sec :underline))))
 
 	 `(link-visited ((t (:foreground ,sec))))
+	 `(success ((t (:foreground ,pri))))
 	 `(error ((t (:foreground ,alert :weight bold))))
 	 `(warning ((t (:foreground ,cur :weight bold))))
 	 `(secondary-selection ((t (:background ,bg+ :foreground ,fg :box))))
