@@ -76,8 +76,6 @@ We also add a fringe of 15px because I don't like when text is right on the edge
 #+begin_src emacs-lisp
   (use-package emacs
     :config
-    ;; set font scale to default
-    (set-face-attribute 'default (selected-frame) :height font-scale)
     ;; functions for font scale
     (defun oct/inc-scale ()
       "increases the frame's font scale"
@@ -89,8 +87,11 @@ We also add a fringe of 15px because I don't like when text is right on the edge
       (interactive)
       (setq font-scale (- font-scale 10))
       (set-face-attribute 'default (selected-frame) :height font-scale))
-  
-    (set-face-attribute 'default nil :family "Hack" :height font-scale)
+
+    (set-face-attribute 'default nil :font "SF Mono" :height font-scale :weight 'regular)
+    (set-face-attribute 'fixed-pitch nil :font "SF Mono" :height font-scale :weight 'regular)
+    (set-face-attribute 'variable-pitch nil :font "SF Pro" :height font-scale :weight 'semi-bold)
+
     :bind
     ("C-=" . 'oct/inc-scale)
     ("C--" . 'oct/dec-scale))
@@ -584,9 +585,6 @@ function to load a given theme
 ** gui
 
 #+begin_src emacs-lisp
-  (use-package org
-    :config
-    (setq org-ellipsis " ▼"))
 
   (defun oct/org-visual-fill ()
     (setq visual-fill-column-width 80
@@ -604,19 +602,30 @@ function to load a given theme
     :custom (org-bullets-bullet-list
              '("●" "○")))
 
-  ;; set face sizes
-  (dolist (face '((org-level-1 . 1.2)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.05)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
-    (set-face-attribute
-     (car face) nil
-     :height (cdr face)))
+  (use-package org
+    :config
+    (setq org-ellipsis " ▼")
+    ;; set face sizes
+    (dolist (face '((org-level-1 . 1.2)
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.05)
+                    (org-level-4 . 1.0)
+                    (org-level-5 . 1.1)
+                    (org-level-6 . 1.1)
+                    (org-level-7 . 1.1)
+                    (org-level-8 . 1.1)))
+      (set-face-attribute
+       (car face) nil
+       :height (cdr face)
+:slant 'normal))
 
+    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 #+end_src
 
 ** Working with source code

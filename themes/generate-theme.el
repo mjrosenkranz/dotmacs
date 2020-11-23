@@ -4,10 +4,10 @@
 	 `(default ((t (:background ,bg :foreground ,fg))))
 	 ;; ui
 	 `(cursor ((t (:background ,cur))))
-	 `(fringe ((t (:foreground ,bg))))
-	 `(window-divider ((t (:foreground ,bg+))))
-	 `(window-divider-first-pixel ((t (:inherit 'window-divider))))
-	 `(window-divider-last-pixel ((t (:inherit 'window-divider))))
+	 `(fringe ((t (:foreground ,fg+ :background ,bg))))
+	 `(window-divider ((t (:foreground ,bg+ :background ,bg+))))
+	 `(window-divider-first-pixel ((t (:foreground ,bg+ :background ,bg+))))
+	 `(window-divider-last-pixel ((t (:foreground ,bg+ :background ,bg+))))
 	 ;; line numbers
 	 `(line-number ((t (:background ,bg :foreground ,comm))))
 	 `(linum ((t (:background ,bg :foreground ,bg+))))
@@ -47,13 +47,12 @@
 	 `(lazy-highlight ((t (:inherit region))))
 
 	 ;; evil
-	 
 	 `(evil-ex-commands ((t (:foreground ,pri))))
 	 `(evil-ex-info ((t (:foreground ,bg+))))
-	 ;; `(evil-ex-lazy-highlight
-	 ;; `(evil-ex-search
-	 ;; `(evil-ex-substitute-matches
-	 ;; `(evil-ex-substitute-replacement
+	 `(evil-ex-lazy-highlight ((t (:background ,bg+))))
+	 `(evil-ex-search ((t (:foreground ,pri :weight bold))))
+	 `(evil-ex-substitute-matches ((t (:foreground ,pri :weight bold))))
+	 `(evil-ex-substitute-replacement ((t (:foreground ,alert :weight bold))))
 
 	 ;; company mode
 	 `(company-echo ((t (:foreground ,fg, :background ,bg))))
@@ -97,12 +96,12 @@
 	 `(magit-diff-lines-heading ((t (:inherit 'magit-diff-hunk-heading-selection :background ,bg+))))
 
 	 `(diff-added ((t (:background ,block :foreground ,pri))))
-	 `(diff-refine-added ((t (:inherit 'diff-added))))
+	 `(diff-refine-added ((t (:inherit 'diff-added :weight bold))))
 	 `(magit-diff-added ((t (:background ,block :foreground ,pri))))
 	 `(magit-diff-added-highlight ((t (:inherit 'magit-diff-added))))
 
 	 `(diff-removed ((t (:background ,block :foreground ,alert))))
-	 `(diff-refine-removed ((t (:inherit 'diff-removed))))
+	 `(diff-refine-removed ((t (:inherit 'diff-removed :weight bold))))
 	 `(magit-diff-removed ((t (:background ,block :foreground ,alert))))
 	 `(magit-diff-removed-highlight ((t (:inherit 'magit-diff-removed))))
 
