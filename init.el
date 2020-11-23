@@ -2,7 +2,6 @@
 (require 'package)
 (setq package-archives
 						 '(("melpa" . "https://melpa.org/packages/")
-							 ("elpa" . "https://elpa.org/packages/")
 							 ("org" . "https://orgmode.org/elpa/")))
 
 ;; make sure that it gets initialized

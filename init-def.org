@@ -521,9 +521,9 @@ function to load a given theme
     (rust-mode . lsp-deferred)
     (flycheck-mode . flycheck-rust-setup))
 
-  (use-package lsp-rust
-    :ensure
-    :after lsp-mode)
+  ;; (use-package lsp-rust
+  ;;   :ensure
+  ;;   :after lsp-mode)
 
   (use-package flycheck-rust
     :ensure)
@@ -617,8 +617,7 @@ function to load a given theme
       (set-face-attribute
        (car face) nil
        :height (cdr face)
-:slant 'normal))
-
+:slant 'normal)
     (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
     (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
@@ -626,6 +625,8 @@ function to load a given theme
     (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+)
+
 #+end_src
 
 ** Working with source code
