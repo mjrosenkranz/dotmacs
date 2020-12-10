@@ -526,6 +526,8 @@ function to load a given theme
 #+begin_src emacs-lisp
   (use-package rust-mode
     :ensure
+    :config
+    (setq rust-indent-offset 2)
     :hook
     (rust-mode . lsp-deferred)
     (flycheck-mode . flycheck-rust-setup))
