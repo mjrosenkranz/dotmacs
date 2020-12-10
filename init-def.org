@@ -403,21 +403,25 @@ function to load a given theme
     ("C-x C-d" . oct/dired-split-right))
 #+end_src
 
-** windowmove
+** swap windows around with windmove
 
 #+begin_src emacs-lisp
   ;; make moving between and swapping windows easier
   (use-package windmove
     :defer
-    :bind
-    ("M-<left>" . 'windmove-left)
-    ("M-<right>" . 'windmove-right)
-    ("M-<up>" . 'windmove-up)
-    ("M-<down>" . 'windmove-down)
-    ("M-S-<left>" . 'windmove-swap-states-left)
-    ("M-S-<right>" . 'windmove-swap-states-right)
-    ("M-S-<up>" . 'windmove-swap-states-up)
-    ("M-S-<down>" . 'windmove-swap-states-down))
+    :bind (:map evil-window-map
+    ("H" . windmove-swap-states-left)
+    ("L" . windmove-swap-states-right)
+    ("K" . windmove-swap-states-up)
+    ("J" . windmove-swap-states-down)))
+#+end_src
+
+** scroll other window
+#+begin_src emacs-lisp
+  (use-package evil
+    :bind (:map evil-normal-state-map
+                ("C-S-e" . scroll-other-window)
+                ("C-S-Y" . scroll-other-window-down)))
 #+end_src
 
 * Programming
