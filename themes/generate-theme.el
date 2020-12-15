@@ -6,6 +6,7 @@
 	 `(default ((t (:background ,bg :foreground ,fg))))
 	 `(cursor ((t (:background ,cur))))
 	 `(fringe ((t (:foreground ,fg+ :background ,bg))))
+   `(fill-column-indicator ((t (:foreground ,bg+))))
 	 `(window-divider ((t (:foreground ,bg+ :background ,bg+))))
 	 `(window-divider-first-pixel ((t (:foreground ,bg+ :background ,bg+))))
 	 `(window-divider-last-pixel ((t (:foreground ,bg+ :background ,bg+))))

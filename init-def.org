@@ -161,15 +161,19 @@ function to load a given theme
 ** line numbers
 
 #+begin_src emacs-lisp
-  (use-package emacs
+  (use-package display-line-numbers-mode
     :config
-    (column-number-mode)
-    (global-display-line-numbers-mode t)
-    (dolist (mode '(org-mode-hook
-                    term-mode-hook
-                    vterm-mode-hook))
-      (add-hook mode (lambda ()
-                       (display-line-numbers-mode 0)))))
+    (global-display-line-numbers-mode -1)
+    :hook
+    (prog-mode . display-line-numbers-mode))
+
+  (use-package column-number-mode
+    :hook
+    (prog-mode . column-number-mode))
+
+  (use-package display-fill-column-indicator-mode
+    :hook
+    (prog-mode . display-fill-column-indicator-mode))
 #+end_src
 
 * Editor
@@ -338,7 +342,7 @@ function to load a given theme
              (window-height . 0.25))))
     :bind (("C-c b" . window-toggle-side-windows)))
 #+end_src
-   
+  
 * Completetion
 ** icomplete
 
