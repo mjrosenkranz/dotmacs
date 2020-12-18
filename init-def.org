@@ -246,6 +246,23 @@ function to load a given theme
      "cs" 'oct/exec-init))
 #+end_src
 
+*** comments
+#+begin_src emacs-lisp
+  (defun oct/comment ()
+    (interactive)
+    (unless (use-region-p)
+      (let ((pos (line-beginning-position)))
+        (end-of-line)
+        (set-mark pos)))
+    (comment-or-uncomment-region
+     (region-beginning)
+     (region-end)))
+
+  (use-package emacs
+    :bind
+    ("C-\\" . oct/comment))
+#+end_src
+
 ** tabs
 
 #+begin_src emacs-lisp
