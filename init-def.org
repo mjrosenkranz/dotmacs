@@ -456,20 +456,22 @@ function to load a given theme
 ** vterm
 
 #+begin_src emacs-lisp
-  (use-package vterm
-    :ensure t)
+    (use-package vterm
+      :ensure t
+      :config
+      (evil-set-initial-state 'vterm-mode 'emacs))
 
-  (defun oct/scratch ()
-    "Launches a terminal in the bottom window."
-    (interactive)
-    ;; if there is a buffer then kill it
-    (when (get-buffer "vterm-scratch")
-      (progn
-        (let ((proc (get-buffer-process (current-buffer))))
-          (when (processp proc)
-            (set-process-query-on-exit-flag proc nil)))
-        (kill-buffer "vterm-scratch")))
-    (vterm "vterm-scratch"))
+    (defun oct/scratch ()
+      "Launches a terminal in the bottom window."
+      (interactive)
+      ;; if there is a buffer then kill it
+      (when (get-buffer "vterm-scratch")
+        (progn
+          (let ((proc (get-buffer-process (current-buffer))))
+            (when (processp proc)
+              (set-process-query-on-exit-flag proc nil)))
+          (kill-buffer "vterm-scratch")))
+      (vterm "vterm-scratch"))
 #+end_src
 
 ** Languages
