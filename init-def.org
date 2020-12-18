@@ -170,10 +170,6 @@ function to load a given theme
   (use-package column-number-mode
     :hook
     (prog-mode . column-number-mode))
-
-  (use-package display-fill-column-indicator-mode
-    :hook
-    (prog-mode . display-fill-column-indicator-mode))
 #+end_src
 
 * Editor
