@@ -199,37 +199,10 @@ function to load a given theme
     (setq evil-want-keybinding nil)
     :config
     (evil-mode 1)
-    ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-    ;; let us use evil mode in ibuffer
-    (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
-    (add-to-list 'evil-emacs-state-modes 'vterm-mode)
     (evil-global-set-key 'motion "j" 'evil-next-visual-line)
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
     (evil-global-set-key 'motion "g(" 'backward-up-list)
     (evil-global-set-key 'motion "g)" 'down-list))
-#+end_src
-
-*** better versions of q and wq
-
-#+begin_src emacs-lisp
-;; (use-package evil
-;; 	;; change :q to just killing the buffer
-;; 	(evil-define-command evil-quit-current (&optional bang)
-;; 		:repeat nil
-;; 		(interactive "<!>")
-;; 		;; if there are any other buffers just kill this one
-;; 		(kill-buffer (current-buffer)))
-;; 
-;; 	;; change :wq to just writing and killing the buffer
-;; 	(evil-define-command evil-write-quit-current (&optional bang)
-;; 		:repeat nil
-;; 		(interactive "<!>")
-;; 		;; if there are any other buffers just kill this one
-;; 		(save-buffer)
-;; 		(kill-buffer (current-buffer)))
-;; 	(evil-ex-define-cmd "q[uit]" 'evil-quit-current)
-;; 	(evil-ex-define-cmd "wq" 'evil-write-quit-current))
 #+end_src
 
 *** evil collection
@@ -358,7 +331,6 @@ function to load a given theme
 #+end_src
 
 ** display-buffer-alist
-
 #+begin_src emacs-lisp
   (use-package emacs
     :init
@@ -485,9 +457,8 @@ function to load a given theme
       (use-package vterm
         :ensure t
         :config
-        (evil-set-initial-state 'vterm-mode 'emacs)
+        ;; (evil-set-initial-state 'vterm-mode 'emacs)
           (evil-collection-init))
-
 
       (defun oct/scratch ()
         "Launches a terminal in the bottom window."
