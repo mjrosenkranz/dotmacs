@@ -51,6 +51,13 @@ this is helful for testing if I've fucked it up yet.
       (org-babel-load-file init-org)))
 #+end_src
 
+** backups
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (setq backup-directory-alist '(("" . "~/.emacs.d/backups"))))
+#+end_src
+
 * GUI
 ** Basics
 Trying to keep the interface minimal.
@@ -71,7 +78,7 @@ We also add a fringe of 15px because I don't like when text is right on the edge
     (set-fringe-mode 15))
 #+end_src
 
-** Set font properties and keybinds
+** set font properties and keybinds
 
 #+begin_src emacs-lisp
     (use-package emacs
@@ -101,11 +108,21 @@ We also add a fringe of 15px because I don't like when text is right on the edge
       ("C--" . 'oct/dec-scale))
 #+end_src
 
-** olivetti
-
+** visual fill
 #+begin_src emacs-lisp
-  (use-package olivetti
-    :ensure t)
+  (defun oct/visual-fill ()
+    (interactive)
+    (setq visual-fill-column-width 80
+          visual-fill-column-center-text t)
+    (visual-fill-column-mode 1))
+
+  (use-package visual-fill-column
+    :config
+    (setq display-fill-column-indicator-character (kbd "▒"))
+    :hook
+    (org-mode . oct/visual-fill)
+    (prog-mode . display-fill-column-indicator-mode)
+    (prog-mode . oct/visual-fill))
 #+end_src
 
 ** diminish
@@ -158,8 +175,7 @@ function to load a given theme
     (setq-default rainbow-mode 1))
 #+end_src
 
-** line numbers
-
+* line numbers
 #+begin_src emacs-lisp
   (use-package display-line-numbers-mode
     :config
@@ -175,7 +191,6 @@ function to load a given theme
 * Editor
 ** evil-mode
 *** basic  settings
-
 #+begin_src emacs-lisp
   (use-package evil
     :ensure t
@@ -184,7 +199,8 @@ function to load a given theme
     (setq evil-want-keybinding nil)
     :config
     (evil-mode 1)
-    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+    ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
     ;; let us use evil mode in ibuffer
     (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
     (add-to-list 'evil-emacs-state-modes 'vterm-mode)
@@ -222,6 +238,7 @@ function to load a given theme
   (use-package evil-collection
     :ensure
     :after evil
+    :custom (evil-collection-setup-minibuffer t)
     :config
     (evil-collection-init))
 #+end_src
@@ -259,6 +276,7 @@ function to load a given theme
      (region-end)))
 
   (use-package emacs
+  ;; unbind / first
     :bind
     ("C-\\" . oct/comment))
 #+end_src
@@ -272,6 +290,14 @@ function to load a given theme
     (setq-default c-basic-offset 2)
     (setq-default indent-tabs-mode nil)
     (setq-default indet-tabs-mode nil))
+#+end_src
+
+** language?
+#+begin_src emacs-lisp
+  (use-package emacs
+    :init
+    (set-language-environment "UTF-8")
+    (set-default-coding-systems 'utf-8))
 #+end_src
 
 * Buffers
@@ -456,22 +482,24 @@ function to load a given theme
 ** vterm
 
 #+begin_src emacs-lisp
-    (use-package vterm
-      :ensure t
-      :config
-      (evil-set-initial-state 'vterm-mode 'emacs))
+      (use-package vterm
+        :ensure t
+        :config
+        (evil-set-initial-state 'vterm-mode 'emacs)
+          (evil-collection-init))
 
-    (defun oct/scratch ()
-      "Launches a terminal in the bottom window."
-      (interactive)
-      ;; if there is a buffer then kill it
-      (when (get-buffer "vterm-scratch")
-        (progn
-          (let ((proc (get-buffer-process (current-buffer))))
-            (when (processp proc)
-              (set-process-query-on-exit-flag proc nil)))
-          (kill-buffer "vterm-scratch")))
-      (vterm "vterm-scratch"))
+
+      (defun oct/scratch ()
+        "Launches a terminal in the bottom window."
+        (interactive)
+        ;; if there is a buffer then kill it
+        (when (get-buffer "vterm-scratch")
+          (progn
+            (let ((proc (get-buffer-process (current-buffer))))
+              (when (processp proc)
+                (set-process-query-on-exit-flag proc nil)))
+            (kill-buffer "vterm-scratch")))
+        (vterm "vterm-scratch"))
 #+end_src
 
 ** Languages
@@ -551,10 +579,6 @@ function to load a given theme
     (rust-mode . lsp-deferred)
     (flycheck-mode . flycheck-rust-setup))
 
-  ;; (use-package lsp-rust
-  ;;   :ensure
-  ;;   :after lsp-mode)
-
   (use-package flycheck-rust
     :ensure)
 
@@ -615,15 +639,6 @@ function to load a given theme
 ** gui
 
 #+begin_src emacs-lisp
-  (defun oct/org-visual-fill ()
-    (setq visual-fill-column-width 80
-          visual-fill-column-center-text t)
-    (visual-fill-column-mode 1))
-
-  (use-package visual-fill-column
-    :ensure
-    :hook (org-mode . oct/org-visual-fill))
-
   (use-package org-bullets
     :ensure
     :after org
@@ -681,4 +696,3 @@ function to load a given theme
     :bind
     ("C-c s" . 'oct/org-mode-insert-src))
 #+end_src
-
