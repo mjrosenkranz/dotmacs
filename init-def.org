@@ -386,6 +386,13 @@ function to load a given theme
     (company-idle-delay 0.0))
 #+end_src
 
+** which-key
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure
+    :config
+    (which-key-mode 1))
+#+end_src
 * Navigation
 ** dired
 *** basic settings
@@ -594,7 +601,6 @@ function to load a given theme
 
 * Org
 ** basic settings
-
 #+begin_src emacs-lisp
   (defun oct/org-setup ()
     (org-indent-mode)
@@ -603,7 +609,13 @@ function to load a given theme
     (visual-line-mode 1))
 
   (use-package org
-    :hook (org-mode . oct/org-setup))
+    :hook (org-mode . oct/org-setup)
+    :config
+    (setq org-agenda-start-with-log-mode t)
+    (setq org-log-done 'time)
+    (setq org-log-into-drawer t)
+    (setq org-agenda-files
+          '("~/docs/org/tasks.org")))
 
 #+end_src
 
@@ -644,7 +656,6 @@ function to load a given theme
 #+end_src
 
 ** Working with source code
-
 #+begin_src emacs-lisp
   (defun oct/org-mode-insert-src ()
     (interactive)
@@ -667,3 +678,4 @@ function to load a given theme
     :bind
     ("C-c s" . 'oct/org-mode-insert-src))
 #+end_src
+
