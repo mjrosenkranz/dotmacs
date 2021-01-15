@@ -157,10 +157,36 @@
 
 	 ;; org
 	 `(org-link ((t (:inherit 'link))))
+   `(org-todo ((t (:inherit 'warning))))
+   `(org-done ((t (:foreground ,sec :weight bold))))
 	 `(org-block ((t (:background ,block :extend t))))
 	 `(org-block-begin-line ((t (:background ,block :foreground ,bg+ :extend t))))
 	 `(org-block-end-line ((t (:inherit 'org-block-begin-line :extend t))))
 	 `(org-ellipsis ((t (:foreground ,bg+))))
+
+   `(org-agenda-date ((t (:background ,bg :foreground ,fg))))
+   `(org-agenda-date-today ((t (:foreground ,fg :weight bold :underline))))
+   `(org-agenda-date-weekend ((t (:inherit 'org-agenda-date))))
+   `(org-agenda-done ((t (:inherit 'org-done))))
+   `(org-scheduled ((t (:foreground ,fg+))))
+
+
+ ;; org-agenda-calendar-event
+ ;; org-agenda-calendar-sexp
+ ;; org-agenda-clocking
+ ;; org-agenda-column-dateline
+ ;; org-agenda-current-time
+ ;; org-agenda-diary
+ ;; org-agenda-dimmed-todo-face
+ ;; org-agenda-filter-category
+ ;; org-agenda-filter-effort
+ ;; org-agenda-filter-regexp
+ ;; org-agenda-filter-tags
+ ;; org-agenda-restriction-lock
+ ;; org-agenda-structure
+
+
+
 
 	 ;; term
 		`(term-color-black   ((t (:foreground ,comm :background ,comm))))

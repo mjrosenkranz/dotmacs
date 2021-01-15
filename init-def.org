@@ -108,10 +108,9 @@ We also add a fringe of 15px because I don't like when text is right on the edge
     ("C--" . 'oct/dec-scale)
     :config
     (if (daemonp)
-        (add-hook 'after-make-frame-functions
-                  (lambda (frame)
-                    (with-selected-frame frame
-                      (oct/set-font-faces))))))
+        (add-hook 'server-after-make-frame-hook
+                  (lambda ()
+                      (oct/set-font-faces)))))
 #+end_src
 
 ** visual fill
@@ -194,7 +193,7 @@ function to load a given theme
     (prog-mode . column-number-mode))
 #+end_src
 
-* Editor
+* editor
 ** evil-mode
 *** basic  settings
 #+begin_src emacs-lisp
@@ -371,7 +370,7 @@ function to load a given theme
     (icomplete-mode 1)
     :bind (:map icomplete-minibuffer-map
                 ("<tab>" . icomplete-force-complete)
-                ("<return>" . icomplete-force-complete-and-exit) ; exit with completion
+                ("<return>" . icomplete-force-complete-and-exit)
                 ("<right>" . icomplete-forward-completions)
                 ("<left>" . icomplete-backward-completions)))
 #+end_src
@@ -399,6 +398,7 @@ function to load a given theme
     :config
     (which-key-mode 1))
 #+end_src
+
 * Navigation
 ** dired
 *** basic settings
