@@ -81,31 +81,37 @@ We also add a fringe of 15px because I don't like when text is right on the edge
 ** set font properties and keybinds
 
 #+begin_src emacs-lisp
-    (use-package emacs
-      :config
-      ;; functions for font scale
-      (defun oct/inc-scale ()
-        "increases the frame's font scale"
-        (interactive)
-        (setq font-scale (+ font-scale 10))
-        (set-face-attribute 'fixed-pitch (selected-frame) :height font-scale)
-        (set-face-attribute 'variable-pitch (selected-frame) :height font-scale)
-        (set-face-attribute 'default (selected-frame) :height font-scale))
-      (defun oct/dec-scale ()
-        "decreases the frame's font scale"
-        (interactive)
-        (setq font-scale (- font-scale 10))
-        (set-face-attribute 'default (selected-frame) :height font-scale)
-        (set-face-attribute 'fixed-pitch (selected-frame) :height font-scale)
-        (set-face-attribute 'variable-pitch (selected-frame) :height font-scale))
+  (defun oct/inc-scale ()
+    "increases the frame's font scale"
+    (interactive)
+    (setq font-scale (+ font-scale 10))
+    (set-face-attribute 'fixed-pitch (selected-frame) :height font-scale)
+    (set-face-attribute 'variable-pitch (selected-frame) :height font-scale)
+    (set-face-attribute 'default (selected-frame) :height font-scale))
+  (defun oct/dec-scale ()
+    "decreases the frame's font scale"
+    (interactive)
+    (setq font-scale (- font-scale 10))
+    (set-face-attribute 'default (selected-frame) :height font-scale)
+    (set-face-attribute 'fixed-pitch (selected-frame) :height font-scale)
+    (set-face-attribute 'variable-pitch (selected-frame) :height font-scale))
 
-      (set-face-attribute 'default nil :font "SF Mono" :height font-scale :weight 'regular)
-      (set-face-attribute 'fixed-pitch nil :font "SF Mono" :height font-scale :weight 'regular)
-      (set-face-attribute 'variable-pitch nil :font "SF Pro" :height font-scale :weight 'semi-bold)
+  (defun oct/set-font-faces ()
+    (set-face-attribute 'default nil :font "SF Mono" :height font-scale :weight 'regular)
+    (set-face-attribute 'fixed-pitch nil :font "SF Mono" :height font-scale :weight 'regular)
+    (set-face-attribute 'variable-pitch nil :font "SF Pro" :height font-scale :weight 'semi-bold))
 
-      :bind
-      ("C-=" . 'oct/inc-scale)
-      ("C--" . 'oct/dec-scale))
+
+  (use-package emacs
+    :bind
+    ("C-=" . 'oct/inc-scale)
+    ("C--" . 'oct/dec-scale)
+    :config
+    (if (daemonp)
+        (add-hook 'after-make-frame-functions
+                  (lambda (frame)
+                    (with-selected-frame frame
+                      (oct/set-font-faces))))))
 #+end_src
 
 ** visual fill
