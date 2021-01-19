@@ -467,23 +467,49 @@ function to load a given theme
 ** vterm
 
 #+begin_src emacs-lisp
-      (use-package vterm
-        :ensure t
-        :config
-        ;; (evil-set-initial-state 'vterm-mode 'emacs)
-          (evil-collection-init))
+  (use-package vterm
+    :ensure t
+    :config
+    ;; (evil-set-initial-state 'vterm-mode 'emacs)
+      (evil-collection-init))
 
-      (defun oct/scratch ()
-        "Launches a terminal in the bottom window."
-        (interactive)
-        ;; if there is a buffer then kill it
-        (when (get-buffer "vterm-scratch")
-          (progn
-            (let ((proc (get-buffer-process (current-buffer))))
-              (when (processp proc)
-                (set-process-query-on-exit-flag proc nil)))
-            (kill-buffer "vterm-scratch")))
-        (vterm "vterm-scratch"))
+  (defun oct/scratch-term ()
+    "Launches a terminal in the bottom window."
+    (interactive)
+    ;; if there is a buffer then kill it
+    (when (get-buffer "vterm-scratch")
+      (progn
+        (let ((proc (get-buffer-process (current-buffer))))
+          (when (processp proc)
+            (set-process-query-on-exit-flag proc nil)))
+        (kill-buffer "vterm-scratch")))
+    (vterm "vterm-scratch"))
+
+  (defun oct/get-hidden-terms ()
+    "returns a list of terminal buffers that are not visible"
+    (interactive)
+    (let (bufz '())
+      (dolist (buf (buffer-list))
+        (with-current-buffer buf
+          ;; check if the major mode is vterm
+          (when (and
+                 (derived-mode-p 'vterm-mode)
+                 (not (get-buffer-window buf)))
+            ;; check if this buffer is visible
+            (push buf bufz))))
+      bufz))
+
+  (defun oct/term-in-new-frame ()
+    "new term window with either a term that is not\
+  currently visible or a new one"
+    (interactive)
+    (let ((bufs (oct/get-hidden-terms))
+          (nf (make-frame '((name . "bloop")
+                            (minibuffer . nil)))))
+      (with-selected-frame nf
+        (if bufs
+            (switch-to-buffer (car bufs))
+          (vterm)))))
 #+end_src
 
 ** Languages
@@ -675,7 +701,7 @@ function to load a given theme
     :after org
     :config
     ;; make this in the current window
-    (setq org-src-window-setup 'reorganize-frame)
+    (setq org-src-window-setup 'current-window)
     (setq org-edit-src-persistent-message nil)
     (setq org-src-fontify-natively t)
     (setq org-src-preserve-indentation nil)
