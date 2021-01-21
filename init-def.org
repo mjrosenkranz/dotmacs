@@ -507,6 +507,7 @@ function to load a given theme
           (nf (make-frame '((name . "bloop")
                             (minibuffer . nil)))))
       (with-selected-frame nf
+      (setq mode-line-format nil)
         (if bufs
             (switch-to-buffer (car bufs))
           (vterm)))))
