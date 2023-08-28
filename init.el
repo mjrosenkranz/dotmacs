@@ -53,7 +53,6 @@
   ;; TODO: move these to general?
   :bind (("C-s" . swiper)
          :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
          ("C-l" . ivy-alt-done)
          ("C-j" . ivy-next-line)
          ("C-k" . ivy-previous-line)
@@ -113,6 +112,12 @@
 
 ;; no word wrap
 (setq-default truncate-lines t)
+
+;; clean up the modeline
+(setq modus-themes-common-palette-overrides
+      '((border-mode-line-active bg-mode-line-active)
+	(border-mode-line-active bg-mode-line-active)
+        (border-mode-line-inactive bg-mode-line-inactive)))
 
 ;; theme
 (use-package modus-themes
@@ -202,6 +207,7 @@
 
 ;; get evil bindings in stuff like magit
 (use-package evil-collection
+  :demand t
   :after evil
   :config
   (evil-collection-init))
