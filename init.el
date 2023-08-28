@@ -129,8 +129,35 @@
 (setq scroll-error-top-bottom t)
 (setq next-error-recenter (quote (4)))
 
+;; make escape do it all
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit) 
+
 
 ;; keybindings 
+(use-package general
+  :demand t
+  :config
+  (general-evil-setup t)
+  (general-create-definer oct/leader-keys
+    :keymaps '(normal insert visual emacs)
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+
+  (general-define-key
+    "M-k" 'evil-window-up
+    "M-j" 'evil-window-down
+    "M-h" 'evil-window-left
+    "M-r" 'evil-window-left)
+  
+
+  ;; TODO: shift j/k while in visual mode should move the region
+
+  (oct/leader-keys
+   "g" 'magit-status
+   "f" 'previous-buffer
+   "j" 'next-buffer
+   "/" 'comment-line
+   "n" 'evil-ex-nohighlight))
 
 (use-package evil
   :demand t
@@ -141,9 +168,9 @@
   ;; For some reasons evils own search isn't default.
   (setq evil-search-module 'evil-search)
   ;; make the minibuffer use evil mode
-  (setq evil-want-minibuffer t)
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
 
   :config
   ;; Initialize.
@@ -154,7 +181,6 @@
 ;; get evil bindings in stuff like magit
 (use-package evil-collection
   :after evil
-  :ensure t
   :config
   (evil-collection-init))
 
@@ -176,33 +202,6 @@
   (setq swiper-goto-start-of-match t))
 
 
-;; keybindings
-
-(use-package general
-  :demand t
-  :config
-  (general-evil-setup t)
-  (general-create-definer oct/leader-keys
-    :keymaps '(normal insert visual emacs)
-    :prefix "SPC"
-    :global-prefix "C-SPC")
-
-  (general-define-key
-    "M-k" 'evil-window-up
-    "M-j" 'evil-window-down
-    "M-h" 'evil-window-left
-    "M-r" 'evil-window-left)
-
-  
-
-  ;; TODO: shift j/k while in visual mode should move the region
-
-  (oct/leader-keys
-   "g" '(:ignore t)
-   "gs" 'magit-status
-   "f" 'previous-buffer
-   "j" 'next-buffer
-   "n" 'evil-ex-nohighlight)
 
 ;; ---- git ------
 (use-package magit
