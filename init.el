@@ -105,6 +105,30 @@
 ;; ----- ux ------
 ;; scrolling
 
+;; give some room at the top and bottom
+(setq scroll-margin 8)
+(setq scroll-conservatively scroll-margin)
+
+;; only scroll by one when moving out of frame
+(setq scroll-step 1)
+;; keep same position
+(setq scroll-preserve-screen-position t)
+
+;; make the scrolling based on pixels not lines
+(pixel-scroll-precision-mode 1)
+(setq pixel-scroll-precision-large-scroll-height 40.0)
+
+;; always redraw immediately when scrolling
+(setq fast-but-imprecise-scrolling nil)
+(setq jit-lock-defer-time 0)
+
+(setq mouse-wheel-scroll-amount '(6 ((shift) . 1)))
+(setq mouse-wheel-progressive-speed t)
+(setq mouse-wheel-inhibit-click-time nil)
+
+(setq scroll-error-top-bottom t)
+(setq next-error-recenter (quote (4)))
+
 
 ;; keybindings 
 
