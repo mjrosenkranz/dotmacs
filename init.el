@@ -28,7 +28,7 @@
 (setq use-package-always-defer t)
 
 
-;; editing
+;; --- editing ---
 
 ;; utf 8 only
 (prefer-coding-system 'utf-8)
@@ -36,6 +36,16 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
+
+;; completion
+
+(use-package which-key
+  :defer 0
+  :config
+  (which-key-mode)
+  ;; Initialize.
+  (setq which-key-mode-idle-delay 1))
+
 
 ;; ---settings---
 
@@ -57,6 +67,31 @@
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
 
+;; line numbers
+;; display them always
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers 'relative)
+(setq-default display-line-numbers-widen t)
+
+;; i want to know the column too
+(setq column-number-mode t)
+
+;; cursor
+(setq cursor-in-non-selected-windows 'hollow)
+(setq highlight-nonselected-windows t)
+
+
+;; parens
+(show-paren-mode 1)
+;; Don't blink, it's too distracting.
+(setq blink-matching-paren nil)
+(setq show-paren-delay 0.2)
+(setq show-paren-highlight-openparen t)
+(setq show-paren-when-point-inside-paren t)
+
+;; no word wrap
+(setq-default truncate-lines t)
+
 ;; theme
 (use-package modus-themes
   :demand t
@@ -64,13 +99,12 @@
   :config
   (load-theme 'modus-vivendi t))
 
-;; completion
+;; fonts
 
-(use-package which-key
-  :demand t
-  :config
-  ;; Initialize.
-  (which-key-mode))
+
+;; ----- ux ------
+;; scrolling
+
 
 ;; keybindings 
 
@@ -93,11 +127,30 @@
 
   (setq evil-ex-search-case 'sensitive))
 
+;; get evil bindings in stuff like magit
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
 (use-package evil-surround
   :demand t
   :config
   ;; Initialize.
   (global-evil-surround-mode 1))
+
+;; make undo work how we expect
+(use-package undo-fu)
+
+(use-package swiper
+  :commands (swiper)
+  :config
+
+  ;; Go to the start of the match instead of the end. Why?
+  ;; .. allows us to operate on the term just jumped to (look up reference for e.g.)
+  (setq swiper-goto-start-of-match t))
+
 
 ;; keybindings
 
@@ -116,13 +169,27 @@
     "M-h" 'evil-window-left
     "M-r" 'evil-window-left)
 
+  
+
   ;; TODO: shift j/k while in visual mode should move the region
 
   (oct/leader-keys
    "g" '(:ignore t)
    "gs" 'magit-status
    "f" 'previous-buffer
-   "j" 'next-buffer))
+   "j" 'next-buffer
+   "n" 'evil-ex-nohighlight)
+
+;; ---- git ------
+(use-package magit
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+;; ;; Make magit show changes within diff line
+;; (use-package magit-diff
+;;   :after magit
+;;   :config
+;;   (setq magit-diff-refine-hunk t))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -132,7 +199,7 @@
  '(custom-safe-themes
    '("69f7e8101867cfac410e88140f8c51b4433b93680901bb0b52014144366a08c8" default))
  '(package-selected-packages
-   '(modus-themes general which-key undo-fu package-utils hl-prog-extra highlight-numbers find-file-in-project evil-surround evil-numbers diff-hl default-font-presets counsel company)))
+   '(magit-diff evil-magit magit modus-themes general which-key undo-fu package-utils hl-prog-extra highlight-numbers find-file-in-project evil-surround evil-numbers diff-hl default-font-presets counsel company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
