@@ -30,6 +30,50 @@
 
 ;; editing
 
+;; utf 8 only
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+
+;; ---settings---
+
+;; ----- ui -----
+
+;; frame ui: 
+;; get rid of clutter in menu bar
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+;; make the title the buffer name
+(setq-default frame-title-format "%b %&")
+;; no dialog boxes
+(setq use-dialog-box nil)
+;; just y or n
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; please for the love of god no bell
+(setq visible-bell nil)
+(setq ring-bell-function 'ignore)
+
+;; theme
+(use-package modus-themes
+  :demand t
+  :init
+  :config
+  (load-theme 'modus-vivendi t))
+
+;; completion
+
+(use-package which-key
+  :demand t
+  :config
+  ;; Initialize.
+  (which-key-mode))
+
+;; keybindings 
+
 (use-package evil
   :demand t
   :init
@@ -66,39 +110,19 @@
     :prefix "SPC"
     :global-prefix "C-SPC")
 
+  (general-define-key
+    "M-k" 'evil-window-up
+    "M-j" 'evil-window-down
+    "M-h" 'evil-window-left
+    "M-r" 'evil-window-left)
+
+  ;; TODO: shift j/k while in visual mode should move the region
+
   (oct/leader-keys
    "g" '(:ignore t)
    "gs" 'magit-status
    "f" 'previous-buffer
    "j" 'next-buffer))
-
-;; ---settings---
-
-;; ----- ui -----
-;; make the ui clean
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-;; please for the love of god no bell
-(setq visible-bell nil)
-(setq ring-bell-function 'ignore)
-
-;; theme
-(use-package modus-themes
-  :demand t
-  :init
-  :config
-  (load-theme 'modus-vivendi t))
-
-;; completion
-
-(use-package which-key
-  :demand t
-  :config
-  ;; Initialize.
-  (which-key-mode))
-
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -115,3 +139,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
