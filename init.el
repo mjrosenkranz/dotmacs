@@ -44,8 +44,47 @@
 	            c-basic-offset 2
 	            indent-tabs-mode nil)
 
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  ; :hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ivy
+  :after lsp)
+
+;; (use-package lsp-ui
+;;   :hook (lsp-mode . lsp-ui-mode)
+;;   :custom
+;;   (lsp-ui-doc-position 'bottom))
+
+;; ------- languages -------------
+
+;; python
+(use-package python-mode
+  :ensure t
+  :hook (python-mode . lsp-deferred)
+  :config)
+
+(use-package pyvenv
+  :after python-mode
+  :config
+  (pyvenv-mode 1))
+
 (setq python-indent-guess-indent-offset t
       python-indent-guess-indent-offset-verbose nil)
+
+;; typescript
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2))
+
+;; rust
 
 ;; completion
 
@@ -55,6 +94,20 @@
   (which-key-mode)
   ;; Initialize.
   (setq which-key-mode-idle-delay 1))
+
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+         ("<tab>" . company-complete-selection))
+        (:map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 (use-package ivy
   ;; TODO: do we need this at startup?
@@ -246,7 +299,8 @@
    "M-r" 'evil-window-left)
   
   (general-define-key
-   :keymaps '(normal dired-mode-map)
+   :keymaps 'dired-mode-map
+   :states 'normal
    "h" 'dired-up-directory
    "l" 'dired-find-file)
 
@@ -272,6 +326,7 @@
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump t)
 
   :config
   ;; Initialize.
@@ -324,7 +379,7 @@
  '(custom-safe-themes
    '("69f7e8101867cfac410e88140f8c51b4433b93680901bb0b52014144366a08c8" default))
  '(package-selected-packages
-   '(font-lock magit-diff evil-magit magit modus-themes general which-key undo-fu package-utils hl-prog-extra highlight-numbers find-file-in-project evil-surround evil-numbers diff-hl default-font-presets counsel company)))
+   '(pyvenv typescript-mode company-box lsp-ivy python-mode font-lock magit-diff evil-magit magit modus-themes general which-key undo-fu package-utils hl-prog-extra highlight-numbers find-file-in-project evil-surround evil-numbers diff-hl default-font-presets counsel company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
