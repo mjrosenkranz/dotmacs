@@ -89,10 +89,6 @@
   ;;      ("1\n" (message "A pyright update is available.")))))
   )
 
-(use-package pyvenv
-  :after python-mode
-  :config
-  (pyvenv-mode 1))
 
 (setq python-indent-guess-indent-offset t
       python-indent-guess-indent-offset-verbose nil)
@@ -191,6 +187,7 @@
 ;; make a line width 80
 (setq-default fill-column 80)
 ;; hightlight the line we on too
+;; TODO: make it not hl mode in terminals
 (global-hl-line-mode 1)
 
 ;; i want to know the column too
@@ -257,14 +254,6 @@
  truncate-string-ellipsis "…")
 
 
-;; (use-package font-lock
-;;   :defer t
-;;   :custom-face
-;;   (font-lock-comment-face ((t (:inherit font-lock-comment-face :italic t))))
-;;   (font-lock-doc-face ((t (:inherit font-lock-doc-face :italic t))))
-;;   (font-lock-string-face ((t (:inherit font-lock-string-face :italic t)))))
-
-
 ;; (set-fontset-font t 'unicode
 ;;                     (font-spec :name "Inconsolata Light"
 ;;                                :size 16) nil)
@@ -316,10 +305,11 @@
     :global-prefix "C-SPC")
 
   (general-define-key
+   ;; TODO: add window swapping
    "M-k" 'evil-window-up
    "M-j" 'evil-window-down
    "M-h" 'evil-window-left
-   "M-r" 'evil-window-left)
+   "M-l" 'evil-window-right)
   
   (general-define-key
    :keymaps 'dired-mode-map
@@ -397,23 +387,12 @@
 ;; ------- shell ----
 ;; add homebrew stuff to the path
 (add-to-list 'exec-path "/opt/homebrew/bin")
+(add-to-list 'exec-path "~/.nix-profile/bin")
+
+;; environment
+(setq dired-use-ls-dired nil)
 
 (use-package direnv
   :demand
   :config
   (direnv-mode))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("69f7e8101867cfac410e88140f8c51b4433b93680901bb0b52014144366a08c8" default))
- '(package-selected-packages
-   '(no-littering direnv pyvenv-mode pyenv-mode pyenv lsp-pyright pyvenv typescript-mode company-box lsp-ivy python-mode font-lock magit-diff evil-magit magit modus-themes general which-key undo-fu package-utils hl-prog-extra highlight-numbers find-file-in-project evil-surround evil-numbers diff-hl default-font-presets counsel company)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
