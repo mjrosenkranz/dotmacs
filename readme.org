@@ -1,0 +1,20 @@
+#+title: dotmacs: emacs config from mjr
+
+* Install
+
+** macos
+
+Install with brew and emacs plus
+
+#+begin_src sh
+brew tap d12frosted/emacs-plus
+brew install emacs-plus --with-imagemagick --with-native-comp
+#+end_src
+
+link the application spotlight can find it
+
+#+begin_src sh
+
+ln -s /opt/homebrew/opt/emacs-plus@29/Emacs.app /Applications
+
+#+end_src sh
