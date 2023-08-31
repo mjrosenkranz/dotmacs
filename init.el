@@ -35,6 +35,15 @@
   :config
   (setq backup-directory-alist '(("" . "~/.emacs.d/backups"))))
 
+;; theme
+(use-package modus-themes
+  :demand t
+  :init
+  :config
+  ;; (load-theme 'modus-operandi-tinted t)
+  (load-theme 'modus-vivendi-tinted t))
+
+
 ;; --- editing ---
 
 ;; utf 8 only
@@ -79,15 +88,7 @@
   :after lsp-mode
   :custom
   (lsp-pyright-auto-import-completions nil)
-  (lsp-pyright-typechecking-mode "off")
-  ;; :config
-  ;; (fk/async-process
-  ;;  "npm outdated -g | grep pyright | wc -l" nil
-  ;;  (lambda (process output)
-  ;;    (pcase output
-  ;;      ("0\n" (message "Pyright is up to date."))
-  ;;      ("1\n" (message "A pyright update is available.")))))
-  )
+  (lsp-pyright-typechecking-mode "off"))
 
 
 (setq python-indent-guess-indent-offset t
@@ -154,6 +155,17 @@
   :config
   (counsel-mode 1))
 
+(use-package helpful
+  :commands (helpful-callable helpful-variable helpful-command helpful-key)
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
+
 
 ;; ---settings---
 
@@ -219,14 +231,6 @@
 	      (bg-region bg-sage)
 	      (fg-hl-line unspecified)
 	      (border-mode-line-inactive bg-mode-line-inactive)))
-
-;; theme
-(use-package modus-themes
-  :demand t
-  :init
-  :config
-  ;; (load-theme 'modus-operandi-tinted t)
-  (load-theme 'modus-operandi-tinted t))
 
 ;; fonts
 
@@ -317,13 +321,17 @@
    "h" 'dired-up-directory
    "l" 'dired-find-file)
 
+  (general-define-key
+   "C-c p" '(:keymap projectile-command-map :package projectile))
   ;; TODO: shift j/k while in visual mode should move the region
 
   (oct/leader-keys
     "g" 'magit-status
     "f" 'previous-buffer
     "j" 'next-buffer
+    "d" 'dired-jump
     "b" 'counsel-switch-buffer
+    "r" 'counsel-projectile-rg
     "/" 'comment-line
     "n" 'evil-ex-nohighlight))
 
@@ -392,7 +400,34 @@
 ;; environment
 (setq dired-use-ls-dired nil)
 
-(use-package direnv
+;; do this
+;; export VIRTUAL_ENV=./venv
+;; export PATH=./venv/bin:$PATH
+
+(use-package envrc
   :demand
   :config
-  (direnv-mode))
+  (envrc-global-mode))
+
+;; projects
+
+(use-package projectile
+  :demand
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  ;; :bind-keymap
+  ;; ("C-c p" . projectile-command-map)
+  :init
+  ;; look for code in the... code dir
+  (setq projectile-project-search-path '("~/code"))
+  ;; add this project
+  (projectile-add-known-project "~/.emacs.d")
+  ;; add dots
+  (projectile-add-known-project "~/dots")
+  (setq projectile-switch-project-action #'projectile-dired))
+
+(use-package counsel-projectile
+  :after projectile
+  :config (counsel-projectile-mode))
+
