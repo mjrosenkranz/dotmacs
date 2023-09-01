@@ -40,8 +40,8 @@
   :demand t
   :init
   :config
-  ;; (load-theme 'modus-operandi-tinted t)
-  (load-theme 'modus-vivendi-tinted t))
+  ;; (load-theme 'modus-vivendi-tinted t)
+  (load-theme 'modus-operandi-tinted t))
 
 
 ;; --- editing ---
@@ -72,10 +72,13 @@
 (use-package lsp-ivy
   :after lsp)
 
-;; (use-package lsp-ui
-;;   :hook (lsp-mode . lsp-ui-mode)
-;;   :custom
-;;   (lsp-ui-doc-position 'bottom))
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom)
+  (lsp-ui-sideline-update-mode 'line)
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-sideline-show-hover nil))
 
 ;; ------- languages -------------
 
@@ -99,7 +102,7 @@
   :mode "\\.ts\\'"
   :hook (typescript-mode . lsp-deferred)
   :config
-  (setq typescript-indent-level 2))
+  (setq typescript-indent-level 4))
 
 ;; rust
 
@@ -193,7 +196,13 @@
 ;; line numbers
 ;; display them always
 (global-display-line-numbers-mode 1)
-(setq display-line-numbers 'relative)
+
+(defun display-line-numbers--turn-on ()
+  "Turn on `display-line-numbers-mode'."
+  (unless (minibufferp)
+    (display-line-numbers-mode)
+    (setq display-line-numbers 'relative)))
+
 (setq-default display-line-numbers-widen t)
 
 ;; make a line width 80
@@ -327,13 +336,20 @@
 
   (oct/leader-keys
     "g" 'magit-status
-    "f" 'previous-buffer
-    "j" 'next-buffer
-    "d" 'dired-jump
     "b" 'counsel-switch-buffer
-    "r" 'counsel-projectile-rg
+    "C-n" 'next-buffer
+    "C-p" 'previous-buffer
+    "f" '(:ignore t)
+    "fd" 'dired-jump
+    "ff" 'counsel-projectile-find-file
+    "fg" 'counsel-projectile-rg
     "/" 'comment-line
-    "n" 'evil-ex-nohighlight))
+    "n" 'evil-ex-nohighlight
+    ;; lsp shit
+    "r" '(:ignore t)
+    "rr" 'lsp-find-references
+    "rn" 'lsp-rename
+  ))
 
 (use-package evil
   :demand t
