@@ -343,11 +343,17 @@
 
   (general-define-key
    ;; TODO: add window swapping
+   :states 'normal
+   :keymaps 'override
    "M-k" 'evil-window-up
    "M-j" 'evil-window-down
    "M-h" 'evil-window-left
    "M-l" 'evil-window-right)
-  
+
+  (general-define-key
+   :keymaps 'evil-motion-state-map
+   "g D" 'goto-def-in-new-window)
+
   (general-define-key
    :keymaps 'dired-mode-map
    :states 'normal
@@ -393,7 +399,15 @@
   ;; Initialize.
   (evil-mode)
 
-  (setq evil-ex-search-case 'sensitive))
+  (setq evil-ex-search-case 'sensitive)
+
+  ;; function for opening a definition in a new window
+  (defun goto-def-in-new-window ()
+    "opens the definition under the cursor in a vsplit"
+    (interactive)
+    (select-window
+     (split-window (selected-window) nil 'right))
+    (evil-goto-definition)))
 
 ;; get evil bindings in stuff like magit
 (use-package evil-collection
