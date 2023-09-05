@@ -31,9 +31,6 @@
         "~/.emacs.d/custom-settings.el")
   (load custom-file t)
 
-(use-package emacs
-  :config
-  (setq backup-directory-alist '(("" . "~/.emacs.d/backups"))))
 
 ;; theme
 (use-package modus-themes
@@ -67,6 +64,7 @@
   :init
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   :custom
+  (lsp-eldoc-enable-hover nil)
   (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.6)
@@ -85,13 +83,13 @@
 (use-package lsp-ivy
   :after lsp)
 
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom)
-  (lsp-ui-sideline-update-mode 'line)
-  (lsp-ui-sideline-show-diagnostics t)
-  (lsp-ui-sideline-show-hover nil))
+;; (use-package lsp-ui
+;;   :hook (lsp-mode . lsp-ui-mode)
+;;   :custom
+;;   (lsp-ui-doc-position 'bottom)
+;;   (lsp-ui-sideline-update-mode 'line)
+;;   (lsp-ui-sideline-show-diagnostics t)
+;;   (lsp-ui-sideline-show-hover nil))
 
 ;; ------- languages -------------
 
@@ -200,7 +198,7 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tooltip-mode -1)
-(set-fringe-mode 10)
+(set-fringe-mode 0)
 
 ;; make the title the buffer name
 (setq-default frame-title-format "%b %&")
@@ -224,6 +222,7 @@
     (setq display-line-numbers 'relative)))
 
 (setq-default display-line-numbers-widen t)
+(setq-default display-line-numbers-width-start t)
 
 ;; make a line width 80
 (setq-default fill-column 80)
@@ -260,6 +259,11 @@
 	      (bg-region bg-sage)
 	      (fg-hl-line unspecified)
 	      (border-mode-line-inactive bg-mode-line-inactive)))
+
+;; show colors with text stuff
+(use-package rainbow-mode
+  :demand
+  :config (rainbow-mode))
 
 ;; fonts
 
@@ -347,6 +351,7 @@
   (general-define-key
    :keymaps 'dired-mode-map
    :states 'normal
+   "C-<return>" 'eshell
    "h" 'dired-up-directory
    "l" 'dired-find-file)
 
@@ -368,8 +373,7 @@
     ;; lsp shit
     "r" '(:ignore t)
     "rr" 'lsp-find-references
-    "rn" 'lsp-rename
-  ))
+    "rn" 'lsp-rename))
 
 (use-package evil
   :demand t
@@ -467,3 +471,5 @@
   :after projectile
   :config (counsel-projectile-mode))
 
+(setq backup-directory-alist '(("" . "~/.emacs.d/backups")))
+(setq gc-cons-threshold (* 2 1000 1000))
