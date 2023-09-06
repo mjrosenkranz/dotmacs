@@ -226,9 +226,65 @@
 
 ;; make a line width 80
 (setq-default fill-column 80)
-;; hightlight the line we on too
-;; TODO: make it not hl mode in terminals
-(global-hl-line-mode 1)
+;; pulse the line whenever we switch windows
+(use-package pulsar
+  :demand t
+  :init
+  (setq pulsar-pulse t)
+  (setq pulsar-delay 0.055)
+  (setq pulsar-iterations 10)
+  (setq pulsar-face 'pulsar-red)
+  (setq pulsar-highlight-face 'pulsar-green)
+  :custom
+  (pulsar-pulse-functions
+   '(recenter-top-bottom
+     move-to-window-line-top-bottom
+     reposition-window
+     bookmark-jump
+     other-window
+     delete-window
+     delete-other-windows
+     forward-page
+     backward-page
+     scroll-up-command
+     scroll-down-command
+     ;; windows and buffers
+     next-buffer
+     previous-buffer
+     windmove-right
+     windmove-left
+     windmove-up
+     windmove-down
+     windmove-swap-states-right
+     windmove-swap-states-left
+     windmove-swap-states-up
+     windmove-swap-states-down
+     ;; evil
+     evil-ex-search-next
+     evil-ex-search-previous
+     evil-ex-search-word-forward
+     evil-ex-search-word-backward
+     evil-forward-paragraph
+     evil-backward-paragraph
+     evil-jump-forward
+     evil-jump-backward
+     ;; tabs
+     tab-new
+     tab-close
+     tab-next
+     ;; org
+     org-next-visible-heading
+     org-previous-visible-heading
+     org-forward-heading-same-level
+     org-backward-heading-same-level
+     outline-backward-same-level
+     outline-forward-same-level
+     outline-next-visible-heading
+     outline-previous-visible-heading
+     outline-up-heading)
+   )
+  :config
+  (pulsar-global-mode 1))
 
 ;; i want to know the column too
 (setq column-number-mode t)
@@ -345,10 +401,10 @@
    ;; TODO: add window swapping
    :states 'normal
    :keymaps 'override
-   "M-k" 'evil-window-up
-   "M-j" 'evil-window-down
-   "M-h" 'evil-window-left
-   "M-l" 'evil-window-right)
+   "M-k" 'windmove-up
+   "M-j" 'windmove-down
+   "M-h" 'windmove-left
+   "M-l" 'windmove-right)
 
   (general-define-key
    :keymaps 'evil-motion-state-map
