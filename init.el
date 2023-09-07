@@ -36,6 +36,13 @@
 (use-package modus-themes
   :demand t
   :init
+  (setq modus-themes-common-palette-overrides
+        '((border-mode-line-active bg-mode-line-active)
+          (border-mode-line-active bg-mode-line-active)
+          (fg-region unspecified)
+          (bg-region bg-sage)
+          (fg-hl-line unspecified)
+          (border-mode-line-inactive bg-mode-line-inactive)))
   :config
   ;; (load-theme 'modus-vivendi-tinted t)
   (load-theme 'modus-operandi-tinted t))
@@ -194,11 +201,31 @@
 
 ;; frame ui: 
 ;; get rid of clutter in menu bar
+(setq inhibit-startup-message t)
+(setq inhibit-startup-screen t)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tooltip-mode -1)
-(set-fringe-mode 0)
+;; set only left fringe
+(set-fringe-mode '(nil . 0))
+
+
+(use-package git-gutter
+  :hook (prog-mode . git-gutter-mode)
+  :init
+  (git-gutter)
+  (set-face-foreground 'vertical-border (face-attribute 'line-number :background))
+  :config
+  (setq git-gutter:update-interval 0.02))
+
+(use-package git-gutter-fringe
+  :demand t
+  :config
+  (define-fringe-bitmap 'git-gutter-fr:added [0] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:modified [0] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:deleted [0] nil nil '(center repeated)))
+
 
 ;; make the title the buffer name
 (setq-default frame-title-format "%b %&")
@@ -295,7 +322,6 @@
 ;; distracting for monkey brain
 (blink-cursor-mode 0)
 
-
 ;; parens
 (show-paren-mode 1)
 ;; Don't blink, it's too distracting.
@@ -307,14 +333,6 @@
 ;; no word wrap
 (setq-default truncate-lines t)
 
-;; clean up the modeline
-(setq modus-themes-common-palette-overrides
-      '((border-mode-line-active bg-mode-line-active)
-	      (border-mode-line-active bg-mode-line-active)
-	      (fg-region unspecified)
-	      (bg-region bg-sage)
-	      (fg-hl-line unspecified)
-	      (border-mode-line-inactive bg-mode-line-inactive)))
 
 ;; show colors with text stuff
 (use-package rainbow-mode
@@ -408,7 +426,8 @@
 
   (general-define-key
    :keymaps 'evil-motion-state-map
-   "g D" 'goto-def-in-new-window)
+   "g D" 'goto-def-in-new-window
+   "z z" 'pulsar-recenter-center)
 
   (general-define-key
    :keymaps 'dired-mode-map
@@ -422,6 +441,7 @@
   ;; TODO: shift j/k while in visual mode should move the region
 
   (oct/leader-keys
+    "u" 'universal-argument
     "g" 'magit-status
     "b" 'counsel-switch-buffer
     "C-n" 'next-buffer
@@ -435,7 +455,8 @@
     ;; lsp shit
     "r" '(:ignore t)
     "rr" 'lsp-find-references
-    "rn" 'lsp-rename))
+    "rn" 'lsp-rename
+    "k" 'lsp-ui-doc-glance))
 
 (use-package evil
   :demand t
@@ -507,6 +528,9 @@
 (add-to-list 'exec-path "/opt/homebrew/bin")
 (add-to-list 'exec-path "~/.nix-profile/bin")
 
+(use-package vterm
+  :ensure t)
+
 ;; environment
 (setq dired-use-ls-dired nil)
 
@@ -543,3 +567,5 @@
 
 (setq backup-directory-alist '(("" . "~/.emacs.d/backups")))
 (setq gc-cons-threshold (* 2 1000 1000))
+
+
