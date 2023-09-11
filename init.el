@@ -331,7 +331,7 @@
 (setq show-paren-when-point-inside-paren t)
 
 ;; no word wrap
-(setq-default truncate-lines t)
+(setq-default truncate-lines nil)
 
 
 ;; show colors with text stuff
@@ -443,13 +443,16 @@
   (oct/leader-keys
     "u" 'universal-argument
     "g" 'magit-status
-    "b" 'counsel-switch-buffer
+    "s" 'persp-switch
+    "b" 'persp-counsel-switch-buffer
     "C-n" 'next-buffer
     "C-p" 'previous-buffer
     "f" '(:ignore t)
     "fd" 'dired-jump
     "ff" 'counsel-projectile-find-file
-    "fg" 'counsel-projectile-rg
+    "fb" 'counsel-projectile-switch-to-buffer
+    ;; "fg" 'counsel-projectile-rg
+    "fg" 'mjr/rg-dir
     "/" 'comment-line
     "n" 'evil-ex-nohighlight
     ;; lsp shit
@@ -565,7 +568,15 @@
   :after projectile
   :config (counsel-projectile-mode))
 
+(use-package perspective
+  ;; :bind (("C-x k" . persp-kill-buffer))
+  ;; :custom ((persp-mode-prefix-key "C-x x"))
+  :init (persp-mode))
+
 (setq backup-directory-alist '(("" . "~/.emacs.d/backups")))
 (setq gc-cons-threshold (* 2 1000 1000))
 
-
+(defun mjr/rg-dir ()
+    (interactive)
+    (let ((dir (file-name-directory buffer-file-name)))
+        (counsel-rg nil dir nil (concat dir ": "))))
