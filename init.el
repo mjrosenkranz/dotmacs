@@ -90,20 +90,16 @@
 (use-package lsp-ivy
   :after lsp)
 
-;; (use-package lsp-ui
-;;   :hook (lsp-mode . lsp-ui-mode)
-;;   :custom
-;;   (lsp-ui-doc-position 'bottom)
-;;   (lsp-ui-sideline-update-mode 'line)
-;;   (lsp-ui-sideline-show-diagnostics t)
-;;   (lsp-ui-sideline-show-hover nil))
-
 ;; ------- languages -------------
 
 ;; python
 (use-package python-mode
   :hook (python-mode . lsp-deferred)
-  :config)
+  :config
+    (add-hook 'python-mode-hook
+              (lambda ()
+                (modify-syntax-entry ?_ "w" python-mode-syntax-table)
+                (modify-syntax-entry ?- "w" python-mode-syntax-table))))
 
 (use-package lsp-pyright
   :after lsp-mode
@@ -130,6 +126,10 @@
 ;; nix
 (use-package nix-mode
   :mode "\\.nix\\'")
+
+;; protobuf
+(use-package protobuf-mode
+  :mode "\\.proto\\'")
 
 ;; completion
 
@@ -393,7 +393,7 @@
 
   (general-define-key
    ;; TODO: add window swapping
-   :states 'normal
+   :states '(normal insert)
    :keymaps 'override
    "M-k" 'windmove-up
    "M-j" 'windmove-down
@@ -419,6 +419,8 @@
   (oct/leader-keys
     "u" 'universal-argument
     "g" 'magit-status
+    "," 'rename-buffer
+    "$" 'persp-rename
     "s" 'persp-switch
     "b" 'switch-to-buffer
     "C-n" 'next-buffer
@@ -538,8 +540,7 @@
   (projectile-add-known-project "~/.emacs.d")
   ;; add dots
   (projectile-add-known-project "~/dots")
-  ;; (setq projectile-switch-project-action #'projectile-dired)
-(setq projectile-switch-project-action nil))
+  (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package perspective
   ;; :bind (("C-x k" . persp-kill-buffer))
