@@ -154,44 +154,20 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
-(use-package ivy
-  ;; TODO: do we need this at startup?
-  :demand
-  :diminish
-  ;; TODO: move these to general?
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
-
-(use-package counsel
-  :bind (
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history))
+(use-package vertico
   :custom
-  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
-  :config
-  (counsel-mode 1))
+  (vertico-cycle t)
+  :init
+  (vertico-mode))
+              
+(use-package savehist
+  :init
+  (savehist-mode))
 
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key)
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
   :bind
-  ([remap describe-function] . counsel-describe-function)
   ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
 
@@ -444,14 +420,14 @@
     "u" 'universal-argument
     "g" 'magit-status
     "s" 'persp-switch
-    "b" 'persp-counsel-switch-buffer
+    "b" 'switch-to-buffer
     "C-n" 'next-buffer
     "C-p" 'previous-buffer
     "f" '(:ignore t)
     "fd" 'dired-jump
-    "ff" 'counsel-projectile-find-file
-    "fb" 'counsel-projectile-switch-to-buffer
-    ;; "fg" 'counsel-projectile-rg
+    "ff" 'projectile-find-file
+    "fb" 'projectile-switch-to-buffer
+    ;; "fg" 'projectile-ripgrep
     "fg" 'mjr/rg-dir
     "/" 'comment-line
     "n" 'evil-ex-nohighlight
@@ -562,11 +538,8 @@
   (projectile-add-known-project "~/.emacs.d")
   ;; add dots
   (projectile-add-known-project "~/dots")
-  (setq projectile-switch-project-action #'projectile-dired))
-
-(use-package counsel-projectile
-  :after projectile
-  :config (counsel-projectile-mode))
+  ;; (setq projectile-switch-project-action #'projectile-dired)
+(setq projectile-switch-project-action nil))
 
 (use-package perspective
   ;; :bind (("C-x k" . persp-kill-buffer))
