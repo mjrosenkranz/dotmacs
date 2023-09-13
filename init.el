@@ -159,6 +159,12 @@
   (vertico-cycle t)
   :init
   (vertico-mode))
+
+(use-package orderless
+  :demand
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
               
 (use-package savehist
   :init
@@ -446,12 +452,16 @@
   ;; See `undo-fu' package.
   (setq evil-undo-system 'undo-fu)
   ;; For some reasons evils own search isn't default.
+
   (setq evil-search-module 'evil-search)
   ;; make the minibuffer use evil mode
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump t)
+  ;; set visual lines
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
   :config
   ;; Initialize.
