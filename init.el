@@ -87,19 +87,14 @@
   :config
   (lsp-enable-which-key-integration t))
 
-(use-package lsp-ivy
-  :after lsp)
-
 ;; ------- languages -------------
 
 ;; python
 (use-package python-mode
   :hook (python-mode . lsp-deferred)
-  :config
-    (add-hook 'python-mode-hook
-              (lambda ()
-                (modify-syntax-entry ?_ "w" python-mode-syntax-table)
-                (modify-syntax-entry ?- "w" python-mode-syntax-table))))
+  :hook (python-mode . (lambda ()
+                         (modify-syntax-entry ?_ "w" python-mode-syntax-table)
+                         (modify-syntax-entry ?- "w" python-mode-syntax-table))))
 
 (use-package lsp-pyright
   :after lsp-mode
@@ -417,12 +412,13 @@
   (general-define-key
    :keymaps 'dired-mode-map
    :states 'normal
-   "C-<return>" 'eshell
    "h" 'dired-up-directory
    "l" 'dired-find-file)
 
   (general-define-key
-   "C-c p" '(:keymap projectile-command-map :package projectile))
+   "C-c p" '(:keymap projectile-command-map :package projectile)
+   "s-<return>" 'projectile-run-vterm-other-window
+   "C-<return>" 'projectile-run-eshell)
   ;; TODO: shift j/k while in visual mode should move the region
 
   (oct/leader-keys
@@ -462,13 +458,13 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump t)
+  :config
+  ;; Initialize.
+  (evil-mode)
   ;; set visual lines
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-  :config
-  ;; Initialize.
-  (evil-mode)
 
   (setq evil-ex-search-case 'sensitive)
 
@@ -495,16 +491,6 @@
 
 ;; make undo work how we expect
 (use-package undo-fu)
-
-(use-package swiper
-  :commands (swiper)
-  :config
-
-  ;; Go to the start of the match instead of the end. Why?
-  ;; .. allows us to operate on the term just jumped to (look up reference for e.g.)
-  (setq swiper-goto-start-of-match t))
-
-
 
 ;; ---- git ------
 (use-package magit
@@ -543,11 +529,12 @@
   :demand
   :diminish projectile-mode
   :config (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
+  :custom ((projectile-completion-system 'default))
   ;; :bind-keymap
   ;; ("C-c p" . projectile-command-map)
   :init
   ;; look for code in the... code dir
+  (setq projectile-completion-system 'default)
   (setq projectile-project-search-path '("~/code"))
   ;; add this project
   (projectile-add-known-project "~/.emacs.d")
