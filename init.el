@@ -165,6 +165,9 @@
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package consult
+  :demand)
               
 (use-package savehist
   :init
@@ -428,15 +431,15 @@
     "," 'rename-buffer
     "$" 'persp-rename
     "s" 'persp-switch
-    "b" 'switch-to-buffer
+    "b" 'consult-buffer
     "C-n" 'next-buffer
     "C-p" 'previous-buffer
     "f" '(:ignore t)
     "fd" 'dired-jump
     "ff" 'projectile-find-file
     "fb" 'projectile-switch-to-buffer
-    ;; "fg" 'projectile-ripgrep
-    "fg" 'mjr/rg-dir
+    "fg" 'consult-ripgrep
+    ;; "fg" 'mjr/rg-dir
     "/" 'comment-line
     "n" 'evil-ex-nohighlight
     ;; lsp shit
@@ -552,10 +555,13 @@
   (projectile-add-known-project "~/dots")
   (setq projectile-switch-project-action #'projectile-dired))
 
+;; TODO: change name of terminal or shell to number and running command?
 (use-package perspective
   ;; :bind (("C-x k" . persp-kill-buffer))
   ;; :custom ((persp-mode-prefix-key "C-x x"))
-  :init (persp-mode))
+  :init (persp-mode)
+    (consult-customize consult--source-buffer :hidden t :default nil)
+    (add-to-list 'consult-buffer-sources persp-consult-source))
 
 (setq backup-directory-alist '(("" . "~/.emacs.d/backups")))
 (setq gc-cons-threshold (* 2 1000 1000))
