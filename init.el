@@ -222,7 +222,12 @@
 
 
 ;; make the title the buffer name
-(setq-default frame-title-format "%b %&")
+;; (setq-default frame-title-format "%b %&")
+(setq-default frame-title-format '((:eval
+                                    (format "%s: %s"
+                                            (persp-name (get-current-persp))
+                                            (buffer-name)))
+                                   "%&"))
 ;; no dialog boxes
 (setq use-dialog-box nil)
 ;; just y or n
