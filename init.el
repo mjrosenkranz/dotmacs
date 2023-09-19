@@ -87,7 +87,15 @@
   :config
   (lsp-enable-which-key-integration t))
 
-;; ------- languages -------------
+(use-package dap-mode
+  :custom
+  (dap-auto-configure-mode t)
+  (dap-auto-configure-features '(sessions locals breakpoonts expressions))
+  :config
+  (require 'dap-python)
+  (setq dap-python-debugger 'debugpy))
+
+;; ------- Languages -------------
 
 ;; python
 (use-package python-mode
@@ -163,6 +171,12 @@
 
 (use-package consult
   :demand)
+
+(use-package embark
+  :demand)
+
+(use-package embark-consult)
+              
               
 (use-package savehist
   :init
@@ -408,6 +422,10 @@
    :keymaps 'evil-motion-state-map
    "g D" 'goto-def-in-new-window
    "z z" 'pulsar-recenter-center)
+
+(general-define-key
+   :keymaps 'minibuffer-local-map
+   "C-o" 'embark-export)
 
   (general-define-key
    :keymaps 'dired-mode-map
