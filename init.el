@@ -445,7 +445,8 @@
     "," 'rename-buffer
     "$" 'persp-rename
     "s" 'persp-switch
-    "b" 'consult-buffer
+    "S" 'persp-add-new
+    "b" '(lambda () (interactive) (with-persp-buffer-list () (consult-buffer)))
     "C-n" 'next-buffer
     "C-p" 'previous-buffer
     "f" '(:ignore t)
@@ -560,13 +561,12 @@
   (projectile-add-known-project "~/dots")
   (setq projectile-switch-project-action #'projectile-dired))
 
-;; TODO: change name of terminal or shell to number and running command?
-(use-package perspective
-  ;; :bind (("C-x k" . persp-kill-buffer))
-  ;; :custom ((persp-mode-prefix-key "C-x x"))
-  :init (persp-mode)
-    (consult-customize consult--source-buffer :hidden t :default nil)
-    (add-to-list 'consult-buffer-sources persp-consult-source))
+(use-package persp-mode
+  :custom ((persp-keymap-prefix "C-x x"))
+  :config
+   (setq persp-add-buffer-on-after-change-major-mode t)
+  :init (persp-mode))
+
 
 (setq backup-directory-alist '(("" . "~/.emacs.d/backups")))
 (setq gc-cons-threshold (* 2 1000 1000))
