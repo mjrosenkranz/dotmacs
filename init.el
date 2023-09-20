@@ -567,7 +567,7 @@
   (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package persp-mode
-  :custom ((persp-keymap-prefix "C-x x"))
+  :custom ((persp-keymap-prefix nil))
   :config
    (setq persp-add-buffer-on-after-change-major-mode t)
   :init (persp-mode))
