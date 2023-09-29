@@ -222,12 +222,13 @@
 
 
 ;; make the title the buffer name
-;; (setq-default frame-title-format "%b %&")
-(setq-default frame-title-format '((:eval
-                                    (format "%s: %s"
-                                            (persp-name (get-current-persp))
-                                            (buffer-name)))
-                                   "%&"))
+(setq-default frame-title-format "%b %&")
+;; (setq-default frame-title-format '((:eval
+;;                                     (format "%s: %s"
+;;                                             (persp-name (get-current-persp))
+;;                                             (buffer-name)))
+;;                                    "%&"))
+
 ;; no dialog boxes
 (setq use-dialog-box nil)
 ;; just y or n
@@ -448,10 +449,11 @@
     "u" 'universal-argument
     "g" 'magit-status
     "," 'rename-buffer
-    "$" 'persp-rename
-    "s" 'persp-switch
-    "S" 'persp-add-new
-    "b" '(lambda () (interactive) (with-persp-buffer-list () (consult-buffer)))
+    ;; "$" 'persp-rename
+    ;; "s" 'persp-switch
+    ;; "S" 'persp-add-new
+    ;; "b" '(lambda () (interactive) (with-persp-buffer-list () (consult-buffer)))
+    "b" 'consult-buffer
     "C-n" 'next-buffer
     "C-p" 'previous-buffer
     "f" '(:ignore t)
@@ -466,7 +468,8 @@
     "r" '(:ignore t)
     "rr" 'lsp-find-references
     "rn" 'lsp-rename
-    "k" 'lsp-ui-doc-glance))
+    "k" 'lsp-ui-doc-glance
+    "a" 'lsp-execute-code-action))
 
 (use-package evil
   :demand t
@@ -566,11 +569,11 @@
   (projectile-add-known-project "~/dots")
   (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package persp-mode
-  :custom ((persp-keymap-prefix nil))
-  :config
-   (setq persp-add-buffer-on-after-change-major-mode t)
-  :init (persp-mode))
+;; (use-package persp-mode
+;;   :custom ((persp-keymap-prefix nil))
+;;   :config
+;;    (setq persp-add-buffer-on-after-change-major-mode t)
+;;   :init (persp-mode))
 
 
 (setq backup-directory-alist '(("" . "~/.emacs.d/backups")))
