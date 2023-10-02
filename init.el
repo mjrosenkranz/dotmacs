@@ -204,6 +204,12 @@
 ;; set only left fringe
 (set-fringe-mode '(nil . 0))
 
+(use-package mood-line
+  :demand t
+  ;; Enable mood-line
+  :config
+  (mood-line-mode))
+
 
 (use-package git-gutter
   :hook (prog-mode . git-gutter-mode)
@@ -549,6 +555,10 @@
   :demand
   :config
   (envrc-global-mode))
+
+(use-package eat
+  :hook (eshell-mode . eat-eshell-mode)
+  :hook (eshell-mode . eat-eshell-visual-command-mode))
 
 ;; projects
 
