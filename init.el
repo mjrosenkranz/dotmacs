@@ -431,6 +431,12 @@
    "M-l" 'windmove-right)
 
   (general-define-key
+   :states '(visual)
+   :keymaps 'override
+   "K" 'drag-stuff-up
+   "J" 'drag-stuff-down)
+
+  (general-define-key
    :keymaps 'evil-motion-state-map
    "g D" 'goto-def-in-new-window
    "z z" 'pulsar-recenter-center)
@@ -521,6 +527,12 @@
   :config
   ;; Initialize.
   (global-evil-surround-mode 1))
+
+(use-package drag-stuff
+  :demand t
+  :config
+  ;; Initialize.
+  (drag-stuff-mode 1))
 
 ;; make undo work how we expect
 (use-package undo-fu)
