@@ -33,25 +33,24 @@
 
 
 ;; theme
-;; (use-package modus-themes
-;;   :demand t
-;;   :init
-;;   (setq modus-themes-common-palette-overrides
-;;         '((border-mode-line-active bg-mode-line-active)
-;;           (border-mode-line-active bg-mode-line-active)
-;;           (fg-region unspecified)
-;;           (bg-region bg-sage)
-;;           (fg-hl-line unspecified)
-;;           (border-mode-line-inactive bg-mode-line-inactive)))
-;;   :config
-;;   ;; (load-theme 'modus-vivendi-tinted t)
-;;   (load-theme 'modus-vivendi-tinted t))
-
-(use-package catppuccin-theme
+(use-package modus-themes
   :demand t
+  :init
+  (setq modus-themes-common-palette-overrides
+        '((border-mode-line-active bg-mode-line-active)
+          (border-mode-line-active bg-mode-line-active)
+          (fg-region unspecified)
+          (bg-region bg-sage)
+          (fg-hl-line unspecified)
+          (border-mode-line-inactive bg-mode-line-inactive)))
   :config
-  (setq catppuccin-flavor 'macchiato)
-  (load-theme 'catppuccin t))
+  (load-theme 'modus-operandi-tinted t))
+
+;; (use-package catppuccin-theme
+;;   :demand t
+;;   :config
+;;   (setq catppuccin-flavor 'macchiato)
+;;   (load-theme 'catppuccin t))
 
 
 ;; --- editing ---
@@ -142,6 +141,9 @@
   (lsp-pyright-auto-import-completions nil)
   (lsp-pyright-typechecking-mode "off"))
 
+(use-package cc-mode
+  :hook (c++-mode . lsp-deferred))
+  
 
 (setq python-indent-guess-indent-offset t
       python-indent-guess-indent-offset-verbose nil)
@@ -242,6 +244,7 @@
 (setq inhibit-startup-screen t)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+(tab-bar-mode t)
 (scroll-bar-mode -1)
 (tooltip-mode -1)
 ;; set only left fringe
@@ -469,6 +472,8 @@
    ;; TODO: add window swapping
    :states '(normal insert)
    :keymaps 'override
+   "s-M-<return>" 'multi-vterm-project
+   "s-<return>" 'multi-vterm
    "M-k" 'windmove-up
    "M-j" 'windmove-down
    "M-h" 'windmove-left
@@ -497,7 +502,7 @@
 
   (general-define-key
    "C-c p" '(:keymap projectile-command-map :package projectile)
-   "s-<return>" 'projectile-run-vterm-other-window
+   ;; "s-<return>" 'multi-vterm-project
    "C-<return>" 'projectile-run-eshell)
   ;; TODO: shift j/k while in visual mode should move the region
 
@@ -520,6 +525,7 @@
     ;; "fg" 'mjr/rg-dir
     "/" 'comment-line
     "n" 'evil-ex-nohighlight
+    "t" 'tab-bar-new-tab
     ;; lsp shit
     "r" '(:ignore t)
     "rr" 'lsp-find-references
@@ -589,11 +595,8 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-;; ;; Make magit show changes within diff line
-;; (use-package magit-diff
-;;   :after magit
-;;   :config
-;;   (setq magit-diff-refine-hunk t))
+(use-package forge
+  :after magit)
 
 ;; ------- shell ----
 ;; add homebrew stuff to the path
@@ -601,6 +604,9 @@
 (add-to-list 'exec-path "~/.nix-profile/bin")
 
 (use-package vterm
+  :ensure t)
+
+(use-package multi-vterm
   :ensure t)
 
 ;; environment
