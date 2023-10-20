@@ -103,10 +103,36 @@
 
 ;; ------- Languages -------------
 
+(setq treesit-language-source-alist
+   '((cmake "https://github.com/uyha/tree-sitter-cmake")
+     (css "https://github.com/tree-sitter/tree-sitter-css")
+     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+     (html "https://github.com/tree-sitter/tree-sitter-html")
+     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+     (json "https://github.com/tree-sitter/tree-sitter-json")
+     (make "https://github.com/alemuller/tree-sitter-make")
+     (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+     (python "https://github.com/tree-sitter/tree-sitter-python")
+     (toml "https://github.com/tree-sitter/tree-sitter-toml")
+     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+     (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+(setq major-mode-remap-alist
+      '(
+   (python-mode . python-ts-mode)
+   (typescript-mode . typescript-ts-mode)
+   (css-mode . css-ts-mode)
+   ;; (yaml-mode . yaml-ts-mode)
+   ;; (bash-mode . bash-ts-mode)
+   ;; (js2-mode . js-ts-mode)
+   ;; (json-mode . json-ts-mode)
+   ))
+
 ;; python
 (use-package python-mode
-  :hook (python-mode . lsp-deferred)
-  :hook (python-mode . (lambda ()
+  :hook (python-ts-mode . lsp-deferred)
+  :hook (python-ts-mode . (lambda ()
                          (modify-syntax-entry ?_ "w" python-mode-syntax-table)
                          (modify-syntax-entry ?- "w" python-mode-syntax-table))))
 
@@ -123,7 +149,8 @@
 ;; typescript
 (use-package typescript-mode
   :mode "\\.ts\\'"
-  :hook (typescript-mode . lsp-deferred)
+  :hook (typescript-ts-mode . lsp-deferred)
+  :hook (tsx-ts-mode . lsp-deferred)
   :config
   (setq typescript-indent-level 4))
 
@@ -437,6 +464,12 @@
    "M-l" 'windmove-right)
 
   (general-define-key
+   :states '(visual)
+   :keymaps 'override
+   "K" 'drag-stuff-up
+   "J" 'drag-stuff-down)
+
+  (general-define-key
    :keymaps 'evil-motion-state-map
    "g D" 'goto-def-in-new-window
    "z z" 'pulsar-recenter-center)
@@ -527,6 +560,15 @@
   :config
   ;; Initialize.
   (global-evil-surround-mode 1))
+
+(use-package evil-numbers
+  :demand t)
+
+(use-package drag-stuff
+  :demand t
+  :config
+  ;; Initialize.
+  (drag-stuff-mode 1))
 
 ;; make undo work how we expect
 (use-package undo-fu)
