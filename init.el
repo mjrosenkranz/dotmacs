@@ -194,7 +194,14 @@
   :custom
   (vertico-cycle t)
   :init
-  (vertico-mode))
+  (vertico-mode)
+  :config
+  (setq completion-in-region-function
+        (lambda (&rest args)
+          (apply (if vertico-mode
+                     #'consult-completion-in-region
+                   #'completion--in-region)
+                 args))))
 
 (use-package orderless
   :demand
@@ -204,6 +211,7 @@
 
 (use-package consult
   :demand)
+
 
 (use-package embark
   :demand)
@@ -371,6 +379,7 @@
 
 ;; no word wrap
 (setq-default truncate-lines nil)
+(global-visual-line-mode t)
 
 
 ;; show colors with text stuff
@@ -606,8 +615,9 @@
 
 (use-package eat
   :hook (eshell-mode . eat-eshell-mode)
-  ;; :hook (eshell-mode . eat-eshell-visual-command-mode)
-  )
+  :hook (eshell-mode . eat-eshell-visual-command-mode)
+  :config
+  (setq eshell-visual-commands nil))
 
 ;; projects
 
