@@ -33,19 +33,25 @@
 
 
 ;; theme
-(use-package modus-themes
+;; (use-package modus-themes
+;;   :demand t
+;;   :init
+;;   (setq modus-themes-common-palette-overrides
+;;         '((border-mode-line-active bg-mode-line-active)
+;;           (border-mode-line-active bg-mode-line-active)
+;;           (fg-region unspecified)
+;;           (bg-region bg-sage)
+;;           (fg-hl-line unspecified)
+;;           (border-mode-line-inactive bg-mode-line-inactive)))
+;;   :config
+;;   ;; (load-theme 'modus-vivendi-tinted t)
+;;   (load-theme 'modus-vivendi-tinted t))
+
+(use-package catppuccin-theme
   :demand t
-  :init
-  (setq modus-themes-common-palette-overrides
-        '((border-mode-line-active bg-mode-line-active)
-          (border-mode-line-active bg-mode-line-active)
-          (fg-region unspecified)
-          (bg-region bg-sage)
-          (fg-hl-line unspecified)
-          (border-mode-line-inactive bg-mode-line-inactive)))
   :config
-  ;; (load-theme 'modus-vivendi-tinted t)
-  (load-theme 'modus-operandi-tinted t))
+  (setq catppuccin-flavor 'macchiato)
+  (load-theme 'catppuccin t))
 
 
 ;; --- editing ---
@@ -266,7 +272,7 @@
   (setq pulsar-pulse t)
   (setq pulsar-delay 0.055)
   (setq pulsar-iterations 10)
-  (setq pulsar-face 'pulsar-red)
+  (setq pulsar-face 'pulsar-blue)
   (setq pulsar-highlight-face 'pulsar-green)
   :custom
   (pulsar-pulse-functions
@@ -558,7 +564,8 @@
 
 (use-package eat
   :hook (eshell-mode . eat-eshell-mode)
-  :hook (eshell-mode . eat-eshell-visual-command-mode))
+  ;; :hook (eshell-mode . eat-eshell-visual-command-mode)
+  )
 
 ;; projects
 
