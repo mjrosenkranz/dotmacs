@@ -212,12 +212,14 @@
 (use-package consult
   :demand)
 
-
 (use-package embark
   :demand)
 
 (use-package embark-consult)
               
+(use-package marginalia
+  :demand
+  :init (marginalia-mode))
               
 (use-package savehist
   :init
@@ -603,10 +605,6 @@
 
 ;; environment
 (setq dired-use-ls-dired nil)
-
-;; do this
-;; export VIRTUAL_ENV=./venv
-;; export PATH=./venv/bin:$PATH
 
 (use-package envrc
   :demand
