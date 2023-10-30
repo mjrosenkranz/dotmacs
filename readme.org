@@ -30,7 +30,11 @@ ln -s /opt/homebrew/opt/emacs-plus@29/Emacs.app /Applications
         + read-only access to organization
     + write:discussion
         + ability to create and edit comments on PRs
-2. Create =.authinfo= file:
+2. Create =.authinfo= file with entries for forge and github-review:
+
     #+begin_src
+
     machine api.github.com login Morgan-Alloy^forge password <key-contents>
+    machine api.github.com login Morgan-Alloy^github-review password <key-contents>
+
     #+begin_src
