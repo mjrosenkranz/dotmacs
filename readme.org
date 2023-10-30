@@ -18,3 +18,19 @@ link the application spotlight can find it
 ln -s /opt/homebrew/opt/emacs-plus@29/Emacs.app /Applications
 
 #+end_src sh
+
+** misc
+*** Setup forge and github review:
+1. Create (or reuse) a github PAT with the following scopes
+    + repo
+        + read write access to repos
+    + user
+        + profile information
+    + read:org
+        + read-only access to organization
+    + write:discussion
+        + ability to create and edit comments on PRs
+2. Create =.authinfo= file:
+    #+begin_src
+    machine api.github.com login Morgan-Alloy^forge password <key-contents>
+    #+begin_src

@@ -598,6 +598,10 @@
 (use-package forge
   :after magit)
 
+(use-package github-review
+  :after magit)
+
+
 ;; ------- shell ----
 ;; add homebrew stuff to the path
 (add-to-list 'exec-path "/opt/homebrew/bin")
