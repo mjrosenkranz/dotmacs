@@ -159,6 +159,10 @@
 ;; rust
 
 (use-package rustic
+  :hook (rustic-mode . lsp-deferred)
+  :hook (rustic-mode . (lambda ()
+                         (modify-syntax-entry ?_ "w" rustic-mode-syntax-table)
+                         (modify-syntax-entry ?- "w" rustic-mode-syntax-table)))
   :ensure)
 
 ;; nix
