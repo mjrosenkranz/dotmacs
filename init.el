@@ -74,7 +74,7 @@
   :commands (lsp lsp-deferred)
   ; :hook (lsp-mode . efs/lsp-mode-setup)
   :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  (setq lsp-keymap-prefix "C-c l")
   :custom
   (lsp-eldoc-enable-hover nil)
   (lsp-rust-analyzer-cargo-watch-command "clippy")
@@ -478,6 +478,9 @@
    :keymaps 'override
    "s-M-<return>" 'multi-vterm-project
    "s-<return>" 'multi-vterm
+   "s-t" 'tab-new
+   ;; todo: close window if last tab
+   "s-w" 'tab-close
    "M-k" 'windmove-up
    "M-j" 'windmove-down
    "M-h" 'windmove-left
