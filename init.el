@@ -57,6 +57,9 @@
 
 ;; utf 8 only
 (prefer-coding-system 'utf-8)
+;; make the clipboard work right
+(setq select-enable-primary nil)
+(setq select-enable-clipboard t)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
@@ -479,6 +482,8 @@
    "s-M-<return>" 'multi-vterm-project
    "s-<return>" 'multi-vterm
    "s-t" 'tab-new
+   "s-+" 'text-scale-increase
+   "s--" 'text-scale-decrease
    ;; todo: close window if last tab
    "s-w" 'tab-close
    "M-k" 'windmove-up
@@ -537,7 +542,7 @@
     "r" '(:ignore t)
     "rr" 'lsp-find-references
     "rn" 'lsp-rename
-    "k" 'lsp-ui-doc-glance
+    "k" 'lsp-describe-thing-at-point
     "a" 'lsp-execute-code-action))
 
 (use-package evil
@@ -667,3 +672,17 @@
     (interactive)
     (let ((dir (file-name-directory buffer-file-name)))
         (counsel-rg nil dir nil (concat dir ": "))))
+
+;; --- windows --
+;; if you try to open a window in a dedicated windo then
+;; we move the new window somewhere else
+(setq switch-to-buffer-in-dedicated-window 'pop)
+;; make switch to buffer obey the display buffer stuff
+(setq switch-to-buffer-obey-display-actions t)
+
+(setq display-buffer-alist nil)
+(add-to-list 'display-buffer-alist
+             '("\\*lsp-help\\*"
+               (display-buffer-in-side-window display-buffer-reuse-window)
+               (side . bottom)
+               (slot . 0)))
