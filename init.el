@@ -509,7 +509,11 @@
    "g D" 'goto-def-in-new-window
    "z z" 'pulsar-recenter-center)
 
-(general-define-key
+  (general-define-key
+   :keymaps 'ctl-x-map 
+   "K" 'kill-buffer-and-window)
+
+  (general-define-key
    :keymaps 'minibuffer-local-map
    "C-o" 'embark-export)
 
