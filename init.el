@@ -33,24 +33,24 @@
 
 
 ;; theme
-(use-package modus-themes
-  :demand t
-  :init
-  (setq modus-themes-common-palette-overrides
-        '((border-mode-line-active bg-mode-line-active)
-          (border-mode-line-active bg-mode-line-active)
-          (fg-region unspecified)
-          (bg-region bg-sage)
-          (fg-hl-line unspecified)
-          (border-mode-line-inactive bg-mode-line-inactive)))
-  :config
-  (load-theme 'modus-operandi-tinted t))
-
-;; (use-package catppuccin-theme
+;; (use-package modus-themes
 ;;   :demand t
+;;   :init
+;;   (setq modus-themes-common-palette-overrides
+;;         '((border-mode-line-active bg-mode-line-active)
+;;           (border-mode-line-active bg-mode-line-active)
+;;           (fg-region unspecified)
+;;           (bg-region bg-sage)
+;;           (fg-hl-line unspecified)
+;;           (border-mode-line-inactive bg-mode-line-inactive)))
 ;;   :config
-;;   (setq catppuccin-flavor 'macchiato)
-;;   (load-theme 'catppuccin t))
+;;   (load-theme 'modus-operandi-tinted t))
+
+(use-package catppuccin-theme
+  :demand t
+  :config
+  (setq catppuccin-flavor 'macchiato)
+  (load-theme 'catppuccin t))
 
 
 ;; --- editing ---
@@ -406,6 +406,9 @@
   :demand
   :config (rainbow-mode))
 
+(use-package default-text-scale
+  :ensure t)
+
 ;; fonts
 
 (set-face-attribute 'default nil
@@ -487,10 +490,10 @@
    :states '(normal insert)
    :keymaps 'override
    "s-M-<return>" 'multi-vterm-project
-   "s-<return>" 'multi-vterm
+   "s-<return>" 'mjr/eshell
    "s-t" 'tab-new
-   "s-+" 'text-scale-increase
-   "s--" 'text-scale-decrease
+   "s-+" 'default-text-scale-increase
+   "s--" 'default-text-scale-decrease
    ;; todo: close window if last tab
    "C-S-V" 'yank
    "s-w" 'tab-close
@@ -529,6 +532,13 @@
    ;; "s-<return>" 'multi-vterm-project
    "C-<return>" 'projectile-run-eshell)
   ;; TODO: shift j/k while in visual mode should move the region
+
+  (general-define-key
+   :keymaps 'eshell-mode-map
+   "C-l" (lambda ()
+           (interactive)
+           ;; (eshell/clear 1)
+           (recenter 0)))
 
   (oct/leader-keys
     "u" 'universal-argument
@@ -648,8 +658,18 @@
 (use-package eat
   :hook (eshell-mode . eat-eshell-mode)
   :hook (eshell-mode . eat-eshell-visual-command-mode)
+  :hook (eshell-mode . (lambda ()
+                         (make-local-variable 'scroll-margin)
+                         (setq scroll-margin 0)))
+
+
   :config
   (setq eshell-visual-commands nil))
+
+;; --- mjr functions ---
+(defun mjr/eshell ()
+  (interactive)
+  (eshell 'N))
 
 ;; projects
 
