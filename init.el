@@ -485,12 +485,13 @@
    "s-+" 'text-scale-increase
    "s--" 'text-scale-decrease
    ;; todo: close window if last tab
+   "C-S-V" 'yank
    "s-w" 'tab-close
    "M-k" 'windmove-up
    "M-j" 'windmove-down
    "M-h" 'windmove-left
    "M-l" 'windmove-right)
-
+ 
   (general-define-key
    :states '(visual)
    :keymaps 'override
@@ -686,3 +687,11 @@
                (display-buffer-in-side-window display-buffer-reuse-window)
                (side . bottom)
                (slot . 0)))
+;; --- org mode ---
+(use-package org
+  :init
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t)
+     (shell . t))))
