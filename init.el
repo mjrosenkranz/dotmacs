@@ -140,16 +140,23 @@
 
 (use-package lsp-pyright
   :after lsp-mode
+  :config
+  (setq python-indent-guess-indent-offset t
+        python-indent-guess-indent-offset-verbose nil)
   :custom
   (lsp-pyright-auto-import-completions nil)
   (lsp-pyright-typechecking-mode "off"))
 
+;; cpp
 (use-package cc-mode
   :hook (c++-mode . lsp-deferred))
   
+(use-package cmake-mode
+  :ensure t)
+  
 
-(setq python-indent-guess-indent-offset t
-      python-indent-guess-indent-offset-verbose nil)
+
+
 
 ;; typescript
 (use-package typescript-mode
@@ -503,7 +510,11 @@
    "g D" 'goto-def-in-new-window
    "z z" 'pulsar-recenter-center)
 
-(general-define-key
+  (general-define-key
+   :keymaps 'ctl-x-map 
+   "K" 'kill-buffer-and-window)
+
+  (general-define-key
    :keymaps 'minibuffer-local-map
    "C-o" 'embark-export)
 
