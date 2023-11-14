@@ -437,7 +437,6 @@
                     ;; :weight 'semilight
                     :slant 'italic)
 
-
 ;; some font adjacent stuff
 (setq-default ;; what kind of weirdo uses two spaces after a period?
  sentence-end-double-space nil
@@ -673,11 +672,15 @@
   :hook (eshell-mode . eat-eshell-visual-command-mode)
   :hook (eshell-mode . (lambda ()
                          (make-local-variable 'scroll-margin)
-                         (setq scroll-margin 0)))
-
-
+                         (setq scroll-margin 0)
+                         (remove-hook
+                          'eshell-output-filter-functions
+                          'eshell-postoutput-scroll-to-bottom)))
   :config
-  (setq eshell-visual-commands nil))
+  (setq eshell-visual-commands nil)
+  (defalias 'ff 'find-file)
+  (defalias 'ffo 'find-file-other-window))
+
 
 ;; --- mjr functions ---
 (defun mjr/eshell ()
