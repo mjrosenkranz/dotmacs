@@ -406,15 +406,27 @@
   :demand
   :config (rainbow-mode))
 
-(use-package default-text-scale
-  :ensure t)
-
 ;; fonts
+
+(defvar mjr/font-height 140)
+
+(defun mjr/change-font-height (amt)
+  (interactive)
+  (setq mjr/font-height (+ amt mjr/font-height))
+  (set-face-attribute 'default nil :height mjr/font-height))
+
+(defun mjr/inc-font-height ()
+  (interactive)
+  (mjr/change-font-height 10))
+
+(defun mjr/dec-font-height ()
+  (interactive)
+  (mjr/change-font-height -10))
 
 (set-face-attribute 'default nil
                     :family "Roboto Mono"
                     :weight 'regular
-                    :height 140)
+                    :height mjr/font-height)
 
 (set-face-attribute 'bold nil
                     :family "Roboto Mono"
@@ -492,8 +504,9 @@
    "s-M-<return>" 'multi-vterm-project
    "s-<return>" 'mjr/eshell
    "s-t" 'tab-new
-   "s-+" 'default-text-scale-increase
-   "s--" 'default-text-scale-decrease
+   "s-+" 'mjr/inc-font-height
+   "s-<kp-add>" 'mjr/inc-font-height
+   "s--" 'mjr/dec-font-height
    ;; todo: close window if last tab
    "C-S-V" 'yank
    "s-w" 'tab-close
