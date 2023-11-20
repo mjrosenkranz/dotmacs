@@ -434,9 +434,10 @@
                     :weight 'medium)
 
 (set-face-attribute 'italic nil
-                    :family "Iosevka Term Medium Extended"
-                    ;; :weight 'semilight
-                    :slant 'italic)
+                    :family "Iosevka Term Light"
+                    :slant 'italic
+                    :width 'expanded)
+
 
 ;; some font adjacent stuff
 (setq-default ;; what kind of weirdo uses two spaces after a period?
@@ -445,15 +446,6 @@
  bidi-paragraph-direction 'left-to-right
  ;; make truncate ellipsis
  truncate-string-ellipsis "…")
-
-
-;; (set-fontset-font t 'unicode
-;;                     (font-spec :name "Inconsolata Light"
-;;                                :size 16) nil)
-
-;; (set-fontset-font t '(#xe000 . #xffdd)
-;;                      (font-spec :name "RobotoMono Nerd Font"
-;;                                 :size 12) nil)
 
 
 ;; ----- ux ------
