@@ -279,12 +279,13 @@
   :config
   (setq git-gutter:update-interval 0.02))
 
+
 (use-package git-gutter-fringe
   :demand t
   :config
-  (define-fringe-bitmap 'git-gutter-fr:added [0] nil nil '(center repeated))
-  (define-fringe-bitmap 'git-gutter-fr:modified [0] nil nil '(center repeated))
-  (define-fringe-bitmap 'git-gutter-fr:deleted [0] nil nil '(center repeated)))
+  (define-fringe-bitmap 'git-gutter-fr:added [255] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:modified [255] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:deleted [255] nil nil '(center repeated)))
 
 
 ;; make the title the buffer name
