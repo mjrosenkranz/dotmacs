@@ -192,19 +192,46 @@
   ;; Initialize.
   (setq which-key-mode-idle-delay 1))
 
-(use-package company
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :bind (:map company-active-map
-         ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
+;; (use-package company
+;;   :after lsp-mode
+;;   :hook (lsp-mode . company-mode)
+;;   :bind (:map company-active-map
+;;          ("<tab>" . company-complete-selection))
+;;         (:map lsp-mode-map
+;;          ("<tab>" . company-indent-or-complete-common))
+;;   :custom
+;;   (company-minimum-prefix-length 1)
+;;   (company-idle-delay 0.0))
 
-(use-package company-box
-  :hook (company-mode . company-box-mode))
+;; (use-package company-box
+;;   :hook (company-mode . company-box-mode))
+
+(use-package corfu
+  ;; :custom
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode)
+  (add-hook 'eshell-mode-hook
+            (lambda () (setq-local
+                        corfu-quit-at-boundary 'separator
+                        corfu-quit-no-match t
+                        corfu-auto nil)
+              (corfu-mode)))
+  :custom
+  (corfu-cycle t)
+  (corfu-auto t)
+  ;; only need two letters to start completion
+  (corfu-auto-prefix 2)
+  (corfu-auto-delay 0.0)
+  (corfu-quit-at-boundary 'separator)
+  ;; (corfu-preselect-first nil)
+  :bind (:map corfu-map
+              ("M-SPC" . corfu-insert-separator)
+              ("RET" . nil) ; quit playin with  my cr
+              ("TAB" . corfu-insert)
+              ("C-n"  . corfu-next)
+              ("C-p" . corfu-previous)))
+
 
 (use-package vertico
   :custom
@@ -476,7 +503,7 @@
 (setq next-error-recenter (quote (4)))
 
 ;; make escape do it all
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit) 
+;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit) 
 
 
 ;; keybindings 
@@ -506,6 +533,14 @@
    "M-j" 'windmove-down
    "M-h" 'windmove-left
    "M-l" 'windmove-right)
+
+  (general-define-key
+   ;; lets us kill the minibuffer with escape
+   ;; while in normal mode.
+   ;; kills any extra popups as well
+   :states '(normal)
+   :keymaps 'override
+   "<escape>" 'keyboard-escape-quit)
  
   (general-define-key
    :states '(visual)
@@ -582,6 +617,7 @@
 
   (setq evil-search-module 'evil-search)
   ;; make the minibuffer use evil mode
+  (setq evil-want-minibuffer t)
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
@@ -634,8 +670,8 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-(use-package forge
-  :after magit)
+;; (use-package forge
+;;   :after magit)
 
 (use-package github-review
   :after magit)
