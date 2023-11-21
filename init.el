@@ -83,9 +83,7 @@
   (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.6)
-  ;; enable / disable the hints as you prefer:
   (lsp-inlay-hint-enable t)
-  ;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
   (lsp-rust-analyzer-display-chaining-hints t)
   (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
@@ -207,16 +205,24 @@
 ;;   :hook (company-mode . company-box-mode))
 
 (use-package corfu
+  :hook (minibuffer-setup-hook . (lambda  ()
+                                   (when (where-is-internal #'completion-at-point (list (current-local-map)))
+                                     ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
+                                     (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
+                                                 corfu-popupinfo-delay nil)
+                                     (corfu-mode 1))))
   ;; :custom
   :init
   (global-corfu-mode)
   (corfu-history-mode)
+  (corfu-popupinfo-mode)
   (add-hook 'eshell-mode-hook
             (lambda () (setq-local
                         corfu-quit-at-boundary 'separator
                         corfu-quit-no-match t
                         corfu-auto nil)
               (corfu-mode)))
+
   :custom
   (corfu-cycle t)
   (corfu-auto t)
@@ -232,6 +238,21 @@
               ("C-n"  . corfu-next)
               ("C-p" . corfu-previous)))
 
+(use-package cape
+  :defer 10
+  :bind ("C-c f" . cape-file)
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  (defalias 'dabbrev-after-2 (cape-capf-prefix-length #'cape-dabbrev 2))
+  (add-to-list 'completion-at-point-functions 'dabbrev-after-2 t)
+  (cl-pushnew #'cape-file completion-at-point-functions)
+  :config
+  ;; Silence then pcomplete capf, no errors or messages!
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+
+  ;; Ensure that pcomplete does not write to the buffer
+  ;; and behaves as a pure `completion-at-point-function'.
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
 
 (use-package vertico
   :custom
@@ -253,12 +274,17 @@
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package consult
+  :after vertico
   :demand)
 
 (use-package embark
-  :demand)
+  :demand
+  :bind
+  (("C-<escape>" . embark-act)
+   ([remap describe-bindings] . embark-bindings)))
 
-(use-package embark-consult)
+(use-package embark-consult
+  :after (:all embark consult))
               
 (use-package marginalia
   :demand
@@ -534,13 +560,6 @@
    "M-h" 'windmove-left
    "M-l" 'windmove-right)
 
-  (general-define-key
-   ;; lets us kill the minibuffer with escape
-   ;; while in normal mode.
-   ;; kills any extra popups as well
-   :states '(normal)
-   :keymaps 'override
-   "<escape>" 'keyboard-escape-quit)
  
   (general-define-key
    :states '(visual)
@@ -560,6 +579,13 @@
   (general-define-key
    :keymaps 'minibuffer-local-map
    "C-o" 'embark-export)
+
+  (general-define-key
+   ;; lets us kill the minibuffer with escape
+   ;; while in normal mode.
+   :states '(normal)
+   :keymaps 'minibuffer-local-map
+   "<escape>" 'keyboard-escape-quit)
 
   (general-define-key
    :keymaps 'dired-mode-map
@@ -617,7 +643,7 @@
 
   (setq evil-search-module 'evil-search)
   ;; make the minibuffer use evil mode
-  (setq evil-want-minibuffer t)
+  (setq evil-want-minibuffer nil)
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
@@ -763,6 +789,11 @@
                (display-buffer-in-side-window display-buffer-reuse-window)
                (side . bottom)
                (slot . 0)))
+
+(use-package ace-window
+  :bind (("M-o" . ace-window))
+  :init (setq aw-dispatch-always t))
+
 ;; --- org mode ---
 (use-package org
   :init
