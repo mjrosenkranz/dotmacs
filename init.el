@@ -723,19 +723,22 @@
   (envrc-global-mode))
 
 (use-package eat
-  :hook (eshell-mode . eat-eshell-mode)
-  :hook (eshell-mode . eat-eshell-visual-command-mode)
   :hook (eshell-mode . (lambda ()
                          (make-local-variable 'scroll-margin)
                          (setq scroll-margin 0)
                          (remove-hook
                           'eshell-output-filter-functions
                           'eshell-postoutput-scroll-to-bottom)))
+  :init
+  (eat-eshell-mode)
+  (eat-eshell-visual-command-mode)
   :config
   (setq eshell-visual-commands nil)
   (defalias 'ff 'find-file)
   (defalias 'ffo 'find-file-other-window))
 
+(use-package esh-autosuggest
+  :hook (eshell-mode . esh-autosuggest-mode))
 
 ;; --- mjr functions ---
 (defun mjr/eshell ()
