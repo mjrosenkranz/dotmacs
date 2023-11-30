@@ -190,27 +190,7 @@
   ;; Initialize.
   (setq which-key-mode-idle-delay 1))
 
-;; (use-package company
-;;   :after lsp-mode
-;;   :hook (lsp-mode . company-mode)
-;;   :bind (:map company-active-map
-;;          ("<tab>" . company-complete-selection))
-;;         (:map lsp-mode-map
-;;          ("<tab>" . company-indent-or-complete-common))
-;;   :custom
-;;   (company-minimum-prefix-length 1)
-;;   (company-idle-delay 0.0))
-
-;; (use-package company-box
-;;   :hook (company-mode . company-box-mode))
-
 (use-package corfu
-  :hook (minibuffer-setup-hook . (lambda  ()
-                                   (when (where-is-internal #'completion-at-point (list (current-local-map)))
-                                     ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
-                                     (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
-                                                 corfu-popupinfo-delay nil)
-                                     (corfu-mode 1))))
   ;; :custom
   :init
   (global-corfu-mode)
@@ -222,7 +202,17 @@
                         corfu-quit-no-match t
                         corfu-auto nil)
               (corfu-mode)))
-
+  (defun mjr/minibuffer-corfu ()
+              (unless (or (bound-and-true-p mct--active)
+                          (bound-and-true-p vertico--input)
+                          (eq (current-local-map) read-passwd-map))
+                ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
+                (setq-local corfu-auto t
+                            corfu-auto-prefix 2
+                            corfu-echo-delay 0.0
+                            corfu-popupinfo-delay nil)
+                (corfu-mode 1)))
+  (add-hook 'minibuffer-setup-hook #'mjr/minibuffer-corfu 1)
   :custom
   (corfu-cycle t)
   (corfu-auto t)
@@ -258,14 +248,7 @@
   :custom
   (vertico-cycle t)
   :init
-  (vertico-mode)
-  :config
-  (setq completion-in-region-function
-        (lambda (&rest args)
-          (apply (if vertico-mode
-                     #'consult-completion-in-region
-                   #'completion--in-region)
-                 args))))
+  (vertico-mode))
 
 (use-package orderless
   :demand
@@ -620,6 +603,7 @@
     "f" '(:ignore t)
     "fd" 'dired-jump
     "ff" 'projectile-find-file
+    "fo" 'projectile-find-file-other-window
     "fb" 'projectile-switch-to-buffer
     "fg" 'consult-ripgrep
     ;; "fg" 'mjr/rg-dir
@@ -682,6 +666,12 @@
 (use-package evil-numbers
   :demand t)
 
+(use-package evil-anzu
+  :after evil
+  :init
+  (require 'evil-anzu)
+  (global-anzu-mode))
+
 (use-package drag-stuff
   :demand t
   :config
@@ -737,8 +727,8 @@
   (defalias 'ff 'find-file)
   (defalias 'ffo 'find-file-other-window))
 
-(use-package esh-autosuggest
-  :hook (eshell-mode . esh-autosuggest-mode))
+;; (use-package capf-autosuggest
+;;   :hook (eshell-mode . capf-autosuggest-mode))
 
 ;; --- mjr functions ---
 (defun mjr/eshell ()
