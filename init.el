@@ -147,7 +147,10 @@
 
 ;; cpp
 (use-package cc-mode
-  :hook (c++-mode . lsp-deferred))
+  :hook (c++-mode . lsp-deferred)
+  :hook (c++-mode . (lambda ()
+                         (modify-syntax-entry ?_ "w" c++-mode-syntax-table)
+                         (modify-syntax-entry ?- "w" c++-mode-syntax-table))))
   
 (use-package cmake-mode
   :ensure t)
