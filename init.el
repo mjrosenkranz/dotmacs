@@ -303,11 +303,42 @@
 ;; set only left fringe
 (set-fringe-mode '(nil . 0))
 
+;; TODO: try just minions?
 (use-package mood-line
   :demand t
   ;; Enable mood-line
-  :config
-  (mood-line-mode))
+  ;; :config
+  ;; (mood-line-mode)
+  )
+
+;; (use-package minions
+;;   :init (minions-mode))
+
+ (setq-default mode-line-format
+                      '((:eval
+                         (mood-line--format
+                          ;; Left
+                          (format-mode-line
+                           '(" "
+                             evil-mode-line-tag
+                             (:eval (mood-line-segment-modified))
+                             (:eval (mood-line-segment-buffer-name))
+                             (:eval (mood-line-segment-anzu))
+                             (:eval (mood-line-segment-multiple-cursors))
+                             (:eval (mood-line-segment-position))))
+
+                          ;; Right
+                          (format-mode-line
+                           '((:eval (mood-line-segment-eol))
+                             (:eval (mood-line-segment-encoding))
+                             (:eval (mood-line-segment-vc))
+                             (:eval (mood-line-segment-major-mode))
+                             (:eval (mood-line-segment-misc-info))
+                             (:eval (mood-line-segment-flycheck))
+                             (:eval (mood-line-segment-flymake))
+                             (:eval (mood-line-segment-process))
+                             " "))))))
+
 
 
 (use-package git-gutter
@@ -671,6 +702,7 @@
 
 (use-package evil-anzu
   :after evil
+  :custom (anzu-cons-mode-line-p nil)
   :init
   (require 'evil-anzu)
   (global-anzu-mode))
