@@ -31,6 +31,8 @@
         "~/.emacs.d/custom-settings.el")
   (load custom-file t)
 
+;; uh idk where to put spell stuff
+(setq ispell-program-name "aspell")
 
 ;; theme
 ;; (use-package modus-themes
@@ -75,10 +77,14 @@
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  ; :hook (lsp-mode . efs/lsp-mode-setup)
+  :hook (lsp-completion-mode . mjr/setup-completion)
   :init
+  (defun mjr/setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
   (setq lsp-keymap-prefix "C-c l")
   :custom
+  (lsp-completion-provider :none)
   (lsp-eldoc-enable-hover nil)
   (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-eldoc-render-all t)
@@ -151,6 +157,8 @@
   :hook (c++-mode . (lambda ()
                          (modify-syntax-entry ?_ "w" c++-mode-syntax-table)
                          (modify-syntax-entry ?- "w" c++-mode-syntax-table))))
+
+
   
 (use-package cmake-mode
   :ensure t)
@@ -174,6 +182,14 @@
   :hook (rustic-mode . (lambda ()
                          (modify-syntax-entry ?_ "w" rustic-mode-syntax-table)
                          (modify-syntax-entry ?- "w" rustic-mode-syntax-table)))
+  :ensure)
+
+;; zig
+(use-package zig-mode
+  :hook (zig-mode . lsp-deferred)
+  :hook (rustic-mode . (lambda ()
+                         (modify-syntax-entry ?_ "w" zig-mode-syntax-table)
+                         (modify-syntax-entry ?- "w" zig-mode-syntax-table)))
   :ensure)
 
 ;; nix
